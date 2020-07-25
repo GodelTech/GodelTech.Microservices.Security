@@ -20,8 +20,10 @@ namespace GodeTech.Microservice.IdentityProviderWebsite
 
         public override void ConfigureServices(IServiceCollection services)
         {
-
-            var builder = services.AddIdentityServer()
+            var builder = services.AddIdentityServer(x =>
+                {
+                    x.IssuerUri = "http://godeltech";
+                })
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
