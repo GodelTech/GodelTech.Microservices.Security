@@ -15,21 +15,21 @@ namespace GodelTech.Microservices.Security
 {
     public class ApiSecurityInitializer : MicroserviceInitializerBase
     {
-        private readonly ISecurityInfoProvider _securityInfoProvider;
+        private readonly IAuthorizationPolicyFactory _policyFactory;
 
         public SecurityProtocolType SecurityProtocol { get; set; } = SecurityProtocolType.Tls12;
         public bool ClearDefaultInboundClaimTypeMap { get; set; } = true;
         public bool ClearDefaultOutboundClaimTypeMap { get; set; } = true;
 
         public ApiSecurityInitializer(IConfiguration configuration)
-            : this(configuration, new NullSecurityInfoProvider())
+            : this(configuration, new NullAuthorizationPolicyFactory())
         {
         }
 
-        public ApiSecurityInitializer(IConfiguration configuration, ISecurityInfoProvider securityInfoProvider)
+        public ApiSecurityInitializer(IConfiguration configuration, IAuthorizationPolicyFactory policyFactory)
             : base(configuration)
         {
-            _securityInfoProvider = securityInfoProvider ?? throw new ArgumentNullException(nameof(securityInfoProvider));
+            _policyFactory = policyFactory ?? throw new ArgumentNullException(nameof(policyFactory));
         }
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -85,7 +85,7 @@ namespace GodelTech.Microservices.Security
 
         protected virtual void ConfigureAuthorization(AuthorizationOptions options)
         {
-            foreach (var (policyName, policy) in _securityInfoProvider.CreatePolicies())
+            foreach (var (policyName, policy) in _policyFactory.Create())
             {
                 options.AddPolicy(policyName, policy);
             }

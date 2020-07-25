@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GodelTech.Microservices.Security.Services
 {
-    public interface ISecurityInfoProvider
+    public interface IAuthorizationPolicyFactory
     {
-        IReadOnlyDictionary<string, AuthorizationPolicy> CreatePolicies();
+        IReadOnlyDictionary<string, AuthorizationPolicy> Create();
     }
 }

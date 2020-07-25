@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GodelTech.Microservices.Security.Services
 {
-    public class NullSecurityInfoProvider : ISecurityInfoProvider
+    public class NullAuthorizationPolicyFactory : IAuthorizationPolicyFactory
     {
-        public IReadOnlyDictionary<string, AuthorizationPolicy> CreatePolicies()
+        public IReadOnlyDictionary<string, AuthorizationPolicy> Create()
         {
             return new Dictionary<string, AuthorizationPolicy>();
         }
