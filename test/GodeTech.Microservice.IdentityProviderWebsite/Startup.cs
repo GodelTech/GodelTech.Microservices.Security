@@ -18,7 +18,6 @@ namespace GodeTech.Microservice.IdentityProviderWebsite
             yield return new DeveloperExceptionPageInitializer(Configuration);
 
             yield return new GenericInitializer((app, env) => app.UseStaticFiles());
-            yield return new GenericInitializer((app, env) => app.UseAuthentication());
             yield return new GenericInitializer((app, env) => app.UseRouting());
 
             yield return new IdentityServerInitializer(Configuration);
