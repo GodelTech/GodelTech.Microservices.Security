@@ -9,10 +9,5 @@ namespace GodelTech.Microservices.Security.Services
         {
             return new Dictionary<string, AuthorizationPolicy>();
         }
-
-        public IReadOnlyDictionary<string, string> GetSupportedScopes()
-        {
-            return new Dictionary<string, string>();
-        }
     }
 }

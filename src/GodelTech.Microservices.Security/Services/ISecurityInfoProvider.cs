@@ -6,6 +6,5 @@ namespace GodelTech.Microservices.Security.Services
     public interface ISecurityInfoProvider
     {
         IReadOnlyDictionary<string, AuthorizationPolicy> CreatePolicies();
-        IReadOnlyDictionary<string, string> GetSupportedScopes();
     }
 }
