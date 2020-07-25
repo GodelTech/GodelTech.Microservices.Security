@@ -82,10 +82,10 @@ namespace GodelTech.Microservices.Security
             options.TokenValidationParameters =
                 new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = config.TokenValidation.ValidateIssuer,
+                    ValidateAudience = config.TokenValidation.ValidateAudience,
+                    ValidateLifetime = config.TokenValidation.ValidateLifetime,
+                    ValidateIssuerSigningKey = config.TokenValidation.ValidateIssuerSigningKey,
                     ValidIssuer = config.Issuer,
                     ValidAudience = options.Audience,
                 };

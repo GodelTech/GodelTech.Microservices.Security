@@ -6,5 +6,7 @@
         public string Issuer { get; set; }
         public string Audience { get; set; }
         public bool RequireHttpsMetadata { get; set; }
+
+        public TokenValidationConfig TokenValidation { get; set; } = new TokenValidationConfig();
     }
 }
