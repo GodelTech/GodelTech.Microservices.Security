@@ -1,48 +1,40 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GodelTech.Microservices.Core;
+using GodelTech.Microservices.Core.Mvc;
+using GodelTech.Microservices.Security.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace GodelTech.Microservices.ApiWebsite
 {
-    public class Startup
+    public class Startup : MicroserviceStartup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration) 
+            : base(configuration)
         {
-            Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-        }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
         {
-            if (env.IsDevelopment())
+            yield return new DeveloperExceptionPageInitializer(Configuration);
+
+            yield return new GenericInitializer((app, env) => app.UseRouting());
+
+           // yield return new ApiSecurityInitializer(Configuration, new PolicyFactory());
+
+            yield return new ApiInitializer(Configuration);
+        }
+
+
+        private class PolicyFactory : IAuthorizationPolicyFactory
+        {
+            public IReadOnlyDictionary<string, AuthorizationPolicy> Create()
             {
-                app.UseDeveloperExceptionPage();
+                return new Dictionary<string, AuthorizationPolicy>();
             }
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
         }
     }
 }
