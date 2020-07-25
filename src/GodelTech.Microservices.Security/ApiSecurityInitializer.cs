@@ -34,6 +34,11 @@ namespace GodelTech.Microservices.Security
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (app == null) 
+                throw new ArgumentNullException(nameof(app));
+            if (env == null) 
+                throw new ArgumentNullException(nameof(env));
+
             if (ClearDefaultInboundClaimTypeMap)
                 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -48,6 +53,9 @@ namespace GodelTech.Microservices.Security
 
         public override void ConfigureServices(IServiceCollection services)
         {
+            if (services == null) 
+                throw new ArgumentNullException(nameof(services));
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,7 +70,9 @@ namespace GodelTech.Microservices.Security
 
         protected virtual void ConfigureJwtBearerOptions(JwtBearerOptions options)
         {
-            var config = Configuration.GetIdentityConfiguration();
+            var config = new ApiSecurityConfig();
+
+            Configuration.Bind("ApiSecurityConfig", config);
 
             options.Authority = config.AuthorityUri;
             options.Audience = config.Audience;
