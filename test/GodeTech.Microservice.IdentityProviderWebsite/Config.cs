@@ -21,7 +21,8 @@ namespace GodeTech.Microservice.IdentityProviderWebsite
         public static IEnumerable<ApiScope> ApiScopes =
             new List<ApiScope>
             {
-                new ApiScope("api1", "My API")
+                new ApiScope("api1", "My API"),
+                new ApiScope("api2", "Other API")
             };
 
         public static IEnumerable<Client> Clients =
@@ -35,7 +36,11 @@ namespace GodeTech.Microservice.IdentityProviderWebsite
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     // scopes that client has access to
-                    AllowedScopes = { "api1" }
+                    AllowedScopes =
+                    {
+                        "api1",
+                        "api2"
+                    }
                 },
                 
                 // interactive ASP.NET Core MVC client

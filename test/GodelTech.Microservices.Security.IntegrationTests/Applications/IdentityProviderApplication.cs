@@ -2,7 +2,7 @@ using GodeTech.Microservice.IdentityProviderWebsite;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace GodelTech.Microservices.Security.IntegrationTests
+namespace GodelTech.Microservices.Security.IntegrationTests.Applications
 {
     public class IdentityProviderApplication
     {

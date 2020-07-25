@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using IdentityModel.Client;
 
-namespace GodelTech.Microservices.Security.IntegrationTests
+namespace GodelTech.Microservices.Security.IntegrationTests.Utils
 {
     public class TokenService
     {

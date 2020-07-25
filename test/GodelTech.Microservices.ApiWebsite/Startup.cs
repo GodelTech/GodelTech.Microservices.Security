@@ -31,7 +31,7 @@ namespace GodelTech.Microservices.ApiWebsite
             {
                 var policyBuilder = new AuthorizationPolicyBuilder();
 
-                //policyBuilder.RequireAuthenticatedUser();
+                policyBuilder.RequireAuthenticatedUser();
                 // Check identity provider project (e.g. Config.cs) to get full list of registered scopes
                 policyBuilder.RequireClaim("scope", "api1");
 

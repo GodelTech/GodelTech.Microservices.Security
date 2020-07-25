@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
 namespace GodelTech.Microservices.ApiWebsite.Controllers
 {
-    [Authorize()]
+    [Authorize("Weather API Policy")]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase

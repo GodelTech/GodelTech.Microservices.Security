@@ -2,7 +2,7 @@ using GodelTech.Microservices.ApiWebsite;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace GodelTech.Microservices.Security.IntegrationTests
+namespace GodelTech.Microservices.Security.IntegrationTests.Applications
 {
     public class ApiWebApplication
     {
