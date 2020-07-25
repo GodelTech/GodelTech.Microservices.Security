@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace GodelTech.Microservices.Security.Tests
+namespace GodelTech.Microservices.Security.IntegrationTests
 {
     public class UnitTest1
     {

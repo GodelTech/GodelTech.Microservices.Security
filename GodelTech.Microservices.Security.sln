@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security", "src\GodelTech.Microservices.Security\GodelTech.Microservices.Security.csproj", "{496EAD2C-5D08-4E1A-B050-BDD00992AD0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security", "src\GodelTech.Microservices.Security\GodelTech.Microservices.Security.csproj", "{00000000-0000-0000-0000-000000000001}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Security.Tests", "test\GodelTech.Microservices.Security.Tests\GodelTech.Microservices.Security.Tests.csproj", "{66142817-985C-46F4-925F-EC0E2EF01B84}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.Tests", "test\GodelTech.Microservices.Security.Tests\GodelTech.Microservices.Security.Tests.csproj", "{66142817-985C-46F4-925F-EC0E2EF01B84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.ApiWebsite", "test\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj", "{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Security.IntegrationTests", "test\GodelTech.Microservices.Security.IntegrationTests\GodelTech.Microservices.Security.IntegrationTests.csproj", "{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{496EAD2C-5D08-4E1A-B050-BDD00992AD0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{496EAD2C-5D08-4E1A-B050-BDD00992AD0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{496EAD2C-5D08-4E1A-B050-BDD00992AD0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{496EAD2C-5D08-4E1A-B050-BDD00992AD0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00000000-0000-0000-0000-000000000001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00000000-0000-0000-0000-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
 		{66142817-985C-46F4-925F-EC0E2EF01B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{66142817-985C-46F4-925F-EC0E2EF01B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66142817-985C-46F4-925F-EC0E2EF01B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66142817-985C-46F4-925F-EC0E2EF01B84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
