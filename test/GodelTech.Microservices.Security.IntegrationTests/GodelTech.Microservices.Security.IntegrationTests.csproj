@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj" />
-    <ProjectReference Include="..\GodeTech.Microservice.IdentityProviderWebsite\GodeTech.Microservice.IdentityProviderWebsite.csproj" />
+    <ProjectReference Include="..\GodeTech.Microservices.IdentityProviderWebsite\GodeTech.Microservices.IdentityProviderWebsite.csproj" />
   </ItemGroup>
 
 </Project>
