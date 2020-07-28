@@ -23,12 +23,20 @@ namespace GodelTech.Microservices.Security
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (app == null) 
+                throw new ArgumentNullException(nameof(app));
+            if (env == null) 
+                throw new ArgumentNullException(nameof(env));
+            
             app.UseAuthentication();
             app.UseAuthorization();
         }
 
         public override void ConfigureServices(IServiceCollection services)
         {
+            if (services == null) 
+                throw new ArgumentNullException(nameof(services));
+            
             services.AddAuthentication(options =>
                 {
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
