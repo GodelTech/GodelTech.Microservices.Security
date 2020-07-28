@@ -1,4 +1,4 @@
-﻿namespace GodelTech.Microservices.Security
+﻿namespace GodelTech.Microservices.Security.Services
 {
     public class UiSecurityConfig
     {

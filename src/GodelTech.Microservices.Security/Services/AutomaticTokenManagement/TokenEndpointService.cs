@@ -31,7 +31,7 @@ namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
         public async Task<TokenResponse> RefreshTokenAsync(string refreshToken)
         {
             var oidcOptions = await GetOidcOptionsAsync();
-            var configuration = await oidcOptions.ConfigurationManager.GetConfigurationAsync(default(CancellationToken));
+            var configuration = await oidcOptions.ConfigurationManager.GetConfigurationAsync(default);
 
             var tokenClient = _httpClientFactory.CreateClient("tokenClient");
 
@@ -48,7 +48,7 @@ namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
         public async Task<TokenRevocationResponse> RevokeTokenAsync(string refreshToken)
         {
             var oidcOptions = await GetOidcOptionsAsync();
-            var configuration = await oidcOptions.ConfigurationManager.GetConfigurationAsync(default(CancellationToken));
+            var configuration = await oidcOptions.ConfigurationManager.GetConfigurationAsync(default);
 
             var tokenClient = _httpClientFactory.CreateClient("tokenClient");
 
