@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Api
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Security.IntegrationTests", "test\GodelTech.Microservices.Security.IntegrationTests\GodelTech.Microservices.Security.IntegrationTests.csproj", "{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodeTech.Microservices.IdentityProviderWebsite", "test\GodeTech.Microservices.IdentityProviderWebsite\GodeTech.Microservices.IdentityProviderWebsite.csproj", "{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.IdentityProviderWebsite", "test\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj", "{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Websites", "Websites", "{727F2E34-094D-421B-90DD-725EBB3C0FCB}"
 EndProject
