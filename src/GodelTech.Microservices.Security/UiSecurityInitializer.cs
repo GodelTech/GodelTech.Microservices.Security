@@ -26,7 +26,7 @@ namespace GodelTech.Microservices.Security
 
         public override void ConfigureServices(IServiceCollection services)
         {
-            var identityConfig = Configuration.GetIdentityConfiguration();
+            var identityConfig = GetConfiguration();
             services.AddSingleton(identityConfig);
 
             services.AddAuthentication(options =>
@@ -52,7 +52,11 @@ namespace GodelTech.Microservices.Security
                     options.ClientSecret = identityConfig.ClientSecret;
 
                     options.TokenValidationParameters.ValidIssuer = identityConfig.Issuer;
-                    options.Scope.AddRange(identityConfig.Scopes.Split(' ', StringSplitOptions.RemoveEmptyEntries));
+
+                    foreach (var scope in identityConfig.Scopes)
+                    {
+                        options.Scope.Add(scope);
+                    }
 
                     options.Events = new OpenIdConnectEvents
                     {
@@ -85,6 +89,15 @@ namespace GodelTech.Microservices.Security
                         }
                     };
                 });
+        }
+
+        private UiSecurityConfig GetConfiguration()
+        {
+            var config = new UiSecurityConfig();
+
+            Configuration.Bind("UiSecurityConfig", config);
+
+            return config;
         }
 
         private static string ReplaceDomainAndPort(string authorityUrl, string publicAuthorityAddress)
