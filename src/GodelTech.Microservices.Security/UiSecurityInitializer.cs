@@ -49,26 +49,26 @@ namespace GodelTech.Microservices.Security
 
         protected virtual void ConfigureOpenIdConnectOptions(OpenIdConnectOptions options)
         {
-            var identityConfig = new UiSecurityConfig();
+            var config = new UiSecurityConfig();
 
-            Configuration.Bind("UiSecurityConfig", identityConfig);
+            Configuration.Bind("UiSecurityConfig", config);
 
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.ResponseType = "code";
-            options.RequireHttpsMetadata = false;
+            options.ResponseType = config.ResponseType;
+            options.RequireHttpsMetadata = config.RequireHttpsMetadata;
 
             // This token can later be found in HttpContext
             options.SaveTokens = true;
-            options.GetClaimsFromUserInfoEndpoint = true;
+            options.GetClaimsFromUserInfoEndpoint = config.GetClaimsFromUserInfoEndpoint;
 
             // Apply settings from configuration section
-            options.Authority = identityConfig.AuthorityUri;
-            options.ClientId = identityConfig.ClientId;
-            options.ClientSecret = identityConfig.ClientSecret;
+            options.Authority = config.AuthorityUri;
+            options.ClientId = config.ClientId;
+            options.ClientSecret = config.ClientSecret;
 
-            options.TokenValidationParameters.ValidIssuer = identityConfig.Issuer;
+            options.TokenValidationParameters.ValidIssuer = config.Issuer;
 
-            foreach (var scope in identityConfig.Scopes)
+            foreach (var scope in config.Scopes)
             {
                 options.Scope.Add(scope);
             }
@@ -81,14 +81,14 @@ namespace GodelTech.Microservices.Security
                 // using internal network but user need to access Identity using external address
                 OnRedirectToIdentityProvider = context =>
                 {
-                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(context.ProtocolMessage.IssuerAddress, identityConfig.PublicAuthorityUri);
+                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(context.ProtocolMessage.IssuerAddress, config.PublicAuthorityUri);
 
                     return Task.CompletedTask;
                 },
 
                 OnRedirectToIdentityProviderForSignOut = context =>
                 {
-                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(context.ProtocolMessage.IssuerAddress, identityConfig.PublicAuthorityUri);
+                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(context.ProtocolMessage.IssuerAddress, config.PublicAuthorityUri);
 
                     return Task.CompletedTask;
                 },
