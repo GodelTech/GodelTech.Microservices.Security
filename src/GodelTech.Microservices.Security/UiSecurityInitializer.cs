@@ -52,9 +52,9 @@ namespace GodelTech.Microservices.Security
             var identityConfig = new UiSecurityConfig();
 
             Configuration.Bind("UiSecurityConfig", identityConfig);
-            
+
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.ResponseType = "code id_token";
+            options.ResponseType = "code";
             options.RequireHttpsMetadata = false;
 
             // This token can later be found in HttpContext
