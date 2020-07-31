@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AngleSharp" Version="0.14.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.0" />
     <PackageReference Include="FluentAssertions" Version="5.10.3" />
 
@@ -24,7 +25,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj" />
-    <ProjectReference Include="..\GodeTech.Microservice.IdentityProviderWebsite\GodeTech.Microservice.IdentityProviderWebsite.csproj" />
+    <ProjectReference Include="..\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj" />
+    <ProjectReference Include="..\GodelTech.Microservices.UiWebsite\GodelTech.Microservices.UiWebsite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
