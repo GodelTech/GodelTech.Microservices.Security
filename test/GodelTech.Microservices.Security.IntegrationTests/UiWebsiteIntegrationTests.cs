@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Html.Dom;
+using AngleSharp.Io;
 using FluentAssertions;
 using GodelTech.Microservices.Security.IntegrationTests.Applications;
 using GodelTech.Microservices.Security.IntegrationTests.Utils;
@@ -46,39 +47,11 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             document.Location.Origin.Should().Be(Config.IdentityProviderUrl);
             document.Location.PathName.Should().Be("/Account/Login");
         }
-
         
-        [Fact]
-        public async Task SecuredPageRequested_When_UserLogsIn_Should_RedirectToUserToRequestedPage()
-        {
-            var config = Configuration.Default
-                .WithDefaultLoader()
-                .WithDefaultCookies();
-            
-            var context = BrowsingContext.New(config);
-            
-            var document = await context.OpenAsync(Config.UiWebsiteUrl);
+        // NOTE: Due to limitations of AngleSharp full login workflow can't be properly tested due to
+        // lack of JS support and missing cookies.
+        // Proper testing requires Selenium tests execution.
 
-            document.Location.PathName.Should().Be("/Account/Login");
-
-            
-            var redirectPageContent = await document.Forms[0].SubmitAsync(new
-            {
-                Username = "bob",
-                Password = "bob"
-            });
-
-            var sitePageContent = await redirectPageContent.Forms[0].SubmitAsync();
-            
-            //document.Location.Origin.Should().Be(Config.IdentityProviderUrl);
-            
-            
-            //var result = sitePageContent.DocumentElement.OuterHtml;
-
-            //var form = document.QuerySelector<IHtmlFormElement>("form");
-            //var resultDocument = await form.SubmitAsync(new { q = "anglesharp" });            
-        }        
-        
         public void Dispose()
         {
             _webApp.Stop();
