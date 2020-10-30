@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Core;
-using GodelTech.Microservices.Security.Services;
 using GodelTech.Microservices.Security.Services.AutomaticTokenManagement;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -19,6 +18,25 @@ namespace GodelTech.Microservices.Security
         public UiSecurityInitializer(IConfiguration configuration)
             : base(configuration)
         {
+
+        }
+
+        public override void ConfigureServices(IServiceCollection services)
+        {
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+
+            services
+                .AddAuthentication(
+                    options =>
+                    {
+                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    }
+                )
+                .AddAutomaticTokenManagement()
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, ConfigureOpenIdConnectOptions);
         }
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -30,21 +48,6 @@ namespace GodelTech.Microservices.Security
             
             app.UseAuthentication();
             app.UseAuthorization();
-        }
-
-        public override void ConfigureServices(IServiceCollection services)
-        {
-            if (services == null) 
-                throw new ArgumentNullException(nameof(services));
-            
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                })
-                .AddAutomaticTokenManagement()
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, ConfigureOpenIdConnectOptions);
         }
 
         protected virtual void ConfigureOpenIdConnectOptions(OpenIdConnectOptions options)

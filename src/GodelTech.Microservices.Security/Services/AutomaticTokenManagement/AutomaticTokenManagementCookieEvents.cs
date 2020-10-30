@@ -13,12 +13,12 @@ namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
 {
     public class AutomaticTokenManagementCookieEvents : CookieAuthenticationEvents
     {
+        private static readonly ConcurrentDictionary<string, bool> PendingRefreshTokenRequests = new ConcurrentDictionary<string, bool>();
+
         private readonly ITokenEndpointService _service;
         private readonly AutomaticTokenManagementOptions _options;
         private readonly ILogger<AutomaticTokenManagementCookieEvents> _logger;
         private readonly ISystemClock _clock;
-
-        private static readonly ConcurrentDictionary<string, bool> PendingRefreshTokenRequests = new ConcurrentDictionary<string, bool>();
 
         public AutomaticTokenManagementCookieEvents(
             ITokenEndpointService service,

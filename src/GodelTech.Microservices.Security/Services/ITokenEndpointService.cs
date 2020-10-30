@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using IdentityModel.Client;
 
-namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
+namespace GodelTech.Microservices.Security.Services
 {
     public interface ITokenEndpointService
     {

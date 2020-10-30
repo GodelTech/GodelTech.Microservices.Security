@@ -24,17 +24,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj" />
-    <ProjectReference Include="..\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj" />
-    <ProjectReference Include="..\GodelTech.Microservices.UiWebsite\GodelTech.Microservices.UiWebsite.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="appsettings.json">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\demo\src\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj" />
+    <ProjectReference Include="..\..\demo\src\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj" />
+    <ProjectReference Include="..\..\demo\src\GodelTech.Microservices.UiWebsite\GodelTech.Microservices.UiWebsite.csproj" />
   </ItemGroup>
 
 </Project>

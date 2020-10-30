@@ -14,7 +14,9 @@ namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
         }
 
         public void Configure(CookieAuthenticationOptions options)
-        { }
+        {
+
+        }
 
         public void Configure(string name, CookieAuthenticationOptions options)
         {

@@ -1,4 +1,6 @@
-﻿namespace GodelTech.Microservices.Security.Services
+﻿using GodelTech.Microservices.Security.Services.Configuration;
+
+namespace GodelTech.Microservices.Security
 {
     public class ApiSecurityConfig 
     {

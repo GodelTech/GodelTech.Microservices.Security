@@ -7,15 +7,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Sec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.Tests", "test\GodelTech.Microservices.Security.Tests\GodelTech.Microservices.Security.Tests.csproj", "{66142817-985C-46F4-925F-EC0E2EF01B84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.ApiWebsite", "test\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj", "{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.IntegrationTests", "test\GodelTech.Microservices.Security.IntegrationTests\GodelTech.Microservices.Security.IntegrationTests.csproj", "{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Security.IntegrationTests", "test\GodelTech.Microservices.Security.IntegrationTests\GodelTech.Microservices.Security.IntegrationTests.csproj", "{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{727F2E34-094D-421B-90DD-725EBB3C0FCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.IdentityProviderWebsite", "test\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj", "{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9273CC3A-BC77-4963-BE16-0D6E0609790C}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Websites", "Websites", "{727F2E34-094D-421B-90DD-725EBB3C0FCB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{69A5CE07-0193-4ED8-82D4-6E8ED3ECE065}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.UiWebsite", "test\GodelTech.Microservices.UiWebsite\GodelTech.Microservices.UiWebsite.csproj", "{38399DA9-35B1-490F-82EF-294A7D676C7D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{72F42604-6175-441F-B449-1D4E80BA4CD8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.ApiWebsite", "demo\src\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj", "{1673756F-7616-4CD6-A06C-59D90E94533B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.IdentityProviderWebsite", "demo\src\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj", "{8865AA8A-1666-4EE4-9065-0BEE7DB5A867}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.UiWebsite", "demo\src\GodelTech.Microservices.UiWebsite\GodelTech.Microservices.UiWebsite.csproj", "{6294D984-4D36-4DF9-8D10-4894A3371EC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,30 +37,34 @@ Global
 		{66142817-985C-46F4-925F-EC0E2EF01B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66142817-985C-46F4-925F-EC0E2EF01B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66142817-985C-46F4-925F-EC0E2EF01B84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38399DA9-35B1-490F-82EF-294A7D676C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38399DA9-35B1-490F-82EF-294A7D676C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38399DA9-35B1-490F-82EF-294A7D676C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38399DA9-35B1-490F-82EF-294A7D676C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1673756F-7616-4CD6-A06C-59D90E94533B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1673756F-7616-4CD6-A06C-59D90E94533B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1673756F-7616-4CD6-A06C-59D90E94533B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1673756F-7616-4CD6-A06C-59D90E94533B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8865AA8A-1666-4EE4-9065-0BEE7DB5A867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8865AA8A-1666-4EE4-9065-0BEE7DB5A867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8865AA8A-1666-4EE4-9065-0BEE7DB5A867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8865AA8A-1666-4EE4-9065-0BEE7DB5A867}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6294D984-4D36-4DF9-8D10-4894A3371EC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6294D984-4D36-4DF9-8D10-4894A3371EC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6294D984-4D36-4DF9-8D10-4894A3371EC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6294D984-4D36-4DF9-8D10-4894A3371EC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2} = {727F2E34-094D-421B-90DD-725EBB3C0FCB}
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA} = {727F2E34-094D-421B-90DD-725EBB3C0FCB}
-		{38399DA9-35B1-490F-82EF-294A7D676C7D} = {727F2E34-094D-421B-90DD-725EBB3C0FCB}
+		{00000000-0000-0000-0000-000000000001} = {9273CC3A-BC77-4963-BE16-0D6E0609790C}
+		{66142817-985C-46F4-925F-EC0E2EF01B84} = {69A5CE07-0193-4ED8-82D4-6E8ED3ECE065}
+		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B} = {69A5CE07-0193-4ED8-82D4-6E8ED3ECE065}
+		{72F42604-6175-441F-B449-1D4E80BA4CD8} = {727F2E34-094D-421B-90DD-725EBB3C0FCB}
+		{1673756F-7616-4CD6-A06C-59D90E94533B} = {72F42604-6175-441F-B449-1D4E80BA4CD8}
+		{8865AA8A-1666-4EE4-9065-0BEE7DB5A867} = {72F42604-6175-441F-B449-1D4E80BA4CD8}
+		{6294D984-4D36-4DF9-8D10-4894A3371EC7} = {72F42604-6175-441F-B449-1D4E80BA4CD8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9477816-4A93-43F2-B7A5-A85F5A8C0A46}

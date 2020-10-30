@@ -1,4 +1,4 @@
-﻿namespace GodelTech.Microservices.Security.Services
+﻿namespace GodelTech.Microservices.Security.Services.Configuration
 {
     public class TokenValidationConfig
     {

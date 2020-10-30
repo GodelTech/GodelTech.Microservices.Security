@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GodelTech.Microservices.Security.Services
+namespace GodelTech.Microservices.Security
 {
     public class UiSecurityConfig
     {

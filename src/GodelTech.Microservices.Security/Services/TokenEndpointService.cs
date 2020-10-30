@@ -1,12 +1,13 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
+using GodelTech.Microservices.Security.Services.AutomaticTokenManagement;
 using IdentityModel;
 using IdentityModel.Client;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.Options;
 
-namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
+namespace GodelTech.Microservices.Security.Services
 {
     public class TokenEndpointService : ITokenEndpointService
     {
@@ -34,14 +35,16 @@ namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
 
             var tokenClient = _httpClientFactory.CreateClient("tokenClient");
 
-            return await tokenClient.RequestRefreshTokenAsync(new RefreshTokenRequest
-            {
-                Address = configuration.TokenEndpoint,
+            return await tokenClient.RequestRefreshTokenAsync(
+                new RefreshTokenRequest
+                {
+                    Address = configuration.TokenEndpoint,
 
-                ClientId = oidcOptions.ClientId,
-                ClientSecret = oidcOptions.ClientSecret,
-                RefreshToken = refreshToken
-            });
+                    ClientId = oidcOptions.ClientId,
+                    ClientSecret = oidcOptions.ClientSecret,
+                    RefreshToken = refreshToken
+                }
+            );
         }
 
         public async Task<TokenRevocationResponse> RevokeTokenAsync(string refreshToken)
@@ -51,14 +54,16 @@ namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
 
             var tokenClient = _httpClientFactory.CreateClient("tokenClient");
 
-            return await tokenClient.RevokeTokenAsync(new TokenRevocationRequest
-            {
-                Address = configuration.AdditionalData[OidcConstants.Discovery.RevocationEndpoint].ToString(),
-                ClientId = oidcOptions.ClientId,
-                ClientSecret = oidcOptions.ClientSecret,
-                Token = refreshToken,
-                TokenTypeHint = OidcConstants.TokenTypes.RefreshToken
-            });
+            return await tokenClient.RevokeTokenAsync(
+                new TokenRevocationRequest
+                {
+                    Address = configuration.AdditionalData[OidcConstants.Discovery.RevocationEndpoint].ToString(),
+                    ClientId = oidcOptions.ClientId,
+                    ClientSecret = oidcOptions.ClientSecret,
+                    Token = refreshToken,
+                    TokenTypeHint = OidcConstants.TokenTypes.RefreshToken
+                }
+            );
         }
 
         private async Task<OpenIdConnectOptions> GetOidcOptionsAsync()
@@ -67,6 +72,7 @@ namespace GodelTech.Microservices.Security.Services.AutomaticTokenManagement
                 return _oidcOptions.Get(_managementOptions.Scheme);
 
             var scheme = await _schemeProvider.GetDefaultChallengeSchemeAsync();
+
             return _oidcOptions.Get(scheme.Name);
         }
     }
