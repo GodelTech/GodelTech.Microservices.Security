@@ -21,17 +21,6 @@ namespace GodelTech.Microservices.Security
         {
         }
 
-        public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (app == null) 
-                throw new ArgumentNullException(nameof(app));
-            if (env == null) 
-                throw new ArgumentNullException(nameof(env));
-            
-            app.UseAuthentication();
-            app.UseAuthorization();
-        }
-
         public override void ConfigureServices(IServiceCollection services)
         {
             if (services == null) 
@@ -45,6 +34,17 @@ namespace GodelTech.Microservices.Security
                 .AddAutomaticTokenManagement()
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, ConfigureOpenIdConnectOptions);
+        }
+
+        public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (app == null)
+                throw new ArgumentNullException(nameof(app));
+            if (env == null)
+                throw new ArgumentNullException(nameof(env));
+
+            app.UseAuthentication();
+            app.UseAuthorization();
         }
 
         protected virtual void ConfigureOpenIdConnectOptions(OpenIdConnectOptions options)

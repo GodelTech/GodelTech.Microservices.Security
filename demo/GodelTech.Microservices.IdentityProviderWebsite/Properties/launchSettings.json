@@ -16,7 +16,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "GodeTech.Microservice.IdentityProviderWebsite": {
+    "GodelTech.Microservices.IdentityProviderWebsite": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": ".well-known/openid-configuration",

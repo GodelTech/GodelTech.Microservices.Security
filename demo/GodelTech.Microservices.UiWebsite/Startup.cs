@@ -16,16 +16,14 @@ namespace GodelTech.Microservices.UiWebsite
 
         protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
         {
-            yield return new DeveloperExceptionPageInitializer(Configuration)
-            {
-                ErrorHandlingPath = "/Error"
-            };
-            
-            yield return new GenericInitializer((app, env) => app.UseStaticFiles());
-            yield return new GenericInitializer((app, env) => app.UseRouting());
+            yield return new DeveloperExceptionPageInitializer();
+
+            yield return new GenericInitializer(null, (app, _) => app.UseStaticFiles());
+            yield return new GenericInitializer(null, (app, _) => app.UseRouting());
             
             yield return new UiSecurityInitializer(Configuration);
-            yield return new RazorPagesInitializer(Configuration);
+
+            yield return new RazorPagesInitializer();
         }
     }
 }

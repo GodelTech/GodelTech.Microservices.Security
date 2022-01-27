@@ -6,7 +6,7 @@ using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
-namespace GodeTech.Microservice.IdentityProviderWebsite
+namespace GodelTech.Microservices.IdentityProviderWebsite
 {
     public static class Config
     {

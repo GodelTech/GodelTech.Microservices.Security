@@ -32,25 +32,6 @@ namespace GodelTech.Microservices.Security
             _policyFactory = policyFactory ?? throw new ArgumentNullException(nameof(policyFactory));
         }
 
-        public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (app == null) 
-                throw new ArgumentNullException(nameof(app));
-            if (env == null) 
-                throw new ArgumentNullException(nameof(env));
-
-            if (ClearDefaultInboundClaimTypeMap)
-                JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-
-            if (ClearDefaultOutboundClaimTypeMap)
-                JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
-
-            ServicePointManager.SecurityProtocol = SecurityProtocol;
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-        }
-
         public override void ConfigureServices(IServiceCollection services)
         {
             if (services == null) 
@@ -66,6 +47,25 @@ namespace GodelTech.Microservices.Security
                 .AddJwtBearer(ConfigureJwtBearerOptions);
 
             services.AddAuthorization(ConfigureAuthorization);
+        }
+
+        public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (app == null)
+                throw new ArgumentNullException(nameof(app));
+            if (env == null)
+                throw new ArgumentNullException(nameof(env));
+
+            if (ClearDefaultInboundClaimTypeMap)
+                JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            if (ClearDefaultOutboundClaimTypeMap)
+                JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+
+            ServicePointManager.SecurityProtocol = SecurityProtocol;
+
+            app.UseAuthentication();
+            app.UseAuthorization();
         }
 
         protected virtual void ConfigureJwtBearerOptions(JwtBearerOptions options)

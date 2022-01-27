@@ -1,4 +1,4 @@
-using GodeTech.Microservice.IdentityProviderWebsite;
+using GodelTech.Microservices.IdentityProviderWebsite;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 

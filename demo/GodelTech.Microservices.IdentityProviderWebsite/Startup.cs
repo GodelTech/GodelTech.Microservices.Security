@@ -4,7 +4,7 @@ using GodelTech.Microservices.Core.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 
-namespace GodeTech.Microservice.IdentityProviderWebsite
+namespace GodelTech.Microservices.IdentityProviderWebsite
 {
     public class Startup : MicroserviceStartup
     {
@@ -15,16 +15,16 @@ namespace GodeTech.Microservice.IdentityProviderWebsite
 
         protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
         {
-            yield return new DeveloperExceptionPageInitializer(Configuration);
+            yield return new DeveloperExceptionPageInitializer();
 
-            yield return new GenericInitializer((app, env) => app.UseStaticFiles());
-            yield return new GenericInitializer((app, env) => app.UseRouting());
+            yield return new GenericInitializer(null, (app, _) => app.UseStaticFiles());
+            yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
-            yield return new IdentityServerInitializer(Configuration);
+            yield return new IdentityServerInitializer();
 
-            yield return new GenericInitializer((app, env) => app.UseAuthorization());
+            yield return new GenericInitializer(null, (app, _) => app.UseAuthorization());
 
-            yield return new MvcInitializer(Configuration);
+            yield return new MvcInitializer();
         }
     }
 }
