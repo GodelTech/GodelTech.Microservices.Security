@@ -5,17 +5,21 @@ VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security", "src\GodelTech.Microservices.Security\GodelTech.Microservices.Security.csproj", "{00000000-0000-0000-0000-000000000001}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.Tests", "test\GodelTech.Microservices.Security.Tests\GodelTech.Microservices.Security.Tests.csproj", "{66142817-985C-46F4-925F-EC0E2EF01B84}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demo", "demo", "{57001CE5-65EE-4704-8833-86010A6EA60B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.ApiWebsite", "test\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj", "{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{96BA4B7C-F90F-4942-AA8C-80BAA75210F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Security.IntegrationTests", "test\GodelTech.Microservices.Security.IntegrationTests\GodelTech.Microservices.Security.IntegrationTests.csproj", "{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B8B621C3-0411-4852-99C7-C88C629A7E47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.IdentityProviderWebsite", "test\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj", "{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.Tests", "test\GodelTech.Microservices.Security.Tests\GodelTech.Microservices.Security.Tests.csproj", "{C24B002D-55CE-4961-BEAA-DF6330C8E7F0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Websites", "Websites", "{727F2E34-094D-421B-90DD-725EBB3C0FCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.IntegrationTests", "test\GodelTech.Microservices.Security.IntegrationTests\GodelTech.Microservices.Security.IntegrationTests.csproj", "{1B925340-958E-4BBD-86E1-DB14C5E3AFA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.UiWebsite", "test\GodelTech.Microservices.UiWebsite\GodelTech.Microservices.UiWebsite.csproj", "{38399DA9-35B1-490F-82EF-294A7D676C7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.ApiWebsite", "demo\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj", "{B71396A3-267A-40CE-AB41-C9ED4C9C73FF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.IdentityProviderWebsite", "demo\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj", "{E41116C7-17AD-4BEB-A199-71F9B8EB6369}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.UiWebsite", "demo\GodelTech.Microservices.UiWebsite\GodelTech.Microservices.UiWebsite.csproj", "{727BAA20-914C-4492-8147-D2A66F256095}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,34 +31,37 @@ Global
 		{00000000-0000-0000-0000-000000000001}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00000000-0000-0000-0000-000000000001}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00000000-0000-0000-0000-000000000001}.Release|Any CPU.Build.0 = Release|Any CPU
-		{66142817-985C-46F4-925F-EC0E2EF01B84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{66142817-985C-46F4-925F-EC0E2EF01B84}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{66142817-985C-46F4-925F-EC0E2EF01B84}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{66142817-985C-46F4-925F-EC0E2EF01B84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7537770D-9C9D-4D9D-86FF-57BD12C0D17B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38399DA9-35B1-490F-82EF-294A7D676C7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38399DA9-35B1-490F-82EF-294A7D676C7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38399DA9-35B1-490F-82EF-294A7D676C7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38399DA9-35B1-490F-82EF-294A7D676C7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C24B002D-55CE-4961-BEAA-DF6330C8E7F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C24B002D-55CE-4961-BEAA-DF6330C8E7F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C24B002D-55CE-4961-BEAA-DF6330C8E7F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C24B002D-55CE-4961-BEAA-DF6330C8E7F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B925340-958E-4BBD-86E1-DB14C5E3AFA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B925340-958E-4BBD-86E1-DB14C5E3AFA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B925340-958E-4BBD-86E1-DB14C5E3AFA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B925340-958E-4BBD-86E1-DB14C5E3AFA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B71396A3-267A-40CE-AB41-C9ED4C9C73FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B71396A3-267A-40CE-AB41-C9ED4C9C73FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B71396A3-267A-40CE-AB41-C9ED4C9C73FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B71396A3-267A-40CE-AB41-C9ED4C9C73FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E41116C7-17AD-4BEB-A199-71F9B8EB6369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E41116C7-17AD-4BEB-A199-71F9B8EB6369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E41116C7-17AD-4BEB-A199-71F9B8EB6369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E41116C7-17AD-4BEB-A199-71F9B8EB6369}.Release|Any CPU.Build.0 = Release|Any CPU
+		{727BAA20-914C-4492-8147-D2A66F256095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{727BAA20-914C-4492-8147-D2A66F256095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{727BAA20-914C-4492-8147-D2A66F256095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{727BAA20-914C-4492-8147-D2A66F256095}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{4B4F186C-0D34-4069-B0B9-A44B8B1164D2} = {727F2E34-094D-421B-90DD-725EBB3C0FCB}
-		{E0FFDC9B-E6F5-4307-94F1-7618CDA172EA} = {727F2E34-094D-421B-90DD-725EBB3C0FCB}
-		{38399DA9-35B1-490F-82EF-294A7D676C7D} = {727F2E34-094D-421B-90DD-725EBB3C0FCB}
+		{00000000-0000-0000-0000-000000000001} = {96BA4B7C-F90F-4942-AA8C-80BAA75210F0}
+		{C24B002D-55CE-4961-BEAA-DF6330C8E7F0} = {B8B621C3-0411-4852-99C7-C88C629A7E47}
+		{1B925340-958E-4BBD-86E1-DB14C5E3AFA7} = {B8B621C3-0411-4852-99C7-C88C629A7E47}
+		{B71396A3-267A-40CE-AB41-C9ED4C9C73FF} = {57001CE5-65EE-4704-8833-86010A6EA60B}
+		{E41116C7-17AD-4BEB-A199-71F9B8EB6369} = {57001CE5-65EE-4704-8833-86010A6EA60B}
+		{727BAA20-914C-4492-8147-D2A66F256095} = {57001CE5-65EE-4704-8833-86010A6EA60B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9477816-4A93-43F2-B7A5-A85F5A8C0A46}
