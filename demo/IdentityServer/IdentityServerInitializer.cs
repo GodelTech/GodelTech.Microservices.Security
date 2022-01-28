@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace GodelTech.Microservices.IdentityProviderWebsite
+namespace IdentityServer
 {
     /// <summary>
     /// This class is expected to be used for demo purposes only. More details can be found here:

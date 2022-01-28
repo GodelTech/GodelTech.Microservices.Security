@@ -19,13 +19,13 @@ namespace GodelTech.Microservices.ApiWebsite
 
         protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
         {
-            yield return new DeveloperExceptionPageInitializer();
+            yield return new DeveloperExceptionPageInitializer(Configuration);
 
-            yield return new GenericInitializer(null, (app, _) => app.UseRouting());
+            yield return new GenericInitializer((app, _) => app.UseRouting());
 
             yield return new ApiSecurityInitializer(Configuration, new PolicyFactory());
 
-            yield return new ApiInitializer();
+            yield return new ApiInitializer(Configuration);
         }
     }
 }

@@ -39,9 +39,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\demo\GodelTech.Microservices.ApiWebsite\GodelTech.Microservices.ApiWebsite.csproj" />
-		<ProjectReference Include="..\..\demo\GodelTech.Microservices.IdentityProviderWebsite\GodelTech.Microservices.IdentityProviderWebsite.csproj" />
-		<ProjectReference Include="..\..\demo\GodelTech.Microservices.UiWebsite\GodelTech.Microservices.UiWebsite.csproj" />
+		<ProjectReference Include="..\..\demo\GodelTech.Microservices.Security.Demo.Api\GodelTech.Microservices.Security.Demo.Api.csproj" />
+		<ProjectReference Include="..\..\demo\GodelTech.Microservices.Security.Demo.Mvc\GodelTech.Microservices.Security.Demo.Mvc.csproj" />
+		<ProjectReference Include="..\..\demo\IdentityServer\IdentityServer.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

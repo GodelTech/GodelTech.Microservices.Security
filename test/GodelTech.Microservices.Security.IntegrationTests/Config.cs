@@ -10,8 +10,8 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 {
     public class Config
     {
-        public const string ApiWebsiteUrl = "http://localhost:5000";
-        public const string UiWebsiteUrl = "http://localhost:5000";
-        public const string IdentityProviderUrl = "http://localhost:7777";
+        public const string ApiWebsiteUrl = "http://localhost:55401";
+        public const string UiWebsiteUrl = "http://localhost:55402";
+        public const string IdentityProviderUrl = "http://localhost:55400";
     }
 }

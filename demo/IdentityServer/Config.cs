@@ -6,7 +6,7 @@ using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Test;
 
-namespace GodelTech.Microservices.IdentityProviderWebsite
+namespace IdentityServer
 {
     public static class Config
     {
@@ -52,10 +52,10 @@ namespace GodelTech.Microservices.IdentityProviderWebsite
                     AllowedGrantTypes = GrantTypes.Code,
                     
                     // where to redirect to after login
-                    RedirectUris = { "http://localhost:5000/signin-oidc" },
+                    RedirectUris = { "http://localhost:55402/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "http://localhost:5000/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:55402/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {
