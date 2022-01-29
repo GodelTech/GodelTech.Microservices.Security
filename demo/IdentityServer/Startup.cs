@@ -15,16 +15,18 @@ namespace IdentityServer
 
         protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
         {
-            yield return new DeveloperExceptionPageInitializer(Configuration);
+            yield return new DeveloperExceptionPageInitializer();
 
-            yield return new GenericInitializer((app, _) => app.UseStaticFiles());
-            yield return new GenericInitializer((app, _) => app.UseRouting());
+            yield return new GenericInitializer(null, (app, _) => app.UseStaticFiles());
+            yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
             yield return new IdentityServerInitializer();
 
-            yield return new GenericInitializer((app, _) => app.UseAuthorization());
+            yield return new GenericInitializer(null, (app, _) => app.UseAuthorization());
 
-            yield return new MvcInitializer(Configuration);
+            yield return new MvcInitializer();
+
+            yield return new RazorPagesInitializer();
         }
     }
 }
