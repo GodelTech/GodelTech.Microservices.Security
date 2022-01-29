@@ -24,13 +24,6 @@ namespace GodelTech.Microservices.UiWebsite
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
             yield return new UiSecurityInitializer(Configuration);
 
-            yield return new GenericInitializer(null, (app, _) => app.UseEndpoints(
-                endpoints =>
-                {
-                    endpoints.MapRazorPages();
-                })
-            );
-
             yield return new RazorPagesInitializer();
         }
     }

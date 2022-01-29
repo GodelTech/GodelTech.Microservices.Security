@@ -22,12 +22,6 @@ namespace GodelTech.Microservices.ApiWebsite
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
             yield return new ApiSecurityInitializer(Configuration, new PolicyFactory());
-            yield return new GenericInitializer(null, (app, _) => app.UseEndpoints(
-                endpoints =>
-                {
-                    endpoints.MapControllers();
-                })
-            );
 
             yield return new ApiInitializer();
         }
