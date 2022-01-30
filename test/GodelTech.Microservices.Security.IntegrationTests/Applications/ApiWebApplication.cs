@@ -13,7 +13,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Applications
             _host = Host.CreateDefaultBuilder()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseUrls(Config.ApiWebsiteUrl);
+                    webBuilder.UseUrls(WebApplicationsConfiguration.ApiWebApplicationUrl);
                     webBuilder.UseStartup<Startup>();
                 })
                 .Build();

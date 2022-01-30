@@ -23,7 +23,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         {
             _client = new HttpClient
             {
-                BaseAddress = new Uri(Config.ApiWebsiteUrl)
+                BaseAddress = new Uri(WebApplicationsConfiguration.ApiWebApplicationUrl)
             };
 
             _identityProviderApp = new IdentityProviderApplication();
@@ -42,9 +42,9 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             
             var context = BrowsingContext.New(config);
             
-            var document = await context.OpenAsync(Config.UiWebsiteUrl);
+            var document = await context.OpenAsync(WebApplicationsConfiguration.MvcWebApplicationUrl);
 
-            document.Location.Origin.Should().Be(Config.IdentityProviderUrl);
+            document.Location.Origin.Should().Be(WebApplicationsConfiguration.IdentityProviderWebApplicationUrl);
             document.Location.PathName.Should().Be("/Account/Login");
         }
         

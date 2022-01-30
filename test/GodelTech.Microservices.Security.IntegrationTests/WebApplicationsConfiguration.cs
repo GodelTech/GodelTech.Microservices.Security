@@ -8,10 +8,10 @@ using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
-    public class Config
+    public static class WebApplicationsConfiguration
     {
-        public const string ApiWebsiteUrl = "http://localhost:55401";
-        public const string UiWebsiteUrl = "http://localhost:55402";
-        public const string IdentityProviderUrl = "http://localhost:55400";
+        public const string ApiWebApplicationUrl = "http://localhost:55401";
+        public const string MvcWebApplicationUrl = "http://localhost:55402";
+        public const string IdentityProviderWebApplicationUrl = "http://localhost:55400";
     }
 }
