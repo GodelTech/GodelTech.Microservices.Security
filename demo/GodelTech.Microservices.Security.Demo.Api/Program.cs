@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace GodelTech.Microservices.ApiWebsite
+namespace GodelTech.Microservices.Security.Demo.Api
 {
     public class Program
     {

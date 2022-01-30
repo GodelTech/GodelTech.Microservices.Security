@@ -12,7 +12,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "fakes",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -20,7 +20,7 @@
     "GodelTech.Microservices.Security.Demo.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "fakes",
       "applicationUrl": "https://localhost:44301;http://localhost:55401",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

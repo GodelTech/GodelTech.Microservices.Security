@@ -36,29 +36,29 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         [Fact]
         public async Task SecuredEndpointRequested_When_NoJwtTokenProvided_Should_Return401()
         {
-            (await _client.GetAsync("weatherforecast")).StatusCode.Should()
+            (await _client.GetAsync("fakes")).StatusCode.Should()
                 .Be(HttpStatusCode.Unauthorized);
         }
 
         [Fact]
         public async Task SecuredEndpointRequested_When_JwtTokenProvidedWithProperScopes_ShouldReturn200()
         {
-            var token = await _tokenService.GetClientCredentialsTokenAsync("client", "secret", "api1");
+            var token = await _tokenService.GetClientCredentialsTokenAsync("client", "secret", "fake.add");
 
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            (await _client.GetAsync("weatherforecast")).StatusCode.Should()
+            (await _client.GetAsync("fakes")).StatusCode.Should()
                 .Be(HttpStatusCode.OK);
         }
 
         [Fact]
         public async Task SecuredEndpointRequested_When_JwtTokenProvidedWithoutProperScopes_ShouldReturn403()
         {
-            var token = await _tokenService.GetClientCredentialsTokenAsync("client", "secret", "api2");
+            var token = await _tokenService.GetClientCredentialsTokenAsync("client", "secret", "fake.unused");
 
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-            (await _client.GetAsync("weatherforecast")).StatusCode.Should()
+            (await _client.GetAsync("fakes")).StatusCode.Should()
                 .Be(HttpStatusCode.Forbidden);
         }
 

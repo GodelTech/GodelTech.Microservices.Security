@@ -21,8 +21,10 @@ namespace IdentityServer
         public static IEnumerable<ApiScope> ApiScopes =
             new List<ApiScope>
             {
-                new ApiScope("api1", "My API"),
-                new ApiScope("api2", "Other API")
+                new ApiScope("fake.add", "Fake Add"),
+                new ApiScope("fake.edit", "Fake Edit"),
+                new ApiScope("fake.delete", "Fake Delete"),
+                new ApiScope("fake.unused", "Fake unused scope")
             };
 
         public static IEnumerable<Client> Clients =
@@ -31,15 +33,17 @@ namespace IdentityServer
                 // machine to machine client
                 new Client
                 {
-                    ClientId = "client",
+                    ClientId = "client", // todo: rename to api
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,
                     // scopes that client has access to
                     AllowedScopes =
                     {
-                        "api1",
-                        "api2"
+                        "fake.add",
+                        "fake.edit",
+                        "fake.delete",
+                        "fake.unused"
                     }
                 },
                 
