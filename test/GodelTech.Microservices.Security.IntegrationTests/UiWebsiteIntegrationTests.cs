@@ -15,21 +15,22 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 {
     public class UiWebsiteIntegrationTests : IDisposable
     {
+        private readonly IdentityServerApplication _identityProviderApp;
+
         private readonly HttpClient _client;
-        private readonly UiWebApplication _webApp;
-        private readonly IdentityProviderApplication _identityProviderApp;
+        private readonly UiApplication _webApp;
 
         public UiWebsiteIntegrationTests()
         {
             _client = new HttpClient
             {
-                BaseAddress = new Uri(WebApplicationsConfiguration.ApiWebApplicationUrl)
+                BaseAddress = UiApplication.Url
             };
 
-            _identityProviderApp = new IdentityProviderApplication();
+            _identityProviderApp = new IdentityServerApplication();
             _identityProviderApp.Start();
 
-            _webApp = new UiWebApplication();
+            _webApp = new UiApplication();
             _webApp.Start();
         }
 
@@ -42,9 +43,9 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             
             var context = BrowsingContext.New(config);
             
-            var document = await context.OpenAsync(WebApplicationsConfiguration.MvcWebApplicationUrl);
+            var document = await context.OpenAsync(UiApplication.Url.AbsoluteUri);
 
-            document.Location.Origin.Should().Be(WebApplicationsConfiguration.IdentityProviderWebApplicationUrl);
+            document.Location.Origin.Should().Be(IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'));
             document.Location.PathName.Should().Be("/Account/Login");
         }
         

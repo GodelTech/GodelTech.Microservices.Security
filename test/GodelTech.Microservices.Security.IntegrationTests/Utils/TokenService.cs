@@ -7,36 +7,30 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Utils
 {
     public class TokenService
     {
-        private readonly string _authorityUri;
+        private readonly Uri _authorityUrl;
 
-        public TokenService(string authorityUri)
+        public TokenService(Uri authorityUrl)
         {
-            if (string.IsNullOrWhiteSpace(authorityUri))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(authorityUri));
-
-            _authorityUri = authorityUri;
+            _authorityUrl = authorityUrl;
         }
 
         public Task<string> GetClientCredentialsTokenAsync(string clientId, string clientSecret, params string[] scopes)
         {
-            if (string.IsNullOrWhiteSpace(clientId))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(clientId));
-            if (string.IsNullOrWhiteSpace(clientSecret))
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(clientSecret));
-
-            return GetTokenAsync((client, disco) =>
-            {
-                var tokenRequest = new ClientCredentialsTokenRequest
+            return GetTokenAsync(
+                (client, disco) =>
                 {
-                    Address = disco.TokenEndpoint,
+                    var tokenRequest = new ClientCredentialsTokenRequest
+                    {
+                        Address = disco.TokenEndpoint,
 
-                    ClientId = clientId,
-                    ClientSecret = clientSecret,
-                    Scope = string.Join(' ', scopes)
-                };
+                        ClientId = clientId,
+                        ClientSecret = clientSecret,
+                        Scope = string.Join(' ', scopes)
+                    };
 
-                return client.RequestClientCredentialsTokenAsync(tokenRequest);
-            });
+                    return client.RequestClientCredentialsTokenAsync(tokenRequest);
+                }
+            );
         }
 
         private async Task<string> GetTokenAsync(Func<HttpClient, DiscoveryDocumentResponse, Task<TokenResponse>> tokenResponseProvider)
@@ -45,7 +39,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Utils
             {
                 var discoveryDocumentRequest = new DiscoveryDocumentRequest
                 {
-                    Address = _authorityUri,
+                    Address = _authorityUrl.AbsoluteUri,
                     Policy =
                     {
                         ValidateIssuerName = false,

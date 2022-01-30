@@ -12,32 +12,36 @@ using GodelTech.Microservices.Security.IntegrationTests.Applications;
 using GodelTech.Microservices.Security.IntegrationTests.Utils;
 using Xunit;
 
+// todo: check options
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
+
+// Tests must be executed sequentially in order to avoid concurrency issues when InitializerFactory is set by different threads.
+// Detailed information about ASP.NET Core integration tests can be found here:
+// https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
     public sealed class ApiSecurityInitializerTests : IDisposable
     {
-        private readonly HttpClient _httpClient;
-        private readonly ApiWebApplication _apiWebApplication;
-        private readonly IdentityProviderApplication _identityProviderApp;
+        private readonly IdentityServerApplication _identityProviderApp;
         private readonly TokenService _tokenService;
+
+        private readonly HttpClient _httpClient;
+        private readonly ApiApplication _apiWebApplication;
 
         public ApiSecurityInitializerTests()
         {
-            _httpClient = new HttpClient
-            {
-                BaseAddress =
-                    new Uri(WebApplicationsConfiguration.ApiWebApplicationUrl)
-            };
-
-            _apiWebApplication = new ApiWebApplication();
-            _apiWebApplication.Start();
-
-            _identityProviderApp = new IdentityProviderApplication();
+            _identityProviderApp = new IdentityServerApplication();
             _identityProviderApp.Start();
 
-            _tokenService = new TokenService(
-                WebApplicationsConfiguration.IdentityProviderWebApplicationUrl
-            );
+            _tokenService = new TokenService(IdentityServerApplication.Url);
+
+            _httpClient = new HttpClient
+            {
+                BaseAddress = ApiApplication.Url
+            };
+
+            _apiWebApplication = new ApiApplication();
+            _apiWebApplication.Start();
         }
 
         public static IEnumerable<object[]> HttpGetRequestMemberData =>

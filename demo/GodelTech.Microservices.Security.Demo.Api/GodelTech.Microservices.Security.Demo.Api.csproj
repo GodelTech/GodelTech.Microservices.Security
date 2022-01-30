@@ -19,8 +19,4 @@
 		<ProjectReference Include="..\..\src\GodelTech.Microservices.Security\GodelTech.Microservices.Security.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Models\OpenFake\" />
-	</ItemGroup>
-
 </Project>
