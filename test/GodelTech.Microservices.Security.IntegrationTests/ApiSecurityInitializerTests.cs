@@ -137,7 +137,10 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         [MemberData(nameof(HttpPostRequestMemberData))]
         [MemberData(nameof(HttpPutRequestMemberData))]
         [MemberData(nameof(HttpDeleteRequestMemberData))]
-        public async Task SecuredEndpointRequested_WhenNoJwtTokenProvided_ReturnsUnauthorized(string scope, HttpRequestMessage httpRequestMessage, HttpStatusCode expectedResponseCode)
+        public async Task SecuredEndpointRequested_WhenNoJwtTokenProvided_ReturnsUnauthorized(
+            string scope,
+            HttpRequestMessage httpRequestMessage,
+            HttpStatusCode expectedResponseCode)
         {
             // Arrange & Act
             var result =
@@ -152,7 +155,10 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         [MemberData(nameof(HttpPostRequestMemberData))]
         [MemberData(nameof(HttpPutRequestMemberData))]
         [MemberData(nameof(HttpDeleteRequestMemberData))]
-        public async Task SecuredEndpointRequested_WhenJwtTokenProvidedWithProperScopes_ReturnsCorrectStatusCode(string scope, HttpRequestMessage httpRequestMessage, HttpStatusCode expectedResponseCode)
+        public async Task SecuredEndpointRequested_WhenJwtTokenProvidedWithProperScopes_ReturnsCorrectStatusCode(
+            string scope,
+            HttpRequestMessage httpRequestMessage,
+            HttpStatusCode expectedResponseCode)
         {
             // Arrange 
             var token = await _tokenService.GetClientCredentialsTokenAsync("client", "secret", scope);
@@ -170,7 +176,10 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         [MemberData(nameof(HttpPostRequestMemberData))]
         [MemberData(nameof(HttpPutRequestMemberData))]
         [MemberData(nameof(HttpDeleteRequestMemberData))]
-        public async Task SecuredEndpointRequested_WhenJwtTokenProvidedWithoutProperScopes_ReturnsForbidden(string scope, HttpRequestMessage httpRequestMessage, HttpStatusCode expectedResponseCode)
+        public async Task SecuredEndpointRequested_WhenJwtTokenProvidedWithoutProperScopes_ReturnsForbidden(
+            string scope,
+            HttpRequestMessage httpRequestMessage,
+            HttpStatusCode expectedResponseCode)
         {
             var token = await _tokenService.GetClientCredentialsTokenAsync("client", "secret", "fake.unused");
 
