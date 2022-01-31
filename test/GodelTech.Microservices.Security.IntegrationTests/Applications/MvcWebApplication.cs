@@ -8,14 +8,14 @@ using Microsoft.Extensions.Hosting;
 
 namespace GodelTech.Microservices.Security.IntegrationTests.Applications
 {
-    public class UiApplication
+    public class MvcWebApplication
     {
         public static readonly Uri Url = new Uri("http://localhost:55402");
 
         private readonly IHost _host;
 
         // todo: is it ok in constructor?
-        public UiApplication()
+        public MvcWebApplication()
         {
             var projectPath = ProjectHelpers.GetProjectPath("demo", typeof(Demo.Api.Startup).GetTypeInfo().Assembly);
 

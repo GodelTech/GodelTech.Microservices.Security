@@ -44,6 +44,13 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             _apiWebApplication.Start();
         }
 
+        public void Dispose()
+        {
+            _identityProviderApp.Stop();
+            _httpClient.Dispose();
+            _apiWebApplication.Stop();
+        }
+
         public static IEnumerable<object[]> HttpGetRequestMemberData =>
             new Collection<object[]>
             {
@@ -175,13 +182,6 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
             // Assert
             Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);
-        }
-
-        public void Dispose()
-        {
-            _apiWebApplication.Stop();
-            _identityProviderApp.Stop();
-            _httpClient.Dispose();
         }
     }
 }
