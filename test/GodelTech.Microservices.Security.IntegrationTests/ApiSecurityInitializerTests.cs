@@ -181,7 +181,12 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpRequestMessage httpRequestMessage,
             HttpStatusCode expectedResponseCode)
         {
-            var token = await _tokenService.GetClientCredentialsTokenAsync("client", "secret", "fake.unused");
+            // Arrange
+            var token = await _tokenService.GetClientCredentialsTokenAsync(
+                "client",
+                "secret",
+                "fake.unused"
+            );
 
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
