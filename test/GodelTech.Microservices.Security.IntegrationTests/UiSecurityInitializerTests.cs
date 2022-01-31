@@ -35,7 +35,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         }
 
         [Fact]
-        public async Task SecuredPageRequested_Should_RedirectToIdentityProviderLoginPage()
+        public async Task SecuredPageRequested_RedirectsToIdentityServerLoginPage()
         {
             // Arrange
             var configuration = Configuration.Default
@@ -43,12 +43,14 @@ namespace GodelTech.Microservices.Security.IntegrationTests
                 .WithDefaultCookies();
             
             var context = BrowsingContext.New(configuration);
-            
+
+            var expectedIdentityServerUrl = IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/');
+
             // Act
             var document = await context.OpenAsync(MvcWebApplication.Url.AbsoluteUri);
 
             // Assert
-            Assert.Equal(IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'), document.Location.Origin);
+            Assert.Equal(expectedIdentityServerUrl, document.Location.Origin);
             Assert.Equal("/Account/Login", document.Location.PathName);
         }
         
