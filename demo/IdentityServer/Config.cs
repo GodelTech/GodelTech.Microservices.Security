@@ -56,10 +56,10 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     
                     // where to redirect to after login
-                    RedirectUris = { "http://localhost:55402/signin-oidc" },
+                    RedirectUris = { "http://localhost:55403/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "http://localhost:55402/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:55403/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {

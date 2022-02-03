@@ -10,7 +10,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Applications
 {
     public class RazorPagesApplication
     {
-        public static readonly Uri Url = new Uri("http://localhost:55402");
+        public static readonly Uri Url = new Uri("http://localhost:55403");
 
         private readonly IHost _host;
 
