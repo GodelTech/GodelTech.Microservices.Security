@@ -16,11 +16,11 @@ namespace GodelTech.Microservices.Security.Demo.RazorPages
         protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
         {
             yield return new DeveloperExceptionPageInitializer();
+            yield return new ExceptionHandlerInitializer();
 
             yield return new GenericInitializer(null, (app, _) => app.UseStaticFiles());
-
-
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
+
             yield return new UiSecurityInitializer(Configuration);
 
             yield return new RazorPagesInitializer();

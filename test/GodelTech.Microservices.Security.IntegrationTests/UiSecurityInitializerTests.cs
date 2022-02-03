@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Security.IntegrationTests.Applications;
-using GodelTech.Microservices.Security.IntegrationTests.Fakes;
-using IdentityServer.Quickstart.Account;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
+    // todo: write tests for User page (with login)
     public sealed class UiSecurityInitializerTests : IDisposable
     {
         private readonly HttpClient _httpClient;
@@ -47,21 +45,13 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             // Act
             var result = await client.GetAsync(new Uri(RazorPagesApplication.Url.AbsoluteUri));
 
-            var content = await result.Content.ReadAsStringAsync();
-
-            var file = AppDomain.CurrentDomain.BaseDirectory;
-
-
             // Assert
             Assert.Equal(
                 expectedIdentityServerUrl,
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
             );
             Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);
+            // todo: check response content
         }
-        
-        // NOTE: Due to limitations of AngleSharp full login workflow can't be properly tested due to
-        // lack of JS support and missing cookies.
-        // Proper testing requires Selenium tests execution.
     }
 }

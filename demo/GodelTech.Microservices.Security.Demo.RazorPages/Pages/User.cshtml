@@ -1,0 +1,9 @@
+﻿@page
+@model UserModel
+@{
+    ViewData["Title"] = "User page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals("name", StringComparison.OrdinalIgnoreCase))?.Value</h1>
+</div>

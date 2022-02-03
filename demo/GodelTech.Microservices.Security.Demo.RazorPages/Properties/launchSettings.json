@@ -19,6 +19,7 @@
     },
     "GodelTech.Microservices.Security.Demo.RazorPages": {
       "commandName": "Project",
+      "dotnetRunMessages": "true",
       "launchBrowser": true,
       "launchUrl": "",
       "applicationUrl": "https://localhost:44303;http://localhost:55403",
