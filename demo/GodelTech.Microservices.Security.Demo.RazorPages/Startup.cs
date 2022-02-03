@@ -11,6 +11,7 @@ namespace GodelTech.Microservices.Security.Demo.RazorPages
         public Startup(IConfiguration configuration)
             : base(configuration)
         {
+
         }
 
         protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
@@ -19,6 +20,7 @@ namespace GodelTech.Microservices.Security.Demo.RazorPages
             yield return new ExceptionHandlerInitializer();
 
             yield return new GenericInitializer(null, (app, _) => app.UseStaticFiles());
+
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
             yield return new UiSecurityInitializer(Configuration);

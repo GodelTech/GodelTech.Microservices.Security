@@ -24,6 +24,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Applications
                     hostConfig =>
                     {
                         hostConfig.SetBasePath(projectPath);
+                        // todo: appsettings.json not working
                         hostConfig.AddJsonFile("appsettings.json");
                     }
                 )

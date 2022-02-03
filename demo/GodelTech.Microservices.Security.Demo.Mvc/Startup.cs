@@ -4,7 +4,7 @@ using GodelTech.Microservices.Core.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 
-namespace IdentityServer
+namespace GodelTech.Microservices.Security.Demo.Mvc
 {
     public class Startup : MicroserviceStartup
     {
@@ -23,9 +23,7 @@ namespace IdentityServer
 
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
-            yield return new IdentityServerInitializer();
-
-            yield return new GenericInitializer(null, (app, _) => app.UseAuthorization());
+            yield return new UiSecurityInitializer(Configuration);
 
             yield return new MvcInitializer();
         }

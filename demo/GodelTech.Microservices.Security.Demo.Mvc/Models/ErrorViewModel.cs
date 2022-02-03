@@ -1,0 +1,11 @@
+using System;
+
+namespace GodelTech.Microservices.Security.Demo.Mvc.Models
+{
+    public class ErrorViewModel
+    {
+        public string RequestId { get; set; }
+
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+    }
+}

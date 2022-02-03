@@ -46,7 +46,26 @@ namespace IdentityServer
                         "fake.unused"
                     }
                 },
-                
+                // interactive ASP.NET Core Mvc client
+                new Client
+                {
+                    ClientId = "Mvc",
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    
+                    // where to redirect to after login
+                    RedirectUris = { "http://localhost:55402/signin-oidc" },
+
+                    // where to redirect to after logout
+                    PostLogoutRedirectUris = { "http://localhost:55402/signout-callback-oidc" },
+
+                    AllowedScopes = new List<string>
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile
+                    }
+                },
                 // interactive ASP.NET Core RazorPages client
                 new Client
                 {

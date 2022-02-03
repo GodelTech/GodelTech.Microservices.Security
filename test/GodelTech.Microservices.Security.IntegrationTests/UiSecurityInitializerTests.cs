@@ -7,6 +7,8 @@ using Xunit;
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
     // todo: write tests for User page (with login)
+    // todo: write tests for Mvc demo project (maybe in separate class?)
+    // todo: add UseHsts for demo projects???
     public sealed class UiSecurityInitializerTests : IDisposable
     {
         private readonly HttpClient _httpClient;
@@ -43,7 +45,9 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             using var client = new HttpClient();
 
             // Act
-            var result = await client.GetAsync(new Uri(RazorPagesApplication.Url.AbsoluteUri));
+            var result = await client.GetAsync(
+                new Uri(RazorPagesApplication.Url, "User")
+            );
 
             // Assert
             Assert.Equal(

@@ -4,25 +4,25 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:55401",
-      "sslPort": 44301
+      "applicationUrl": "http://localhost:55402",
+      "sslPort": 44302
     }
   },
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "openFakes",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "GodelTech.Microservices.Security.Demo.Api": {
+    "GodelTech.Microservices.Security.Demo.Mvc": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,
-      "launchUrl": "openFakes",
-      "applicationUrl": "https://localhost:44301;http://localhost:55401",
+      "launchUrl": "",
+      "applicationUrl": "https://localhost:44302;http://localhost:55402",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
