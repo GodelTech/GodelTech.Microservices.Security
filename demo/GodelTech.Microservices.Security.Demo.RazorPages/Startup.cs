@@ -4,7 +4,7 @@ using GodelTech.Microservices.Core.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 
-namespace GodelTech.Microservices.Security.Demo.Mvc
+namespace GodelTech.Microservices.Security.Demo.RazorPages
 {
     public class Startup : MicroserviceStartup
     {

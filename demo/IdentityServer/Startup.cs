@@ -26,8 +26,6 @@ namespace IdentityServer
             yield return new GenericInitializer(null, (app, _) => app.UseAuthorization());
 
             yield return new MvcInitializer();
-
-            yield return new RazorPagesInitializer();
         }
     }
 }

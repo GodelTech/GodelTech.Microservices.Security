@@ -47,10 +47,10 @@ namespace IdentityServer
                     }
                 },
                 
-                // interactive ASP.NET Core MVC client
+                // interactive ASP.NET Core RazorPages client
                 new Client
                 {
-                    ClientId = "mvc",
+                    ClientId = "RazorPages",
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.Code,

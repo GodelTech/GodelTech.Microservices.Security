@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "GodelTech.Microservices.Security.Demo.Mvc": {
+    "GodelTech.Microservices.Security.Demo.RazorPages": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "",

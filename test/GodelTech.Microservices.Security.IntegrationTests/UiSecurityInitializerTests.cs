@@ -13,27 +13,27 @@ namespace GodelTech.Microservices.Security.IntegrationTests
     {
         private readonly HttpClient _httpClient;
         private readonly IdentityServerApplication _identityServerApplication;
-        private readonly MvcWebApplication _mvcWebApplication;
+        private readonly RazorPagesApplication _razorPagesApplication;
 
         public UiSecurityInitializerTests()
         {
             _httpClient = new HttpClient
             {
-                BaseAddress = MvcWebApplication.Url
+                BaseAddress = RazorPagesApplication.Url
             };
 
             _identityServerApplication = new IdentityServerApplication();
             _identityServerApplication.Start();
 
-            _mvcWebApplication = new MvcWebApplication();
-            _mvcWebApplication.Start();
+            _razorPagesApplication = new RazorPagesApplication();
+            _razorPagesApplication.Start();
         }
 
         public void Dispose()
         {
             _httpClient.Dispose();
             _identityServerApplication.Stop();
-            _mvcWebApplication.Stop();
+            _razorPagesApplication.Stop();
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             using var client = new HttpClient();
 
             // Act
-            var result = await client.GetAsync(new Uri(MvcWebApplication.Url.AbsoluteUri));
+            var result = await client.GetAsync(new Uri(RazorPagesApplication.Url.AbsoluteUri));
 
             var content = await result.Content.ReadAsStringAsync();
 

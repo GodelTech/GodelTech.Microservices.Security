@@ -4,7 +4,7 @@
 		<TargetFrameworks>netcoreapp3.1;net5.0</TargetFrameworks>
 
 		<!-- SonarQube needs this -->
-		<ProjectGuid>{00000000-0000-0000-0000-000000000004}</ProjectGuid>
+		<ProjectGuid>{00000000-0000-0000-0000-000000000005}</ProjectGuid>
 
 		<!-- Exclude the project from analysis -->
 		<SonarQubeExclude>true</SonarQubeExclude>

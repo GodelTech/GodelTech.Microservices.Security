@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Reflection;
-using GodelTech.Microservices.Security.Demo.Mvc;
+using GodelTech.Microservices.Security.Demo.RazorPages;
 using GodelTech.Microservices.Security.IntegrationTests.Fakes;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -8,14 +8,14 @@ using Microsoft.Extensions.Hosting;
 
 namespace GodelTech.Microservices.Security.IntegrationTests.Applications
 {
-    public class MvcWebApplication
+    public class RazorPagesApplication
     {
         public static readonly Uri Url = new Uri("http://localhost:55402");
 
         private readonly IHost _host;
 
         // todo: is it ok in constructor?
-        public MvcWebApplication()
+        public RazorPagesApplication()
         {
             var projectPath = ProjectHelpers.GetProjectPath("demo", typeof(Demo.Api.Startup).GetTypeInfo().Assembly);
 
