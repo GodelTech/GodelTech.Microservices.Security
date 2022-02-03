@@ -19,6 +19,7 @@
     },
     "GodelTech.Microservices.Security.Demo.Api": {
       "commandName": "Project",
+      "dotnetRunMessages": "true",
       "launchBrowser": true,
       "launchUrl": "fakes",
       "applicationUrl": "https://localhost:44301;http://localhost:55401",
