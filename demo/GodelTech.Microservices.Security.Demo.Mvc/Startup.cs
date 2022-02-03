@@ -1,11 +1,10 @@
 using System.Collections.Generic;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Core.Mvc;
-using GodelTech.Microservices.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 
-namespace GodelTech.Microservices.UiWebsite
+namespace GodelTech.Microservices.Security.Demo.Mvc
 {
     public class Startup : MicroserviceStartup
     {

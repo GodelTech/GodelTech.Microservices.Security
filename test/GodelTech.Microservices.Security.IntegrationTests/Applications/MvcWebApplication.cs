@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
+using GodelTech.Microservices.Security.Demo.Mvc;
 using GodelTech.Microservices.Security.IntegrationTests.Fakes;
-using GodelTech.Microservices.UiWebsite;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;

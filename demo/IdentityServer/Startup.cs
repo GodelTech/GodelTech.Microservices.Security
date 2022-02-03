@@ -11,6 +11,7 @@ namespace IdentityServer
         public Startup(IConfiguration configuration)
             : base(configuration)
         {
+
         }
 
         protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
