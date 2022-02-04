@@ -20,6 +20,7 @@ using Xunit;
 // https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
+    // todo: write tests for openFake method without security
     public sealed class ApiSecurityInitializerTests : IDisposable
     {
         private readonly IdentityServerApplication _identityProviderApp;
