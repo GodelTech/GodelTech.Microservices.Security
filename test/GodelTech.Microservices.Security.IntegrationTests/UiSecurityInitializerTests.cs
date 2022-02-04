@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -43,34 +42,28 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         public async Task SecuredPageRequested_RedirectsToIdentityServerLoginPage()
         {
             // Arrange
-            var expectedIdentityServerUrl = IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/');
-
             using var client = new HttpClient();
-
-            var expectedResultValue = await File.ReadAllTextAsync("Documents/loginPageHtml.txt");
 
             // Act
             var result = await client.GetAsync(
                 new Uri(RazorPagesApplication.Url, "User")
             );
 
-            var actualHtmlDocument = await result.Content.ReadAsStringAsync();
-            actualHtmlDocument = Regex.Replace(actualHtmlDocument, "code_challenge=(.*?);", "code_challenge=(.*?);");
-            actualHtmlDocument = Regex.Replace(actualHtmlDocument, "nonce=(.*?);", "nonce=(.*?);");
-            actualHtmlDocument = Regex.Replace(actualHtmlDocument, "state=(.*?);", "state=(.*?);");
-            actualHtmlDocument = Regex.Replace(actualHtmlDocument, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />", "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />");
-
             // Assert
             Assert.Equal(
-                expectedIdentityServerUrl,
+                IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
             );
             Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);
-            
-            Assert.Matches(new Regex(actualHtmlDocument), expectedResultValue);
-            /*Assert.Equal(expectedResultValue,
+
+            Assert.Matches(
+                new Regex(
+                    "^" +
+                    await File.ReadAllTextAsync("Documents/AccountLoginHtml.txt") +
+                    "$"
+                ),
                 await result.Content.ReadAsStringAsync()
-            );*/
+            );
         }
     }
 }
