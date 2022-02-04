@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Security.IntegrationTests.Applications;
 using Xunit;
@@ -44,10 +47,18 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
             using var client = new HttpClient();
 
+            var expectedResultValue = await File.ReadAllTextAsync("Documents/loginPageHtml.txt");
+
             // Act
             var result = await client.GetAsync(
                 new Uri(RazorPagesApplication.Url, "User")
             );
+
+            var actualHtmlDocument = await result.Content.ReadAsStringAsync();
+            actualHtmlDocument = Regex.Replace(actualHtmlDocument, "code_challenge=(.*?);", "code_challenge=(.*?);");
+            actualHtmlDocument = Regex.Replace(actualHtmlDocument, "nonce=(.*?);", "nonce=(.*?);");
+            actualHtmlDocument = Regex.Replace(actualHtmlDocument, "state=(.*?);", "state=(.*?);");
+            actualHtmlDocument = Regex.Replace(actualHtmlDocument, "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />", "<input name=\"__RequestVerificationToken\" type=\"hidden\" value=\"(.*?)\" />");
 
             // Assert
             Assert.Equal(
@@ -55,7 +66,11 @@ namespace GodelTech.Microservices.Security.IntegrationTests
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
             );
             Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);
-            // todo: check response content
+            
+            Assert.Matches(new Regex(actualHtmlDocument), expectedResultValue);
+            /*Assert.Equal(expectedResultValue,
+                await result.Content.ReadAsStringAsync()
+            );*/
         }
     }
 }

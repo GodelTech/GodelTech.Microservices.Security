@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+
+    <title>IdentityServer4</title>
+    
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+    
+
+<div class="nav-page">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+
+        <a href="/" class="navbar-brand">
+            <img src="/icon.png" class="icon-banner">
+            IdentityServer4
+        </a>
+
+    
+    </nav>
+</div>
+
+   
+    <div class="container body-container">
+        
+<div class="login-page">
+    <div class="lead">
+        <h1>Login</h1>
+        <p>Choose how to login</p>
+    </div>
+
+    
+
+    <div class="row">
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Local Account</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <form action="" method="post">
+                            <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="/connect/authorize/callback?client_id=RazorPages&amp;redirect_uri=http%3A%2F%2Flocalhost%3A55403%2Fsignin-oidc&amp;response_type=code&amp;scope=openid%20profile&amp;code_challenge=sMW7hKjYpYS00Dmb_l7q2WT31XFt-bJDbEC9IqKNUaU&amp;code_challenge_method=S256&amp;response_mode=form_post&amp;nonce=637795823275504191.MGEyYjQzMWQtOTIzZC00NjZhLWE5M2EtNjVkN2JiMWU3ZmZjNDMxYTJjN2YtN2ZjMi00ODk1LWIzYTAtZWE3NzI1YWFjYWVj&amp;state=CfDJ8JSBlcY8YJBGmtAxMf5j_JVXhBqASAoYBzqNUHaSDMlt3JQ5vSXFswp9GVeZQ0HFVAPeaT6IjQc_Fm_9HjtKPvFe67m73121YdqTXpZdVJl2JOwmwM86VQR8PQ9Zt6XT6-hdQVP9YqDfLBfdgUI1ahTMYhzMOh3kK_bSqkA0xeO6YkvWOVS7QuGr9OUeILfQ8PdKraQF9hkRH1B_CXVJFaDawYu9YebkIa2Bnm0KhTYDwSbgxU830NhlwOR87Giw_BvXOYNT_TjGxkGjfNOGr5pwqyZQ51rbngDFH2E4OaKhzBkEXukcFaZ68HVxWOnXkBOW7Gac1uOP4WYY-B9XyftrFjxVvp8gq0Pa_Q8h26jLhhxOgiYI6Mp0FzH6ahLg1g&amp;x-client-SKU=ID_NETSTANDARD2_0&amp;x-client-ver=5.6.0.0" />
+
+                            <div class="form-group">
+                                <label for="Username">Username</label>
+                                <input class="form-control" placeholder="Username" autofocus type="text" data-val="true" data-val-required="The Username field is required." id="Username" name="Username" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="Password">Password</label>
+                                <input type="password" class="form-control" placeholder="Password" autocomplete="off" data-val="true" data-val-required="The Password field is required." id="Password" name="Password">
+                            </div>
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" data-val="true" data-val-required="The RememberLogin field is required." id="RememberLogin" name="RememberLogin" value="true">
+                                        <label class="form-check-label" for="RememberLogin">
+                                            Remember My Login
+                                        </label>
+                                    </div>
+                                </div>
+                            <button class="btn btn-primary" name="button" value="login">Login</button>
+                            <button class="btn btn-secondary" name="button" value="cancel">Cancel</button>
+                        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8JSBlcY8YJBGmtAxMf5j_JVcCrUFrSPIt_28p5L-GuCFkWbdHmZDhvtGHJnTMBafkeb3kzXG3VM1tRQMvNAgM4p4fGYjiJEY2UnDZBSMyFWv23S_N9CT4LCioPdWs9YJGVDaMm9BCEBjxp0Qyenv7K4" /><input name="RememberLogin" type="hidden" value="false"></form>
+                    </div>
+                </div>
+            </div>
+
+
+    </div>
+</div>
+    </div>
+
+    <script src="/lib/jquery/dist/jquery.slim.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    
+</body>
+</html>

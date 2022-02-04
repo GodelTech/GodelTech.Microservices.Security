@@ -52,4 +52,10 @@
 		</Content>
 	</ItemGroup>
 
+	<ItemGroup>
+		<None Update="Documents\*">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
+
 </Project>
