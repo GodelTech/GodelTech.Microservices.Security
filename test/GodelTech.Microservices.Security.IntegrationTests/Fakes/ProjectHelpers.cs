@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace GodelTech.Microservices.Security.IntegrationTests.Fakes
 {
+    // todo: move to separate lib with tests???
     public static class ProjectHelpers
     {
         public static string GetProjectPath(string projectRelativePath, Assembly startupAssembly)
