@@ -5,6 +5,7 @@ using IdentityModel.Client;
 
 namespace GodelTech.Microservices.Security.IntegrationTests.Utils
 {
+    // todo: use real TokenService from GodelTech library (SharedServices)
     public class TokenService
     {
         private readonly Uri _authorityUrl;
