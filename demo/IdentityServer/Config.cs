@@ -33,7 +33,7 @@ namespace IdentityServer
                 // machine to machine client
                 new Client
                 {
-                    ClientId = "client", // todo: rename to api
+                    ClientId = "ClientForApi", // todo: rename to api
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,

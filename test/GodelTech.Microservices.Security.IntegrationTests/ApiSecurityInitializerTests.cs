@@ -8,7 +8,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Security.Demo.Api.Models.Fake;
-using GodelTech.Microservices.Security.IntegrationTests.Applications;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
@@ -28,7 +27,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
             _httpClient = new HttpClient
             {
-                BaseAddress = ApiApplication.Url
+                BaseAddress = _fixture.ApiApplication.Url
             };
         }
 
@@ -129,8 +128,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpStatusCode expectedResponseCode)
         {
             // Arrange & Act
-            var result =
-                await _httpClient.SendAsync(httpRequestMessage);
+            var result = await _httpClient.SendAsync(httpRequestMessage);
 
             // Assert
             Assert.Equal(HttpStatusCode.Unauthorized, result.StatusCode);
@@ -147,12 +145,12 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpStatusCode expectedResponseCode)
         {
             // Arrange 
-            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync("client", "secret", scope);
+            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync("ClientForApi", "secret", scope);
+
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             
             // Act
-            var result =
-                await _httpClient.SendAsync(httpRequestMessage);
+            var result = await _httpClient.SendAsync(httpRequestMessage);
 
             // Assert
             Assert.Equal(expectedResponseCode, result.StatusCode);
@@ -169,7 +167,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         {
             // Arrange
             var token = await _fixture.TokenService.GetClientCredentialsTokenAsync(
-                "client",
+                "ClientForApi",
                 "secret",
                 "fake.unused"
             );

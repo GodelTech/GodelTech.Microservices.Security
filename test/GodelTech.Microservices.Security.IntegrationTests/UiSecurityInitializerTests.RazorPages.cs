@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using GodelTech.Microservices.Security.IntegrationTests.Applications;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
@@ -14,17 +12,14 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         [Fact]
         public async Task SecuredPageRequested_RedirectsToIdentityServerLoginPage()
         {
-            // Arrange
-            using var client = new HttpClient();
-
-            // Act
-            var result = await client.GetAsync(
-                new Uri(RazorPagesApplication.Url, "User")
+            // Arrange & Act
+            var result = await _httpClient.GetAsync(
+                new Uri(_fixture.RazorPagesApplication.Url, "User")
             );
 
             // Assert
             Assert.Equal(
-                IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
+                _fixture.IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
             );
             Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);

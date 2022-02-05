@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-using GodelTech.Microservices.Security.IntegrationTests.Applications;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
@@ -19,7 +18,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
             _httpClient = new HttpClient
             {
-                BaseAddress = ApiApplication.Url
+                BaseAddress = _fixture.ApiApplication.Url
             };
         }
 
