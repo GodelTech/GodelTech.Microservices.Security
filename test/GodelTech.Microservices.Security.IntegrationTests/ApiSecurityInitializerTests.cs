@@ -9,47 +9,32 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Security.Demo.Api.Models.Fake;
 using GodelTech.Microservices.Security.IntegrationTests.Applications;
-using GodelTech.Microservices.Security.IntegrationTests.Utils;
 using Xunit;
 
-// todo: check options
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
-
-// Tests must be executed sequentially in order to avoid concurrency issues when InitializerFactory is set by different threads.
-// Detailed information about ASP.NET Core integration tests can be found here:
-// https://docs.microsoft.com/en-us/aspnet/core/test/integration-tests?view=aspnetcore-3.1
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
     // todo: write tests for openFake method without security
+    // todo: add UseHsts for demo projects???
+    [Collection("TestCollection")]
     public sealed class ApiSecurityInitializerTests : IDisposable
     {
-        private readonly IdentityServerApplication _identityProviderApp;
-        private readonly TokenService _tokenService;
+        private readonly TestFixture _fixture;
 
         private readonly HttpClient _httpClient;
-        private readonly ApiApplication _apiWebApplication;
 
-        public ApiSecurityInitializerTests()
+        public ApiSecurityInitializerTests(TestFixture fixture)
         {
-            _identityProviderApp = new IdentityServerApplication();
-            _identityProviderApp.Start();
-
-            _tokenService = new TokenService(IdentityServerApplication.Url);
+            _fixture = fixture;
 
             _httpClient = new HttpClient
             {
                 BaseAddress = ApiApplication.Url
             };
-
-            _apiWebApplication = new ApiApplication();
-            _apiWebApplication.Start();
         }
 
         public void Dispose()
         {
-            _identityProviderApp.Stop();
             _httpClient.Dispose();
-            _apiWebApplication.Stop();
         }
 
         public static IEnumerable<object[]> HttpGetRequestMemberData =>
@@ -162,7 +147,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpStatusCode expectedResponseCode)
         {
             // Arrange 
-            var token = await _tokenService.GetClientCredentialsTokenAsync("client", "secret", scope);
+            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync("client", "secret", scope);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             
             // Act
@@ -183,7 +168,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpStatusCode expectedResponseCode)
         {
             // Arrange
-            var token = await _tokenService.GetClientCredentialsTokenAsync(
+            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync(
                 "client",
                 "secret",
                 "fake.unused"
@@ -192,8 +177,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             // Act
-            var result =
-                await _httpClient.SendAsync(httpRequestMessage);
+            var result = await _httpClient.SendAsync(httpRequestMessage);
 
             // Assert
             Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);

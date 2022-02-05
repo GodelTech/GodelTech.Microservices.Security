@@ -1,35 +1,31 @@
 ﻿using System;
 using System.Net.Http;
 using GodelTech.Microservices.Security.IntegrationTests.Applications;
+using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
     // todo: add UseHsts for demo projects???
+    [Collection("TestCollection")]
     public sealed partial class UiSecurityInitializerTests : IDisposable
     {
-        private readonly HttpClient _httpClient;
-        private readonly IdentityServerApplication _identityServerApplication;
-        private readonly RazorPagesApplication _razorPagesApplication;
+        private readonly TestFixture _fixture;
 
-        public UiSecurityInitializerTests()
+        private readonly HttpClient _httpClient;
+
+        public UiSecurityInitializerTests(TestFixture fixture)
         {
+            _fixture = fixture;
+
             _httpClient = new HttpClient
             {
-                BaseAddress = RazorPagesApplication.Url
+                BaseAddress = ApiApplication.Url
             };
-
-            _identityServerApplication = new IdentityServerApplication();
-            _identityServerApplication.Start();
-
-            _razorPagesApplication = new RazorPagesApplication();
-            _razorPagesApplication.Start();
         }
 
         public void Dispose()
         {
             _httpClient.Dispose();
-            _identityServerApplication.Stop();
-            _razorPagesApplication.Stop();
         }
     }
 }
