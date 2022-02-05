@@ -70,6 +70,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
             // Arrange & Act
             var result = await A(cookieContainer, client, new Uri("User", UriKind.Relative));
+            var a = await result.Content.ReadAsStringAsync();
             //var result = await client.GetAsync(new Uri("User", UriKind.Relative));
 
             // Assert
@@ -129,9 +130,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             });
             var response_ = await client.PostAsync("https://localhost:44303/signin-oidc", contentToSend);
 
-            var response2 = await client.GetAsync(url);
-
-            return response2;
+            return response_;
         }
     }
 }
