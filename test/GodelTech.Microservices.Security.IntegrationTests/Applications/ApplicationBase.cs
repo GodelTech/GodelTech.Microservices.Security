@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
 using GodelTech.Microservices.Security.IntegrationTests.Fakes;
 using Microsoft.AspNetCore.Hosting;
@@ -40,7 +41,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Applications
                     hostConfig =>
                     {
                         hostConfig.SetBasePath(projectPath);
-                        hostConfig.AddJsonFile($"{projectPath}\\appsettings.json", false);
+                        hostConfig.AddJsonFile(Path.Combine(projectPath, "appsettings.json"), false);
                     }
                 )
                 .ConfigureWebHostDefaults(
