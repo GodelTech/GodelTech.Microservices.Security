@@ -6,7 +6,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Applications
     public class IdentityServerApplication : ApplicationBase<Startup>
     {
         public IdentityServerApplication()
-            : base("demo", new Uri("http://localhost:55400"))
+            : base("demo", new Uri("https://localhost:44300"))
         {
 
         }

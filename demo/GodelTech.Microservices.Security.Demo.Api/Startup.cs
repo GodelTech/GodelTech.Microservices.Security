@@ -17,6 +17,7 @@ namespace GodelTech.Microservices.Security.Demo.Api
         protected override IEnumerable<IMicroserviceInitializer> CreateInitializers()
         {
             yield return new DeveloperExceptionPageInitializer();
+            yield return new HstsInitializer();
 
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 

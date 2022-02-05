@@ -17,7 +17,7 @@ namespace IdentityServer
             var builder = services.AddIdentityServer(
                     x =>
                     {
-                        x.IssuerUri = "http://godeltech";
+                        x.IssuerUri = "https://godeltech";
                     }
                 )
                 .AddInMemoryIdentityResources(Config.IdentityResources)

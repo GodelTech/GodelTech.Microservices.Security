@@ -3,6 +3,7 @@ using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Core.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Logging;
 
 namespace GodelTech.Microservices.Security.Demo.RazorPages
 {
@@ -18,6 +19,10 @@ namespace GodelTech.Microservices.Security.Demo.RazorPages
         {
             yield return new DeveloperExceptionPageInitializer();
             yield return new ExceptionHandlerInitializer();
+            yield return new HstsInitializer();
+
+            // todo: remove
+            yield return new GenericInitializer(collection => { IdentityModelEventSource.ShowPII = true; });
 
             yield return new GenericInitializer(null, (app, _) => app.UseStaticFiles());
 

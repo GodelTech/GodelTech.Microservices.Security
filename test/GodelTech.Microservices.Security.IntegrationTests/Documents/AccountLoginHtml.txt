@@ -49,7 +49,7 @@
 
                     <div class="card-body">
                         <form action="" method="post">
-                            <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="/connect/authorize/callback\?client_id=RazorPages&amp;redirect_uri=http%3A%2F%2Flocalhost%3A55403%2Fsignin-oidc&amp;response_type=code&amp;scope=openid%20profile&amp;code_challenge=(.*?)&amp;code_challenge_method=S256&amp;response_mode=form_post&amp;nonce=(.*?)&amp;state=(.*?)&amp;x-client-SKU=ID_NETSTANDARD2_0&amp;x-client-ver=[0-9]{1}\.[0-9]{1}\.[0-9]{1}\.[0-9]{1}" />
+                            <input type="hidden" id="ReturnUrl" name="ReturnUrl" value="/connect/authorize/callback\?client_id=RazorPages&amp;redirect_uri=https%3A%2F%2Flocalhost%3A44303%2Fsignin-oidc&amp;response_type=code&amp;scope=openid%20profile&amp;code_challenge=(.*?)&amp;code_challenge_method=S256&amp;response_mode=form_post&amp;nonce=(.*?)&amp;state=(.*?)&amp;x-client-SKU=ID_NETSTANDARD2_0&amp;x-client-ver=[0-9]{1}\.[0-9]{1}\.[0-9]{1}\.[0-9]{1}" />
 
                             <div class="form-group">
                                 <label for="Username">Username</label>

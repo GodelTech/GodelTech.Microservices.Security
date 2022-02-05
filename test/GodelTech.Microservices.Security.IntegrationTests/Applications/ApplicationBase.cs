@@ -49,6 +49,9 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Applications
                     {
                         webBuilder.UseUrls(url.AbsoluteUri);
                         webBuilder.UseStartup<TStartup>();
+
+                        // todo: remove
+                        webBuilder.UseEnvironment("Development");
                     }
                 );
         }

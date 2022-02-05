@@ -55,10 +55,10 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     
                     // where to redirect to after login
-                    RedirectUris = { "http://localhost:55402/signin-oidc" },
+                    RedirectUris = { "https://localhost:44302/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "http://localhost:55402/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44302/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {
@@ -75,10 +75,10 @@ namespace IdentityServer
                     AllowedGrantTypes = GrantTypes.Code,
                     
                     // where to redirect to after login
-                    RedirectUris = { "http://localhost:55403/signin-oidc" },
+                    RedirectUris = { "https://localhost:44303/signin-oidc" },
 
                     // where to redirect to after logout
-                    PostLogoutRedirectUris = { "http://localhost:55403/signout-callback-oidc" },
+                    PostLogoutRedirectUris = { "https://localhost:44303/signout-callback-oidc" },
 
                     AllowedScopes = new List<string>
                     {
@@ -114,7 +114,7 @@ namespace IdentityServer
                             new Claim(JwtClaimTypes.FamilyName, "Smith"),
                             new Claim(JwtClaimTypes.Email, "AliceSmith@email.com"),
                             new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                            new Claim(JwtClaimTypes.WebSite, "http://alice.com"),
+                            new Claim(JwtClaimTypes.WebSite, "https://alice.com"),
                             new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json)
                         }
                     },
@@ -130,7 +130,7 @@ namespace IdentityServer
                             new Claim(JwtClaimTypes.FamilyName, "Smith"),
                             new Claim(JwtClaimTypes.Email, "BobSmith@email.com"),
                             new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean),
-                            new Claim(JwtClaimTypes.WebSite, "http://bob.com"),
+                            new Claim(JwtClaimTypes.WebSite, "https://bob.com"),
                             new Claim(JwtClaimTypes.Address, JsonSerializer.Serialize(address), IdentityServerConstants.ClaimValueTypes.Json)
                         }
                     }

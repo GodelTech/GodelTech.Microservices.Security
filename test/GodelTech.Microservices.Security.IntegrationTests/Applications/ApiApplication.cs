@@ -6,7 +6,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Applications
     public class ApiApplication : ApplicationBase<Startup>
     {
         public ApiApplication()
-            : base("demo", new Uri("http://localhost:55401"))
+            : base("demo", new Uri("https://localhost:44301"))
         {
 
         }

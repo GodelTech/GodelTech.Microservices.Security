@@ -6,7 +6,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Applications
     public class RazorPagesApplication : ApplicationBase<Startup>
     {
         public RazorPagesApplication()
-            : base("demo", new Uri("http://localhost:55403"))
+            : base("demo", new Uri("https://localhost:44303"))
         {
 
         }

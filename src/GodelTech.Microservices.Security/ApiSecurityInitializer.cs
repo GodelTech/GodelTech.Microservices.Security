@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Net.Http;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Security.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -73,6 +74,12 @@ namespace GodelTech.Microservices.Security
             var config = new ApiSecurityConfig();
 
             Configuration.Bind("ApiSecurityConfig", config);
+
+            // todo: remove this
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            options.BackchannelHttpHandler = handler;
+            //
 
             options.Authority = config.AuthorityUri;
             options.Audience = config.Audience;

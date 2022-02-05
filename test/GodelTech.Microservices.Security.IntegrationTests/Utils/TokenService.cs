@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using GodelTech.Microservices.Security.IntegrationTests.Fakes;
 using IdentityModel.Client;
 
 namespace GodelTech.Microservices.Security.IntegrationTests.Utils
@@ -36,29 +37,30 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Utils
 
         private async Task<string> GetTokenAsync(Func<HttpClient, DiscoveryDocumentResponse, Task<TokenResponse>> tokenResponseProvider)
         {
-            using (var client = new HttpClient())
+            using var httpClientHandler = HttpClientHelpers.CreateHttpClientHandler();
+
+            using var httpClient = new HttpClient(httpClientHandler);
+
+            var discoveryDocumentRequest = new DiscoveryDocumentRequest
             {
-                var discoveryDocumentRequest = new DiscoveryDocumentRequest
+                Address = _authorityUrl.AbsoluteUri,
+                Policy =
                 {
-                    Address = _authorityUrl.AbsoluteUri,
-                    Policy =
-                    {
-                        ValidateIssuerName = false,
-                        RequireHttps = false
-                    }
-                };
+                    ValidateIssuerName = false,
+                    RequireHttps = false
+                }
+            };
 
-                var disco = await client.GetDiscoveryDocumentAsync(discoveryDocumentRequest);
-                if (disco.IsError)
-                    throw new Exception(disco.Error);
+            var disco = await httpClient.GetDiscoveryDocumentAsync(discoveryDocumentRequest);
+            if (disco.IsError)
+                throw new Exception(disco.Error);
 
-                var response = await tokenResponseProvider(client, disco);
+            var response = await tokenResponseProvider(httpClient, disco);
 
-                if (response.IsError)
-                    throw new Exception(response.Error);
+            if (response.IsError)
+                throw new Exception(response.Error);
 
-                return response.AccessToken;
-            }
+            return response.AccessToken;
         }
     }
 }

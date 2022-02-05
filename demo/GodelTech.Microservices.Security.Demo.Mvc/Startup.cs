@@ -18,6 +18,7 @@ namespace GodelTech.Microservices.Security.Demo.Mvc
         {
             yield return new DeveloperExceptionPageInitializer();
             yield return new ExceptionHandlerInitializer("/Home/Error");
+            yield return new HstsInitializer();
 
             yield return new GenericInitializer(null, (app, _) => app.UseStaticFiles());
 

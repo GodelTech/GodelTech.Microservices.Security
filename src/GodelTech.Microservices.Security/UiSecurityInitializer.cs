@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Security.Services;
@@ -52,6 +53,12 @@ namespace GodelTech.Microservices.Security
             var config = new UiSecurityConfig();
 
             Configuration.Bind("UiSecurityConfig", config);
+
+            // todo: remove this
+            var handler = new HttpClientHandler();
+            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            options.BackchannelHttpHandler = handler;
+            //
 
             options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             options.ResponseType = config.ResponseType;

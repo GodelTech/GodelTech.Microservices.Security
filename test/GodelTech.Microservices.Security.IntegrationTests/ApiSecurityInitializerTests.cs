@@ -8,6 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Security.Demo.Api.Models.Fake;
+using GodelTech.Microservices.Security.IntegrationTests.Fakes;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
@@ -18,20 +19,24 @@ namespace GodelTech.Microservices.Security.IntegrationTests
     {
         private readonly TestFixture _fixture;
 
+        private readonly HttpClientHandler _httpClientHandler;
         private readonly HttpClient _httpClient;
 
         public ApiSecurityInitializerTests(TestFixture fixture)
         {
             _fixture = fixture;
 
-            _httpClient = new HttpClient
-            {
-                BaseAddress = _fixture.ApiApplication.Url
-            };
+            _httpClientHandler = HttpClientHelpers.CreateHttpClientHandler();
+
+            _httpClient = HttpClientHelpers.CreateHttpClient(
+                _httpClientHandler,
+                _fixture.ApiApplication.Url
+            );
         }
 
         public void Dispose()
         {
+            _httpClientHandler.Dispose();
             _httpClient.Dispose();
         }
 
