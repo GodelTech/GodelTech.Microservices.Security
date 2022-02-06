@@ -18,7 +18,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests
 
             new DriverManager().SetUpDriver(new ChromeConfig());
 
-            _webDriver = new ChromeDriver(chromeOptions);
+            _webDriver = new ChromeDriver(AppContext.BaseDirectory, chromeOptions);
         }
 
         public void Dispose()
