@@ -17,11 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Sec
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.Demo.Api", "demo\GodelTech.Microservices.Security.Demo.Api\GodelTech.Microservices.Security.Demo.Api.csproj", "{00000000-0000-0000-0000-000000000004}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "demo\IdentityServer\IdentityServer.csproj", "{00000000-0000-0000-0000-000000000006}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityServer", "demo\IdentityServer\IdentityServer.csproj", "{00000000-0000-0000-0000-000000000007}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.Demo.RazorPages", "demo\GodelTech.Microservices.Security.Demo.RazorPages\GodelTech.Microservices.Security.Demo.RazorPages.csproj", "{00000000-0000-0000-0000-000000000005}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.Demo.RazorPages", "demo\GodelTech.Microservices.Security.Demo.RazorPages\GodelTech.Microservices.Security.Demo.RazorPages.csproj", "{00000000-0000-0000-0000-000000000006}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Security.Demo.Mvc", "demo\GodelTech.Microservices.Security.Demo.Mvc\GodelTech.Microservices.Security.Demo.Mvc.csproj", "{B9991BA7-6701-452C-9F89-18007B1D8B3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GodelTech.Microservices.Security.Demo.Mvc", "demo\GodelTech.Microservices.Security.Demo.Mvc\GodelTech.Microservices.Security.Demo.Mvc.csproj", "{00000000-0000-0000-0000-000000000005}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GodelTech.Microservices.Security.SeleniumTests", "test\GodelTech.Microservices.Security.SeleniumTests\GodelTech.Microservices.Security.SeleniumTests.csproj", "{1D4C4857-F90F-40ED-A1AF-1EF5BE0A7BA3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{00000000-0000-0000-0000-000000000004}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00000000-0000-0000-0000-000000000004}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00000000-0000-0000-0000-000000000004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00000000-0000-0000-0000-000000000007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00000000-0000-0000-0000-000000000007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00000000-0000-0000-0000-000000000007}.Release|Any CPU.Build.0 = Release|Any CPU
 		{00000000-0000-0000-0000-000000000006}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{00000000-0000-0000-0000-000000000006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00000000-0000-0000-0000-000000000006}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,10 +59,10 @@ Global
 		{00000000-0000-0000-0000-000000000005}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00000000-0000-0000-0000-000000000005}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00000000-0000-0000-0000-000000000005}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9991BA7-6701-452C-9F89-18007B1D8B3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9991BA7-6701-452C-9F89-18007B1D8B3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9991BA7-6701-452C-9F89-18007B1D8B3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9991BA7-6701-452C-9F89-18007B1D8B3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D4C4857-F90F-40ED-A1AF-1EF5BE0A7BA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D4C4857-F90F-40ED-A1AF-1EF5BE0A7BA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D4C4857-F90F-40ED-A1AF-1EF5BE0A7BA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D4C4857-F90F-40ED-A1AF-1EF5BE0A7BA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,9 +72,10 @@ Global
 		{00000000-0000-0000-0000-000000000002} = {B8B621C3-0411-4852-99C7-C88C629A7E47}
 		{00000000-0000-0000-0000-000000000003} = {B8B621C3-0411-4852-99C7-C88C629A7E47}
 		{00000000-0000-0000-0000-000000000004} = {57001CE5-65EE-4704-8833-86010A6EA60B}
+		{00000000-0000-0000-0000-000000000007} = {57001CE5-65EE-4704-8833-86010A6EA60B}
 		{00000000-0000-0000-0000-000000000006} = {57001CE5-65EE-4704-8833-86010A6EA60B}
 		{00000000-0000-0000-0000-000000000005} = {57001CE5-65EE-4704-8833-86010A6EA60B}
-		{B9991BA7-6701-452C-9F89-18007B1D8B3C} = {57001CE5-65EE-4704-8833-86010A6EA60B}
+		{1D4C4857-F90F-40ED-A1AF-1EF5BE0A7BA3} = {B8B621C3-0411-4852-99C7-C88C629A7E47}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9477816-4A93-43F2-B7A5-A85F5A8C0A46}
