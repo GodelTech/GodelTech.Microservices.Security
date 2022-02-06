@@ -28,7 +28,9 @@ namespace GodelTech.Microservices.Security.Demo.RazorPages
 
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
-            yield return new UiSecurityInitializer(Configuration);
+            yield return new UiSecurityInitializer(
+                options => Configuration.Bind("UiSecurityOptions", options)
+            );
 
             yield return new RazorPagesInitializer();
         }

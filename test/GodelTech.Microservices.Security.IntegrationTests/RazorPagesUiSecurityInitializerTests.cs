@@ -59,6 +59,21 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             );
         }
 
+        // todo: remove this test
+        [Fact]
+        public async Task SecuredPageRequested_RedirectsToIdentityServerLoginPage_2()
+        {
+            // Arrange & Act
+            var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
+
+            // Assert
+            Assert.Equal(
+                _fixture.IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
+                result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
+            );
+            Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);
+        }
+
         // todo: fix this test
         [Fact]
         public async Task SecuredPageRequested_Success()

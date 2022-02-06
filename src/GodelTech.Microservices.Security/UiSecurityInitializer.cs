@@ -2,57 +2,70 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Core;
-using GodelTech.Microservices.Security.Services;
 using GodelTech.Microservices.Security.Services.AutomaticTokenManagement;
+using GodelTech.Microservices.Security.UiSecurity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace GodelTech.Microservices.Security
 {
-    public class UiSecurityInitializer : MicroserviceInitializerBase
+    /// <summary>
+    /// UiSecurity initializer.
+    /// </summary>
+    public class UiSecurityInitializer : IMicroserviceInitializer
     {
-        private const string ErrorsFaultPath = "/Errors/Fault";
+        private readonly string _failurePath;
+        private readonly UiSecurityOptions _uiSecurityOptions = new UiSecurityOptions();
 
-        public UiSecurityInitializer(IConfiguration configuration)
-            : base(configuration)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UiSecurityInitializer"/> class.
+        /// </summary>
+        /// <param name="configureUiSecurity">An <see cref="Action{UiSecurityOptions}"/> to configure the provided <see cref="UiSecurityOptions"/>.</param>
+        /// <param name="failurePath">Failure path.</param>
+        public UiSecurityInitializer(
+            Action<UiSecurityOptions> configureUiSecurity,
+            string failurePath = "/Errors/Fault") // todo: a.salanoi: why this path "/Errors/Fault"?
         {
+            if (configureUiSecurity == null) throw new ArgumentNullException(nameof(configureUiSecurity));
+
+            _failurePath = failurePath;
+            configureUiSecurity.Invoke(_uiSecurityOptions);
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+        /// <inheritdoc />
+        public virtual void ConfigureServices(IServiceCollection services)
         {
-            if (services == null) 
-                throw new ArgumentNullException(nameof(services));
-            
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                })
+            services
+                .AddAuthentication(
+                    options =>
+                    {
+                        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                    }
+                )
                 .AddAutomaticTokenManagement()
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, ConfigureOpenIdConnectOptions);
         }
 
-        public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <inheritdoc />
+        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (app == null)
-                throw new ArgumentNullException(nameof(app));
-            if (env == null)
-                throw new ArgumentNullException(nameof(env));
-
             app.UseAuthentication();
             app.UseAuthorization();
         }
 
+        /// <summary>
+        /// Configure OpenIdConnectOptions.
+        /// </summary>
+        /// <param name="options">OpenIdConnectOptions.</param>
         protected virtual void ConfigureOpenIdConnectOptions(OpenIdConnectOptions options)
         {
-            var config = new UiSecurityConfig();
-
-            Configuration.Bind("UiSecurityConfig", config);
+            if (options == null) throw new ArgumentNullException(nameof(options));
 
             // todo: remove this
             var handler = new HttpClientHandler();
@@ -68,22 +81,25 @@ namespace GodelTech.Microservices.Security
             options.NonceCookie.Path = "/";
             //
 
-            options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            options.ResponseType = config.ResponseType;
-            options.RequireHttpsMetadata = config.RequireHttpsMetadata;
+            options.SignInScheme = _uiSecurityOptions.SignInScheme;
+            options.ResponseType = _uiSecurityOptions.ResponseType;
+            options.RequireHttpsMetadata = _uiSecurityOptions.RequireHttpsMetadata;
 
             // This token can later be found in HttpContext
-            options.SaveTokens = true;
-            options.GetClaimsFromUserInfoEndpoint = config.GetClaimsFromUserInfoEndpoint;
+            options.SaveTokens = _uiSecurityOptions.SaveTokens;
+            options.GetClaimsFromUserInfoEndpoint = _uiSecurityOptions.GetClaimsFromUserInfoEndpoint;
 
             // Apply settings from configuration section
-            options.Authority = config.AuthorityUri;
-            options.ClientId = config.ClientId;
-            options.ClientSecret = config.ClientSecret;
+            options.Authority = _uiSecurityOptions.Authority;
+            options.ClientId = _uiSecurityOptions.ClientId;
+            options.ClientSecret = _uiSecurityOptions.ClientSecret;
 
-            options.TokenValidationParameters.ValidIssuer = config.Issuer;
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = _uiSecurityOptions.Issuer
+            };
 
-            foreach (var scope in config.Scopes)
+            foreach (var scope in _uiSecurityOptions.Scopes)
             {
                 options.Scope.Add(scope);
             }
@@ -96,14 +112,20 @@ namespace GodelTech.Microservices.Security
                 // using internal network but user need to access Identity using external address
                 OnRedirectToIdentityProvider = context =>
                 {
-                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(context.ProtocolMessage.IssuerAddress, config.PublicAuthorityUri);
+                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(
+                        context.ProtocolMessage.IssuerAddress,
+                        _uiSecurityOptions.PublicAuthorityUri
+                    );
 
                     return Task.CompletedTask;
                 },
 
                 OnRedirectToIdentityProviderForSignOut = context =>
                 {
-                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(context.ProtocolMessage.IssuerAddress, config.PublicAuthorityUri);
+                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(
+                        context.ProtocolMessage.IssuerAddress,
+                        _uiSecurityOptions.PublicAuthorityUri
+                    );
 
                     return Task.CompletedTask;
                 },
@@ -112,7 +134,7 @@ namespace GodelTech.Microservices.Security
 
                 OnRemoteFailure = context =>
                 {
-                    context.Response.Redirect(ErrorsFaultPath);
+                    context.Response.Redirect(_failurePath);
                     context.HandleResponse();
 
                     return Task.CompletedTask;
@@ -120,8 +142,14 @@ namespace GodelTech.Microservices.Security
             };
         }
 
-        private static string ReplaceDomainAndPort(string authorityUrl, string publicAuthorityAddress)
+        // todo: make tests and than update to Uri and Helper method
+        private static string ReplaceDomainAndPort(string authorityUrl, Uri publicAuthorityUri)
         {
+            // todo: remove this after tests
+            if (publicAuthorityUri == null) return authorityUrl;
+            var publicAuthorityAddress = publicAuthorityUri.AbsoluteUri;
+            //
+
             if (string.IsNullOrWhiteSpace(publicAuthorityAddress))
                 return authorityUrl;
 
@@ -130,6 +158,8 @@ namespace GodelTech.Microservices.Security
                 publicAuthorityAddress;
 
             return publicAuthorityAddress + new Uri(authorityUrl).PathAndQuery;
+
+            //return new Uri(publicAuthorityUri, new Uri(authorityUrl).PathAndQuery).AbsoluteUri;
         }
     }
 }
