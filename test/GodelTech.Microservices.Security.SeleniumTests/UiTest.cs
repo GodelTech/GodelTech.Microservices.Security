@@ -14,7 +14,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests
         public UiTest()
         {
             var chromeOptions = new ChromeOptions();
-            //chromeOptions.AddArguments("headless");
+            chromeOptions.AddArguments("headless");
 
             new DriverManager().SetUpDriver(new ChromeConfig());
 
@@ -30,10 +30,9 @@ namespace GodelTech.Microservices.Security.SeleniumTests
         [Fact]
         public void Create_WhenExecuted_ReturnsCreateView()
         {
-            _webDriver.Navigate().GoToUrl("https://code-maze.com/selenium-aspnet-core-ui-tests/");
+            _webDriver.Navigate().GoToUrl("https://www.google.com/");
 
-            Assert.Equal("Create - EmployeesApp", _webDriver.Title);
-            Assert.Contains("Please provide a new employee data", _webDriver.PageSource);
+            Assert.Equal("Google", _webDriver.Title);
         }
     }
 }
