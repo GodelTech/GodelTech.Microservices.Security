@@ -21,7 +21,10 @@ namespace GodelTech.Microservices.Security.Demo.Api
 
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
-            yield return new ApiSecurityInitializer(Configuration, new PolicyFactory());
+            yield return new ApiSecurityInitializer(
+                options => Configuration.Bind("ApiSecurityOptions", options),
+                new PolicyFactory()
+            );
 
             yield return new ApiInitializer();
         }

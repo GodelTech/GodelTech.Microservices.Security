@@ -3,77 +3,102 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Net.Http;
 using GodelTech.Microservices.Core;
-using GodelTech.Microservices.Security.Services;
+using GodelTech.Microservices.Security.ApiSecurity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
 namespace GodelTech.Microservices.Security
 {
-    public class ApiSecurityInitializer : MicroserviceInitializerBase
+    /// <summary>
+    /// ApiSecurity initializer.
+    /// </summary>
+    public class ApiSecurityInitializer : IMicroserviceInitializer
     {
+        private readonly ApiSecurityOptions _apiSecurityOptions = new ApiSecurityOptions();
         private readonly IAuthorizationPolicyFactory _policyFactory;
+        private readonly ApiSecurityInitializerOptions _options = new ApiSecurityInitializerOptions();
 
-        public SecurityProtocolType SecurityProtocol { get; set; } = SecurityProtocolType.Tls12;
-        public bool ClearDefaultInboundClaimTypeMap { get; set; } = true;
-        public bool ClearDefaultOutboundClaimTypeMap { get; set; } = true;
-
-        public ApiSecurityInitializer(IConfiguration configuration)
-            : this(configuration, new NullAuthorizationPolicyFactory())
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiSecurityInitializer"/> class.
+        /// </summary>
+        /// <param name="configureApiSecurity">An <see cref="Action{ApiSecurityOptions}"/> to configure the provided <see cref="ApiSecurityOptions"/>.</param>
+        /// <param name="configure">An <see cref="Action{ApiSecurityInitializerOptions}"/> to configure the provided <see cref="ApiSecurityInitializerOptions"/>.</param>
+        public ApiSecurityInitializer(
+            Action<ApiSecurityOptions> configureApiSecurity,
+            Action<ApiSecurityInitializerOptions> configure = null)
+            : this(configureApiSecurity, new NullAuthorizationPolicyFactory(), configure)
         {
+
         }
 
-        public ApiSecurityInitializer(IConfiguration configuration, IAuthorizationPolicyFactory policyFactory)
-            : base(configuration)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiSecurityInitializer"/> class.
+        /// </summary>
+        /// <param name="configureApiSecurity">An <see cref="Action{ApiSecurityOptions}"/> to configure the provided <see cref="ApiSecurityOptions"/>.</param>
+        /// <param name="policyFactory">The authorization policy factory.</param>
+        /// <param name="configure">An <see cref="Action{ApiSecurityInitializerOptions}"/> to configure the provided <see cref="ApiSecurityInitializerOptions"/>.</param>
+        public ApiSecurityInitializer(
+            Action<ApiSecurityOptions> configureApiSecurity,
+            IAuthorizationPolicyFactory policyFactory,
+            Action<ApiSecurityInitializerOptions> configure = null)
         {
-            _policyFactory = policyFactory ?? throw new ArgumentNullException(nameof(policyFactory));
+            if (configureApiSecurity == null) throw new ArgumentNullException(nameof(configureApiSecurity));
+            if (policyFactory == null) throw new ArgumentNullException(nameof(policyFactory));
+
+            configureApiSecurity.Invoke(_apiSecurityOptions);
+
+            _policyFactory = policyFactory;
+
+            configure?.Invoke(_options);
         }
 
-        public override void ConfigureServices(IServiceCollection services)
+        /// <inheritdoc />
+        public virtual void ConfigureServices(IServiceCollection services)
         {
-            if (services == null) 
-                throw new ArgumentNullException(nameof(services));
-
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                // Default scheme name is JwtBearerDefaults.AuthenticationScheme
-                // You can check overloads of AddJwtBearer() for find this information
+            services
+                .AddAuthentication(
+                    // todo: simply setup just DefaultScheme? https://stackoverflow.com/questions/46223407/asp-net-core-2-authenticationschemes
+                    options =>
+                    {
+                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    }
+                )
                 .AddJwtBearer(ConfigureJwtBearerOptions);
 
-            services.AddAuthorization(ConfigureAuthorization);
+            services.AddAuthorization(ConfigureAuthorizationOptions);
         }
 
-        public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        /// <inheritdoc />
+        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (app == null)
-                throw new ArgumentNullException(nameof(app));
-            if (env == null)
-                throw new ArgumentNullException(nameof(env));
-
-            if (ClearDefaultInboundClaimTypeMap)
+            if (_options.ClearDefaultInboundClaimTypeMap)
+            {
                 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+            }
 
-            if (ClearDefaultOutboundClaimTypeMap)
+            if (_options.ClearDefaultOutboundClaimTypeMap)
+            {
                 JwtSecurityTokenHandler.DefaultOutboundClaimTypeMap.Clear();
+            }
 
-            ServicePointManager.SecurityProtocol = SecurityProtocol;
+            ServicePointManager.SecurityProtocol = _options.SecurityProtocol;
 
             app.UseAuthentication();
             app.UseAuthorization();
         }
 
+        /// <summary>
+        /// Configure JwtBearerOptions.
+        /// </summary>
+        /// <param name="options">JwtBearerOptions.</param>
         protected virtual void ConfigureJwtBearerOptions(JwtBearerOptions options)
         {
-            var config = new ApiSecurityConfig();
-
-            Configuration.Bind("ApiSecurityConfig", config);
+            if (options == null) throw new ArgumentNullException(nameof(options));
 
             // todo: remove this
             var handler = new HttpClientHandler();
@@ -81,30 +106,35 @@ namespace GodelTech.Microservices.Security
             options.BackchannelHttpHandler = handler;
             //
 
-            options.Authority = config.AuthorityUri;
-            options.Audience = config.Audience;
-            options.IncludeErrorDetails = true;
-            options.RequireHttpsMetadata = config.RequireHttpsMetadata;
+            options.RequireHttpsMetadata = _apiSecurityOptions.RequireHttpsMetadata;
+            options.Authority = _apiSecurityOptions.Authority;
+            options.Audience = _apiSecurityOptions.Audience;
 
-            options.TokenValidationParameters =
-                new TokenValidationParameters
-                {
-                    ValidateIssuer = config.TokenValidation.ValidateIssuer,
-                    ValidateAudience = config.TokenValidation.ValidateAudience,
-                    ValidateLifetime = config.TokenValidation.ValidateLifetime,
-                    ValidateIssuerSigningKey = config.TokenValidation.ValidateIssuerSigningKey,
-                    ValidIssuer = config.Issuer,
-                    ValidAudience = options.Audience,
-                };
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = _apiSecurityOptions.TokenValidation.ValidateAudience,
+                ValidateIssuer = _apiSecurityOptions.TokenValidation.ValidateIssuer,
+                ValidateIssuerSigningKey = _apiSecurityOptions.TokenValidation.ValidateIssuerSigningKey,
+                ValidateLifetime = _apiSecurityOptions.TokenValidation.ValidateLifetime,
+                ValidAudience = _apiSecurityOptions.Audience,
+                ValidIssuer = _apiSecurityOptions.Issuer
+            };
 
-            options.SaveToken = true;
+            options.SaveToken = _apiSecurityOptions.SaveToken;
+            options.IncludeErrorDetails = _apiSecurityOptions.IncludeErrorDetails;
         }
 
-        protected virtual void ConfigureAuthorization(AuthorizationOptions options)
+        /// <summary>
+        /// Configure AuthorizationOptions.
+        /// </summary>
+        /// <param name="options">AuthorizationOptions.</param>
+        protected virtual void ConfigureAuthorizationOptions(AuthorizationOptions options)
         {
-            foreach (var (policyName, policy) in _policyFactory.Create())
+            if (options == null) throw new ArgumentNullException(nameof(options));
+
+            foreach (var authorizationPolicy in _policyFactory.Create())
             {
-                options.AddPolicy(policyName, policy);
+                options.AddPolicy(authorizationPolicy.Key, authorizationPolicy.Value);
             }
         }
     }
