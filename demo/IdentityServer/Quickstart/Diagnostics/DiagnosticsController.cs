@@ -4,12 +4,11 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace IdentityServer.Quickstart.Diagnostics
+namespace IdentityServerHost.Quickstart.UI
 {
     [SecurityHeaders]
     [Authorize]
