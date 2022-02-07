@@ -61,7 +61,6 @@ namespace GodelTech.Microservices.Security.Tests
 
             // Assert
             Assert.Equal(SecurityProtocolType.Tls13, _options.SecurityProtocol);
-
         }
     }
 }
