@@ -23,9 +23,7 @@ namespace GodelTech.Microservices.Security.Tests.ApiSecurity
         [Fact]
         public void RequireHttpsMetadata_Set_Success()
         {
-            // Arrange
-
-            // Act
+            // Arrange & Act
             _options.RequireHttpsMetadata = false;
 
             // Assert
