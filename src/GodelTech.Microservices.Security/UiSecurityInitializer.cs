@@ -2,8 +2,8 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Core;
-using GodelTech.Microservices.Security.Services.AutomaticTokenManagement;
 using GodelTech.Microservices.Security.UiSecurity;
+using IdentityModel.AspNetCore.AccessTokenManagement;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -19,21 +19,27 @@ namespace GodelTech.Microservices.Security
     public class UiSecurityInitializer : IMicroserviceInitializer
     {
         private readonly string _failurePath;
+
         private readonly UiSecurityOptions _uiSecurityOptions = new UiSecurityOptions();
+        private readonly Action<AccessTokenManagementOptions> _configureAccessTokenManagement;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UiSecurityInitializer"/> class.
         /// </summary>
         /// <param name="configureUiSecurity">An <see cref="Action{UiSecurityOptions}"/> to configure the provided <see cref="UiSecurityOptions"/>.</param>
+        /// <param name="configureAccessTokenManagement">An <see cref="Action{AccessTokenManagementOptions}"/> to configure the provided <see cref="AccessTokenManagementOptions"/>.</param>
         /// <param name="failurePath">Failure path.</param>
         public UiSecurityInitializer(
             Action<UiSecurityOptions> configureUiSecurity,
+            Action<AccessTokenManagementOptions> configureAccessTokenManagement = null,
             string failurePath = "/Errors/Fault") // todo: a.salanoi: why this path "/Errors/Fault"?
         {
             if (configureUiSecurity == null) throw new ArgumentNullException(nameof(configureUiSecurity));
 
             _failurePath = failurePath;
+
             configureUiSecurity.Invoke(_uiSecurityOptions);
+            _configureAccessTokenManagement = configureAccessTokenManagement;
         }
 
         /// <inheritdoc />
@@ -47,9 +53,15 @@ namespace GodelTech.Microservices.Security
                         options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                     }
                 )
-                .AddAutomaticTokenManagement()
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+                // todo: remove this with code in Services folder
+                //.AddAutomaticTokenManagement()
+                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme) // todo: verify this with https://github.com/IdentityModel/IdentityModel.AspNetCore/blob/main/samples/Web/Startup.cs
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, ConfigureOpenIdConnectOptions);
+
+            // adds user and client access token management
+            services
+                .AddAccessTokenManagement(_configureAccessTokenManagement)
+                .ConfigureBackchannelHttpClient();
         }
 
         /// <inheritdoc />
@@ -81,29 +93,35 @@ namespace GodelTech.Microservices.Security
             options.NonceCookie.Path = "/";
             //
 
-            options.SignInScheme = _uiSecurityOptions.SignInScheme;
-            options.ResponseType = _uiSecurityOptions.ResponseType;
-            options.RequireHttpsMetadata = _uiSecurityOptions.RequireHttpsMetadata;
-
-            // This token can later be found in HttpContext
-            options.SaveTokens = _uiSecurityOptions.SaveTokens;
-            options.GetClaimsFromUserInfoEndpoint = _uiSecurityOptions.GetClaimsFromUserInfoEndpoint;
-
-            // Apply settings from configuration section
             options.Authority = _uiSecurityOptions.Authority;
+
             options.ClientId = _uiSecurityOptions.ClientId;
             options.ClientSecret = _uiSecurityOptions.ClientSecret;
 
-            options.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidIssuer = _uiSecurityOptions.Issuer
-            };
+            options.ResponseType = _uiSecurityOptions.ResponseType;
+            options.UsePkce = _uiSecurityOptions.UsePkce;
 
+            // todo: verify https://github.com/IdentityModel/IdentityModel.AspNetCore/blob/main/samples/Web/Startup.cs
+            options.SignInScheme = _uiSecurityOptions.SignInScheme;
+            options.RequireHttpsMetadata = _uiSecurityOptions.RequireHttpsMetadata;
+            //
+
+            options.Scope.Clear();
             foreach (var scope in _uiSecurityOptions.Scopes)
             {
                 options.Scope.Add(scope);
             }
 
+            options.GetClaimsFromUserInfoEndpoint = _uiSecurityOptions.GetClaimsFromUserInfoEndpoint;
+            options.SaveTokens = _uiSecurityOptions.SaveTokens;
+
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidIssuer = _uiSecurityOptions.Issuer
+                // todo: verify this https://github.com/IdentityModel/IdentityModel.AspNetCore/blob/main/samples/Web/Startup.cs
+            };
+
+            // todo: a.salanoi: do we really need this?
             options.Events = new OpenIdConnectEvents
             {
                 #region Public \ External address overrides
