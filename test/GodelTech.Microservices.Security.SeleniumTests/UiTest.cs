@@ -7,12 +7,17 @@ using Xunit;
 
 namespace GodelTech.Microservices.Security.SeleniumTests
 {
-    public class UiTest : IDisposable
+    [Collection("TestCollection")]
+    public sealed class UiTest : IDisposable
     {
+        private readonly TestFixture _fixture;
+
         private readonly IWebDriver _webDriver;
 
-        public UiTest()
+        public UiTest(TestFixture fixture)
         {
+            _fixture = fixture;
+
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddArguments("headless");
 

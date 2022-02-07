@@ -1,7 +1,7 @@
 using System;
 using IdentityServer;
 
-namespace GodelTech.Microservices.Security.IntegrationTests.Applications
+namespace GodelTech.Microservices.Security.SeleniumTests.Applications
 {
     public class IdentityServerApplication : ApplicationBase<Startup>
     {

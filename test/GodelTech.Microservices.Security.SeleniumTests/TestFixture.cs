@@ -1,8 +1,7 @@
 ﻿using System;
-using GodelTech.Microservices.Security.IntegrationTests.Utils;
 using GodelTech.Microservices.Security.SeleniumTests.Applications;
 
-namespace GodelTech.Microservices.Security.IntegrationTests
+namespace GodelTech.Microservices.Security.SeleniumTests
 {
     public sealed class TestFixture : IDisposable
     {
@@ -13,8 +12,6 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             ApiApplication = new ApiApplication();
             RazorPagesApplication = new RazorPagesApplication();
 
-            TokenService = new TokenService(IdentityServerApplication.Url);
-
             Start();
         }
 
@@ -23,8 +20,6 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         public ApiApplication ApiApplication { get; }
 
         public RazorPagesApplication RazorPagesApplication { get; }
-
-        public TokenService TokenService { get; }
 
         public void Dispose()
         {

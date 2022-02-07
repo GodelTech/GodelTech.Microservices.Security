@@ -1,7 +1,7 @@
 ﻿using System;
 using GodelTech.Microservices.Security.Demo.RazorPages;
 
-namespace GodelTech.Microservices.Security.IntegrationTests.Applications
+namespace GodelTech.Microservices.Security.SeleniumTests.Applications
 {
     public class RazorPagesApplication : ApplicationBase<Startup>
     {

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace GodelTech.Microservices.Security.IntegrationTests.Applications
+namespace GodelTech.Microservices.Security.SeleniumTests.Applications
 {
     public abstract class ApplicationBase<TStartup>
         where TStartup : class
