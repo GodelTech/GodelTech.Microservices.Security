@@ -50,7 +50,7 @@ namespace GodelTech.Microservices.Security.Tests
         public void SecurityProtocol_Get_Success()
         {
             // Arrange & Act & Assert
-            Assert.Equal(SecurityProtocolType.Tls12, _options.SecurityProtocol);
+            Assert.Equal(SecurityProtocolType.SystemDefault, _options.SecurityProtocol);
         }
 
         [Fact]

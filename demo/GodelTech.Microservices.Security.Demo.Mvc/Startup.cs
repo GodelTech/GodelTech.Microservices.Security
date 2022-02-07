@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Core.Mvc;
-using IdentityModel.AspNetCore.AccessTokenManagement;
-using IdentityModel.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,18 +37,13 @@ namespace GodelTech.Microservices.Security.Demo.Mvc
             yield return new GenericInitializer(
                 services =>
                 {
-                    services.AddClientAccessTokenHttpClient("user_client", configureClient: client =>
-                    {
-                        //client.BaseAddress = new Uri("https://demo.duendesoftware.com/api/");
-                    });
-                    //// registers HTTP client that uses the managed user access token
-                    //services.AddClientAccessTokenHttpClient(
-                    //    "user_client",
-                    //    configureClient: client =>
-                    //    {
-                    //        //client.BaseAddress = new Uri("https://demo.duendesoftware.com/api/");
-                    //    }
-                    //);
+                    services.AddClientAccessTokenHttpClient(
+                        "client",
+                        configureClient: client =>
+                        {
+                            client.BaseAddress = new Uri(Configuration["ApiUrl"]);
+                        }
+                    );
                 }
             );
 

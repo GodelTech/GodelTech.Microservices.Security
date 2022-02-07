@@ -53,8 +53,6 @@ namespace GodelTech.Microservices.Security
                         options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                     }
                 )
-                // todo: remove this with code in Services folder
-                //.AddAutomaticTokenManagement()
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme) // todo: verify this with https://github.com/IdentityModel/IdentityModel.AspNetCore/blob/main/samples/Web/Startup.cs
                 .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, ConfigureOpenIdConnectOptions);
 
@@ -171,7 +169,7 @@ namespace GodelTech.Microservices.Security
             if (string.IsNullOrWhiteSpace(publicAuthorityAddress))
                 return authorityUrl;
 
-            publicAuthorityAddress = publicAuthorityAddress.EndsWith("/") ?
+            publicAuthorityAddress = publicAuthorityAddress.EndsWith("/", StringComparison.InvariantCulture) ?
                 publicAuthorityAddress.Substring(publicAuthorityAddress.Length - 1) :
                 publicAuthorityAddress;
 

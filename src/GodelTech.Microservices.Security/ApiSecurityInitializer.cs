@@ -71,6 +71,8 @@ namespace GodelTech.Microservices.Security
                 .AddJwtBearer(ConfigureJwtBearerOptions);
 
             services.AddAuthorization(ConfigureAuthorizationOptions);
+
+            // todo: think about add AddAccessTokenManagement same as in UiSecurityInitializer
         }
 
         /// <inheritdoc />

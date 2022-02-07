@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Security.IntegrationTests.Fakes;
 using Xunit;
@@ -48,30 +46,6 @@ namespace GodelTech.Microservices.Security.IntegrationTests
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
             );
             Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);
-
-            Assert.Matches(
-                new Regex(
-                    "^" +
-                    await File.ReadAllTextAsync("Documents/AccountLoginHtml.txt") +
-                    "$"
-                ),
-                await result.Content.ReadAsStringAsync()
-            );
-        }
-
-        // todo: remove this test
-        [Fact]
-        public async Task SecuredPageRequested_RedirectsToIdentityServerLoginPage_2()
-        {
-            // Arrange & Act
-            var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
-
-            // Assert
-            Assert.Equal(
-                _fixture.IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
-                result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
-            );
-            Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);
         }
 
         // todo: fix this test
@@ -106,7 +80,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             //);
         }
 
-        private async Task<HttpResponseMessage> A(CookieContainer cookieContainer, HttpClient client, Uri url)
+        private static async Task<HttpResponseMessage> A(CookieContainer cookieContainer, HttpClient client, Uri url)
         {
             var response = await client.GetAsync(url);
             var cookies = cookieContainer.GetCookies(new Uri("https://localhost:44300/connect/authorize"));

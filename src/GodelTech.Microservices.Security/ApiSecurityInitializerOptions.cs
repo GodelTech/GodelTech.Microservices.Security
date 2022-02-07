@@ -20,6 +20,6 @@ namespace GodelTech.Microservices.Security
         /// <summary>
         /// SecurityProtocol.
         /// </summary>
-        public SecurityProtocolType SecurityProtocol { get; set; } = SecurityProtocolType.Tls12;
+        public SecurityProtocolType SecurityProtocol { get; set; } = SecurityProtocolType.SystemDefault;
     }
 }

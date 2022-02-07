@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GodelTech.Microservices.Security.Services;
 using Microsoft.AspNetCore.Authorization;
 
 namespace GodelTech.Microservices.Security.Demo.Api
