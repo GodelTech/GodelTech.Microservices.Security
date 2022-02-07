@@ -14,7 +14,7 @@ namespace GodelTech.Microservices.Security.Demo.Mvc.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        public async Task<IActionResult> CallApiAsUser()
+        public async Task<IActionResult> A()
         {
             var client = _httpClientFactory.CreateClient("user_client");
             client.BaseAddress = new Uri("https://localhost:44301");

@@ -32,23 +32,14 @@ namespace GodelTech.Microservices.Security.Demo.Mvc
                 options => Configuration.Bind("UiSecurityOptions", options),
                 options =>
                 {
-                    //options.Client.Clients.Add(
-                    //    "user_client",
-                    //    new ClientCredentialsTokenRequest
-                    //    {
-                    //        Address = "https://localhost:44300/connect/token",
-                    //        ClientId = "ClientForApi",
-                    //        ClientSecret = "secret",
-                    //        Scope = "api" // optional
-                    //    }
-                    //);
+                    options.Client.DefaultClient.Scope = "api";
                 }
             );
 
             yield return new GenericInitializer(
                 services =>
                 {
-                    services.AddUserAccessTokenHttpClient("user_client", configureClient: client =>
+                    services.AddClientAccessTokenHttpClient("user_client", configureClient: client =>
                     {
                         //client.BaseAddress = new Uri("https://demo.duendesoftware.com/api/");
                     });

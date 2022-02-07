@@ -17,10 +17,11 @@ namespace IdentityServer
                 new IdentityResources.Profile(),
             };
 
-
+        // todo: start using ApiResource https://stackoverflow.com/questions/63811157/apiresource-vs-apiscope-vs-identityresource
         public static IEnumerable<ApiScope> ApiScopes =
             new List<ApiScope>
             {
+                new ApiScope("api", "API"),
                 new ApiScope("fake.add", "Fake Add"),
                 new ApiScope("fake.edit", "Fake Edit"),
                 new ApiScope("fake.delete", "Fake Delete"),
@@ -52,9 +53,13 @@ namespace IdentityServer
                     ClientId = "Mvc",
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
-                    AllowedGrantTypes = GrantTypes.Code,
-                    
-                    // where to redirect to after login
+                    AllowedGrantTypes =
+                    {
+                        GrantType.AuthorizationCode,
+                        GrantType.ClientCredentials
+                    },
+
+                        // where to redirect to after login
                     RedirectUris = { "https://localhost:44302/signin-oidc" },
 
                     // where to redirect to after logout
@@ -63,7 +68,8 @@ namespace IdentityServer
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api"
                     }
                 },
                 // interactive ASP.NET Core RazorPages client
@@ -72,7 +78,11 @@ namespace IdentityServer
                     ClientId = "RazorPages",
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
-                    AllowedGrantTypes = GrantTypes.Code,
+                    AllowedGrantTypes =
+                    {
+                        GrantType.AuthorizationCode,
+                        GrantType.ClientCredentials
+                    },
                     
                     // where to redirect to after login
                     RedirectUris = { "https://localhost:44303/signin-oidc" },
@@ -83,7 +93,8 @@ namespace IdentityServer
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "api"
                     }
                 }
             };
