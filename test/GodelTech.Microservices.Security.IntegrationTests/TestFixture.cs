@@ -11,6 +11,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             IdentityServerApplication = new IdentityServerApplication();
 
             ApiApplication = new ApiApplication();
+            MvcApplication = new MvcApplication();
             RazorPagesApplication = new RazorPagesApplication();
 
             TokenService = new TokenService(IdentityServerApplication.Url);
@@ -21,6 +22,8 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         public IdentityServerApplication IdentityServerApplication { get; }
 
         public ApiApplication ApiApplication { get; }
+
+        public MvcApplication MvcApplication { get; }
 
         public RazorPagesApplication RazorPagesApplication { get; }
 
@@ -36,6 +39,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             IdentityServerApplication.Start();
 
             ApiApplication.Start();
+            MvcApplication.Start();
             RazorPagesApplication.Start();
         }
 
@@ -44,6 +48,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             IdentityServerApplication.Stop();
 
             ApiApplication.Stop();
+            MvcApplication.Stop();
             RazorPagesApplication.Stop();
         }
     }

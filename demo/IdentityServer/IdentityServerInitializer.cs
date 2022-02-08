@@ -22,6 +22,7 @@ namespace IdentityServer
                 )
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
+                .AddInMemoryApiResources(Config.ApiResource)
                 .AddInMemoryClients(Config.Clients)
                 .AddTestUsers(Config.Users);
 

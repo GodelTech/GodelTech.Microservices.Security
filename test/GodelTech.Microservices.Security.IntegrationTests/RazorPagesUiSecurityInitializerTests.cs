@@ -56,10 +56,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             var cookieContainer = new CookieContainer();
             using var httpClientHandler2 = new HttpClientHandler
             {
-                // todo: solve this
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
-                //
-                //AllowAutoRedirect = false,
                 CookieContainer = cookieContainer
             };
             using var client = HttpClientHelpers.CreateClient(httpClientHandler2, cookieContainer);
@@ -76,16 +73,6 @@ namespace GodelTech.Microservices.Security.IntegrationTests
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
             );
             Assert.Equal("/User", result.RequestMessage.RequestUri.AbsolutePath);
-
-            // todo: solve this
-            //Assert.Matches(
-            //    new Regex(
-            //        "^" +
-            //        await File.ReadAllTextAsync("Documents/AccountLoginHtml.txt") +
-            //        "$"
-            //    ),
-            //    await result.Content.ReadAsStringAsync()
-            //);
         }
 
         private static async Task<HttpResponseMessage> A(CookieContainer cookieContainer, HttpClient client, Uri url)

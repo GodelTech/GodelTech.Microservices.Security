@@ -17,7 +17,6 @@ namespace IdentityServer
                 new IdentityResources.Profile(),
             };
 
-        // todo: start using ApiResource https://stackoverflow.com/questions/63811157/apiresource-vs-apiscope-vs-identityresource
         public static IEnumerable<ApiScope> ApiScopes =
             new List<ApiScope>
             {
@@ -28,13 +27,29 @@ namespace IdentityServer
                 new ApiScope("fake.unused", "Fake unused scope")
             };
 
+        public static IEnumerable<ApiResource> ApiResource =
+            new List<ApiResource>
+            {
+                new ApiResource("DemoApi", "API")
+                {
+                    Scopes =
+                    {
+                        "api",
+                        "fake.add",
+                        "fake.edit",
+                        "fake.delete",
+                        "fake.unused"
+                    }
+                }
+            };
+
         public static IEnumerable<Client> Clients =
             new List<Client>
             {
                 // machine to machine client
                 new Client
                 {
-                    ClientId = "ClientForApi", // todo: rename to api
+                    ClientId = "ClientForApi",
                     ClientSecrets = { new Secret("secret".Sha256()) },
 
                     AllowedGrantTypes = GrantTypes.ClientCredentials,

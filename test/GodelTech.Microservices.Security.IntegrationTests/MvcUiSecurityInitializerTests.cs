@@ -5,7 +5,6 @@ using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
-    // todo: write tests for Mvc demo project (maybe in separate class?)
     [Collection("TestCollection")]
     public sealed class MvcUiSecurityInitializerTests : IDisposable
     {
@@ -22,7 +21,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
             _httpClient = HttpClientHelpers.CreateHttpClient(
                 _httpClientHandler,
-                null // todo: solve baseAddress
+                _fixture.MvcApplication.Url
             );
         }
 

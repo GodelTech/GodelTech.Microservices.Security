@@ -10,7 +10,6 @@ using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
-    // todo: add UseHsts for demo projects???
     [Collection("TestCollection")]
     public sealed partial class ApiSecurityInitializerTests : IDisposable
     {

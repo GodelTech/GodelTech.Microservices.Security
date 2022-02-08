@@ -4,7 +4,9 @@ using System.Reflection;
 using GodelTech.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 
 namespace GodelTech.Microservices.Security.SeleniumTests.Applications
 {
@@ -19,7 +21,9 @@ namespace GodelTech.Microservices.Security.SeleniumTests.Applications
 
             var projectPath = ProjectHelpers.GetProjectPath(projectRelativePath, typeof(TStartup).GetTypeInfo().Assembly);
 
-            _host = CreateHostBuilder(projectPath, Url).Build();
+            _host = CreateHostBuilder(projectPath, Url)
+                .ConfigureServices(ConfigureServices)
+                .Build();
         }
 
         public Uri Url { get; }
@@ -32,6 +36,12 @@ namespace GodelTech.Microservices.Security.SeleniumTests.Applications
         public void Stop()
         {
             _host.StopAsync().GetAwaiter().GetResult();
+        }
+
+        protected virtual void ConfigureServices(IServiceCollection services)
+        {
+            // Flag which indicates whether or not PII is shown in logs. False by default.
+            IdentityModelEventSource.ShowPII = true;
         }
 
         private static IHostBuilder CreateHostBuilder(string projectPath, Uri url)
@@ -49,9 +59,6 @@ namespace GodelTech.Microservices.Security.SeleniumTests.Applications
                     {
                         webBuilder.UseUrls(url.AbsoluteUri);
                         webBuilder.UseStartup<TStartup>();
-
-                        // todo: remove
-                        webBuilder.UseEnvironment("Development");
                     }
                 );
         }

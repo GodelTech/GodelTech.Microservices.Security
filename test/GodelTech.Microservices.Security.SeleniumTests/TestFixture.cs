@@ -10,6 +10,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests
             IdentityServerApplication = new IdentityServerApplication();
 
             ApiApplication = new ApiApplication();
+            MvcApplication = new MvcApplication();
             RazorPagesApplication = new RazorPagesApplication();
 
             Start();
@@ -18,6 +19,8 @@ namespace GodelTech.Microservices.Security.SeleniumTests
         public IdentityServerApplication IdentityServerApplication { get; }
 
         public ApiApplication ApiApplication { get; }
+
+        public MvcApplication MvcApplication { get; }
 
         public RazorPagesApplication RazorPagesApplication { get; }
 
@@ -31,6 +34,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests
             IdentityServerApplication.Start();
 
             ApiApplication.Start();
+            MvcApplication.Start();
             RazorPagesApplication.Start();
         }
 
@@ -39,6 +43,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests
             IdentityServerApplication.Stop();
 
             ApiApplication.Stop();
+            MvcApplication.Stop();
             RazorPagesApplication.Stop();
         }
     }

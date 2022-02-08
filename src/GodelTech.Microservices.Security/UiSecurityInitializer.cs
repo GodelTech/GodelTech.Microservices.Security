@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Security.UiSecurity;
 using IdentityModel.AspNetCore.AccessTokenManagement;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -53,8 +54,17 @@ namespace GodelTech.Microservices.Security
                         options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                     }
                 )
-                .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme) // todo: verify this with https://github.com/IdentityModel/IdentityModel.AspNetCore/blob/main/samples/Web/Startup.cs
-                .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, ConfigureOpenIdConnectOptions);
+                .AddCookie(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    options => options.Events.OnSigningOut = async context =>
+                    {
+                        await context.HttpContext.RevokeUserRefreshTokenAsync();
+                    }
+                )
+                .AddOpenIdConnect(
+                    OpenIdConnectDefaults.AuthenticationScheme,
+                    ConfigureOpenIdConnectOptions
+                );
 
             // adds user and client access token management
             services
@@ -78,9 +88,10 @@ namespace GodelTech.Microservices.Security
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             // todo: remove this
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-            options.BackchannelHttpHandler = handler;
+            options.BackchannelHttpHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
             //
 
             // todo: remove this
@@ -96,13 +107,9 @@ namespace GodelTech.Microservices.Security
             options.ClientId = _uiSecurityOptions.ClientId;
             options.ClientSecret = _uiSecurityOptions.ClientSecret;
 
-            options.ResponseType = _uiSecurityOptions.ResponseType;
-            options.UsePkce = _uiSecurityOptions.UsePkce;
-
-            // todo: verify https://github.com/IdentityModel/IdentityModel.AspNetCore/blob/main/samples/Web/Startup.cs
-            options.SignInScheme = _uiSecurityOptions.SignInScheme;
+            options.GetClaimsFromUserInfoEndpoint = _uiSecurityOptions.GetClaimsFromUserInfoEndpoint;
             options.RequireHttpsMetadata = _uiSecurityOptions.RequireHttpsMetadata;
-            //
+            options.ResponseType = _uiSecurityOptions.ResponseType;
 
             options.Scope.Clear();
             foreach (var scope in _uiSecurityOptions.Scopes)
@@ -110,14 +117,12 @@ namespace GodelTech.Microservices.Security
                 options.Scope.Add(scope);
             }
 
-            options.GetClaimsFromUserInfoEndpoint = _uiSecurityOptions.GetClaimsFromUserInfoEndpoint;
-            options.SaveTokens = _uiSecurityOptions.SaveTokens;
-
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidIssuer = _uiSecurityOptions.Issuer
-                // todo: verify this https://github.com/IdentityModel/IdentityModel.AspNetCore/blob/main/samples/Web/Startup.cs
             };
+
+            options.UsePkce = _uiSecurityOptions.UsePkce;
 
             // todo: a.salanoi: do we really need this?
             options.Events = new OpenIdConnectEvents
@@ -156,6 +161,8 @@ namespace GodelTech.Microservices.Security
                     return Task.CompletedTask;
                 }
             };
+
+            options.SaveTokens = _uiSecurityOptions.SaveTokens;
         }
 
         // todo: make tests and than update to Uri and Helper method

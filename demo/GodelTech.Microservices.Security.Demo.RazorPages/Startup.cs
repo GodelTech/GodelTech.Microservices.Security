@@ -3,7 +3,6 @@ using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Core.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Logging;
 
 namespace GodelTech.Microservices.Security.Demo.RazorPages
 {

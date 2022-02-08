@@ -60,14 +60,7 @@ namespace GodelTech.Microservices.Security
         public virtual void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddAuthentication(
-                    // todo: simply setup just DefaultScheme? https://stackoverflow.com/questions/46223407/asp-net-core-2-authenticationschemes
-                    options =>
-                    {
-                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    }
-                )
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(ConfigureJwtBearerOptions);
 
             services.AddAuthorization(ConfigureAuthorizationOptions);
@@ -103,9 +96,10 @@ namespace GodelTech.Microservices.Security
             if (options == null) throw new ArgumentNullException(nameof(options));
 
             // todo: remove this
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
-            options.BackchannelHttpHandler = handler;
+            options.BackchannelHttpHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
             //
 
             options.RequireHttpsMetadata = _apiSecurityOptions.RequireHttpsMetadata;
