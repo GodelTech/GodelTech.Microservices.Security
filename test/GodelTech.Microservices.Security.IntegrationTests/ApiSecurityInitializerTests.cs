@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using GodelTech.Microservices.Security.Demo.Api.Models.Fake;
 using GodelTech.Microservices.Security.IntegrationTests.Fakes;
 using Xunit;
@@ -15,7 +12,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 {
     // todo: add UseHsts for demo projects???
     [Collection("TestCollection")]
-    public sealed class ApiSecurityInitializerTests : IDisposable
+    public sealed partial class ApiSecurityInitializerTests : IDisposable
     {
         private readonly TestFixture _fixture;
 
@@ -40,197 +37,71 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             _httpClient.Dispose();
         }
 
-        public static IEnumerable<object[]> HttpGetRequestMemberData =>
-            new Collection<object[]>
+        public static IList<HttpRequestMessage> FakeHttpRequestMessages =>
+            new Collection<HttpRequestMessage>
             {
-                new object[]
+                // get list
+                new HttpRequestMessage
                 {
-                    string.Empty,
-                    new HttpRequestMessage
-                    {
-                        Method = HttpMethod.Get,
-                        RequestUri = new Uri("fakes", UriKind.Relative)
-                    },
-                    HttpStatusCode.OK
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri("fakes", UriKind.Relative)
                 },
-                new object[]
+                // get
+                new HttpRequestMessage
                 {
-                    string.Empty,
-                    new HttpRequestMessage
-                    {
-                        Method = HttpMethod.Get,
-                        RequestUri = new Uri("fakes/1", UriKind.Relative)
-                    },
-                    HttpStatusCode.OK
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri("fakes/1", UriKind.Relative)
+                },
+                // post
+                new HttpRequestMessage
+                {
+                    Method = HttpMethod.Post,
+                    RequestUri = new Uri("fakes", UriKind.Relative),
+                    Content = new StringContent(
+                        JsonSerializer.Serialize(
+                            new FakePostModel
+                            {
+                                Title = "Test Title"
+                            }
+                        ),
+                        Encoding.UTF8,
+                        "application/json"
+                    )
+                },
+                // put
+                new HttpRequestMessage
+                {
+                    Method = HttpMethod.Put,
+                    RequestUri = new Uri("fakes/1", UriKind.Relative),
+                    Content = new StringContent(
+                        JsonSerializer.Serialize(
+                            new FakePutModel
+                            {
+                                Id = 1,
+                                Title = "New Title"
+                            }
+                        ),
+                        Encoding.UTF8,
+                        "application/json"
+                    )
+                },
+                // delete
+                new HttpRequestMessage
+                {
+                    Method = HttpMethod.Delete,
+                    RequestUri = new Uri("fakes/1", UriKind.Relative)
                 }
             };
 
-        public static IEnumerable<object[]> HttpPostRequestMemberData =>
-            new Collection<object[]>
+        public static IList<HttpRequestMessage> OpenFakeHttpRequestMessages =>
+            new Collection<HttpRequestMessage>
             {
-                new object[]
+                // get list
+                new HttpRequestMessage
                 {
-                    "fake.add",
-                    new HttpRequestMessage
-                    {
-                        Method = HttpMethod.Post,
-                        RequestUri = new Uri("fakes", UriKind.Relative),
-                        Content = new StringContent(
-                            JsonSerializer.Serialize(new FakePostModel()),
-                            Encoding.UTF8,
-                            "application/json"
-                        )
-                    },
-                    HttpStatusCode.Created
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri("openFakes", UriKind.Relative)
                 }
             };
-
-        public static IEnumerable<object[]> HttpPutRequestMemberData =>
-            new Collection<object[]>
-            {
-                new object[]
-                {
-                    "fake.edit",
-                    new HttpRequestMessage
-                    {
-                        Method = HttpMethod.Put,
-                        RequestUri = new Uri("fakes/1", UriKind.Relative),
-                        Content = new StringContent(
-                            JsonSerializer.Serialize(
-                                new FakePutModel { Id = 1 }),
-                            Encoding.UTF8,
-                            "application/json"
-                        )
-                    },
-                    HttpStatusCode.NoContent
-                }
-            };
-
-        public static IEnumerable<object[]> HttpDeleteRequestMemberData =>
-            new Collection<object[]>
-            {
-                new object[]
-                {
-                    "fake.delete",
-                    new HttpRequestMessage
-                    {
-                        Method = HttpMethod.Delete,
-                        RequestUri = new Uri("fakes/1", UriKind.Relative)
-                    },
-                    HttpStatusCode.OK
-                }
-            };
-
-        [Theory]
-        [MemberData(nameof(HttpGetRequestMemberData))]
-        [MemberData(nameof(HttpPostRequestMemberData))]
-        [MemberData(nameof(HttpPutRequestMemberData))]
-        [MemberData(nameof(HttpDeleteRequestMemberData))]
-        public async Task SecuredEndpointRequested_WhenNoJwtTokenProvided_ReturnsUnauthorized(
-            string scope,
-            HttpRequestMessage httpRequestMessage,
-            HttpStatusCode expectedResponseCode)
-        {
-            // Arrange & Act
-            var result = await _httpClient.SendAsync(httpRequestMessage);
-
-            // Assert
-            Assert.Equal(HttpStatusCode.Unauthorized, result.StatusCode);
-        }
-
-        [Theory]
-        [MemberData(nameof(HttpGetRequestMemberData))]
-        [MemberData(nameof(HttpPostRequestMemberData))]
-        [MemberData(nameof(HttpPutRequestMemberData))]
-        [MemberData(nameof(HttpDeleteRequestMemberData))]
-        public async Task SecuredEndpointRequested_WhenJwtTokenProvidedWithProperScopes_ReturnsCorrectStatusCode(
-            string scope,
-            HttpRequestMessage httpRequestMessage,
-            HttpStatusCode expectedResponseCode)
-        {
-            // Arrange 
-            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync("ClientForApi", "secret", scope);
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            
-            // Act
-            var result = await _httpClient.SendAsync(httpRequestMessage);
-
-            // Assert
-            Assert.Equal(expectedResponseCode, result.StatusCode);
-        }
-
-        [Theory]
-        [MemberData(nameof(HttpPostRequestMemberData))]
-        [MemberData(nameof(HttpPutRequestMemberData))]
-        [MemberData(nameof(HttpDeleteRequestMemberData))]
-        public async Task SecuredEndpointRequested_WhenJwtTokenProvidedWithoutProperScopes_ReturnsForbidden(
-            string scope,
-            HttpRequestMessage httpRequestMessage,
-            HttpStatusCode expectedResponseCode)
-        {
-            // Arrange
-            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync(
-                "ClientForApi",
-                "secret",
-                "fake.unused"
-            );
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            // Act
-            var result = await _httpClient.SendAsync(httpRequestMessage);
-
-            // Assert
-            Assert.Equal(HttpStatusCode.Forbidden, result.StatusCode);
-        }
-
-        public static IEnumerable<object[]> OpenFakeRequestMemberData =>
-            new Collection<object[]>
-            {
-                new object[]
-                {
-                    string.Empty,
-                    new HttpRequestMessage
-                    {
-                        Method = HttpMethod.Get,
-                        RequestUri = new Uri("openFakes", UriKind.Relative)
-                    },
-                    HttpStatusCode.OK
-                }
-            };
-
-        [Theory]
-        [MemberData(nameof(OpenFakeRequestMemberData))]
-        public async Task UnsecuredEndpointRequested_WhenJwtTokenProvided_ReturnsCorrectStatusCode(
-            string scope,
-            HttpRequestMessage httpRequestMessage,
-            HttpStatusCode expectedResponseCode)
-        {
-            // Arrange 
-            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync("ClientForApi", "secret", scope);
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            // Act
-            var result = await _httpClient.SendAsync(httpRequestMessage);
-
-            // Assert
-            Assert.Equal(expectedResponseCode, result.StatusCode);
-        }
-
-        [Theory]
-        [MemberData(nameof(OpenFakeRequestMemberData))]
-        public async Task UnsecuredEndpointRequested_WhenJwtTokenNotProvided_ReturnsCorrectStatusCode(
-            string scope,
-            HttpRequestMessage httpRequestMessage,
-            HttpStatusCode expectedResponseCode)
-        {
-            // Arrange & Act
-            var result = await _httpClient.SendAsync(httpRequestMessage);
-
-            // Assert
-            Assert.Equal(expectedResponseCode, result.StatusCode);
-        }
     }
 }

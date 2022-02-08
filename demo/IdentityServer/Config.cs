@@ -41,6 +41,7 @@ namespace IdentityServer
                     // scopes that client has access to
                     AllowedScopes =
                     {
+                        "api",
                         "fake.add",
                         "fake.edit",
                         "fake.delete",

@@ -6,7 +6,7 @@ using IdentityModel.Client;
 
 namespace GodelTech.Microservices.Security.IntegrationTests.Utils
 {
-    // todo: use real TokenService from GodelTech library https://github.com/GodelTech/GodelTech.Auth.IdentityModel
+    // todo: use real TokenService from IdentityModel.AspNetCore or from GodelTech library https://github.com/GodelTech/GodelTech.Auth.IdentityModel
     public class TokenService
     {
         private readonly Uri _authorityUrl;
