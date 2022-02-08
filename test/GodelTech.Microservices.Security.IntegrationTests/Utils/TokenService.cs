@@ -41,7 +41,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Utils
 
             using var httpClient = new HttpClient(httpClientHandler);
 
-            var discoveryDocumentRequest = new DiscoveryDocumentRequest
+            using var discoveryDocumentRequest = new DiscoveryDocumentRequest
             {
                 Address = _authorityUrl.AbsoluteUri,
                 Policy =
@@ -53,12 +53,16 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Utils
 
             var disco = await httpClient.GetDiscoveryDocumentAsync(discoveryDocumentRequest);
             if (disco.IsError)
+#pragma warning disable CA2201 // Do not raise reserved exception types
                 throw new Exception(disco.Error);
+#pragma warning restore CA2201 // Do not raise reserved exception types
 
             var response = await tokenResponseProvider(httpClient, disco);
 
             if (response.IsError)
+#pragma warning disable CA2201 // Do not raise reserved exception types
                 throw new Exception(response.Error);
+#pragma warning restore CA2201 // Do not raise reserved exception types
 
             return response.AccessToken;
         }

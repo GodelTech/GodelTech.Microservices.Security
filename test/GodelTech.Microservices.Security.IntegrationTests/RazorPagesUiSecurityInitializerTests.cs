@@ -54,12 +54,20 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         {
             // Arrange
             var cookieContainer = new CookieContainer();
-            using var client = HttpClientHelpers.CreateClient(cookieContainer);
+            using var httpClientHandler2 = new HttpClientHandler
+            {
+                // todo: solve this
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
+                //
+                //AllowAutoRedirect = false,
+                CookieContainer = cookieContainer
+            };
+            using var client = HttpClientHelpers.CreateClient(httpClientHandler2, cookieContainer);
             client.BaseAddress = _fixture.RazorPagesApplication.Url;
 
             // Arrange & Act
             var result = await A(cookieContainer, client, new Uri("User", UriKind.Relative));
-            var a = await result.Content.ReadAsStringAsync();
+            //var a = await result.Content.ReadAsStringAsync();
             //var result = await client.GetAsync(new Uri("User", UriKind.Relative));
 
             // Assert
@@ -91,36 +99,36 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             var code = string.Empty;
             var scope = string.Empty;
             var state = string.Empty;
-            var session_state = string.Empty;
+            var sessionState = string.Empty;
             if (!string.IsNullOrEmpty(content))
             {
-                code = content.Substring(content.IndexOf("name='code'"));
-                code = code.Substring(code.IndexOf("value='") + 7);
-                code = code.Substring(0, code.IndexOf("'"));
+                code = content.Substring(content.IndexOf("name='code'", StringComparison.InvariantCulture));
+                code = code.Substring(code.IndexOf("value='", StringComparison.InvariantCulture) + 7);
+                code = code.Substring(0, code.IndexOf("'", StringComparison.InvariantCulture));
 
-                scope = content.Substring(content.IndexOf("name='scope'"));
-                scope = scope.Substring(scope.IndexOf("value='") + 7);
-                scope = scope.Substring(0, scope.IndexOf("'"));
+                scope = content.Substring(content.IndexOf("name='scope'", StringComparison.InvariantCulture));
+                scope = scope.Substring(scope.IndexOf("value='", StringComparison.InvariantCulture) + 7);
+                scope = scope.Substring(0, scope.IndexOf("'", StringComparison.InvariantCulture));
 
-                state = content.Substring(content.IndexOf("name='state'"));
-                state = state.Substring(state.IndexOf("value='") + 7);
-                state = state.Substring(0, state.IndexOf("'"));
+                state = content.Substring(content.IndexOf("name='state'", StringComparison.InvariantCulture));
+                state = state.Substring(state.IndexOf("value='", StringComparison.InvariantCulture) + 7);
+                state = state.Substring(0, state.IndexOf("'", StringComparison.InvariantCulture));
 
-                session_state = content.Substring(content.IndexOf("name='session_state'"));
-                session_state = session_state.Substring(session_state.IndexOf("value='") + 7);
-                session_state = session_state.Substring(0, session_state.IndexOf("'"));
+                sessionState = content.Substring(content.IndexOf("name='session_state'", StringComparison.InvariantCulture));
+                sessionState = sessionState.Substring(sessionState.IndexOf("value='", StringComparison.InvariantCulture) + 7);
+                sessionState = sessionState.Substring(0, sessionState.IndexOf("'", StringComparison.InvariantCulture));
             }
 
-            var contentToSend = new FormUrlEncodedContent(new[]
+            using var contentToSend = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("code", code),
                 new KeyValuePair<string, string>("scope", scope),
                 new KeyValuePair<string, string>("state", state),
-                new KeyValuePair<string, string>("session_state", session_state)
+                new KeyValuePair<string, string>("session_state", sessionState)
             });
-            var response_ = await client.PostAsync("https://localhost:44303/signin-oidc", contentToSend);
+            var response2 = await client.PostAsync(new Uri("https://localhost:44303/signin-oidc"), contentToSend);
 
-            return response_;
+            return response2;
         }
     }
 }
