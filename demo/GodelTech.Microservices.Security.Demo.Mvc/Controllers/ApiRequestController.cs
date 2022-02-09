@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GodelTech.Microservices.Security.Demo.Mvc.Controllers
 {
-    public class FakeController : Controller
+    public class ApiRequestController : Controller
     {
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public FakeController(IHttpClientFactory httpClientFactory)
+        public ApiRequestController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
         }
