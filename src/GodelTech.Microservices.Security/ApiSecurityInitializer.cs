@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Net.Http;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Security.ApiSecurity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -94,13 +93,6 @@ namespace GodelTech.Microservices.Security
         protected virtual void ConfigureJwtBearerOptions(JwtBearerOptions options)
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
-
-            // todo: remove this
-            options.BackchannelHttpHandler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            };
-            //
 
             options.RequireHttpsMetadata = _apiSecurityOptions.RequireHttpsMetadata;
             options.Authority = _apiSecurityOptions.Authority;

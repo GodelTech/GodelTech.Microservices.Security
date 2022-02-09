@@ -39,7 +39,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests.Utils
         {
             using var httpClientHandler = HttpClientHelpers.CreateHttpClientHandler();
 
-            using var httpClient = new HttpClient(httpClientHandler);
+            using var httpClient = new HttpClient(httpClientHandler, false);
 
             using var discoveryDocumentRequest = new DiscoveryDocumentRequest
             {

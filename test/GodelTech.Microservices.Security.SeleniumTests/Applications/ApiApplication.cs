@@ -14,12 +14,12 @@ namespace GodelTech.Microservices.Security.SeleniumTests.Applications
 
         }
 
-        // todo: remove this
         protected override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
 
-            services.PostConfigure<JwtBearerOptions>(
+            services.Configure<JwtBearerOptions>(
+                JwtBearerDefaults.AuthenticationScheme,
                 options =>
                 {
                     options.BackchannelHttpHandler = new HttpClientHandler

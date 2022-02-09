@@ -87,21 +87,6 @@ namespace GodelTech.Microservices.Security
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            // todo: remove this
-            options.BackchannelHttpHandler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            };
-            //
-
-            // todo: remove this
-            // https://github.com/IdentityServer/IdentityServer4/issues/2925
-            // https://github.com/dotnet/aspnetcore/blob/d8381656429addead2e5eb22ba1356abfb419d86/src/Azure/AzureAD/test/FunctionalTests/WebAuthenticationTests.cs#L192-L194
-            // CookieContainer doesn't allow cookies from other paths
-            options.CorrelationCookie.Path = "/";
-            options.NonceCookie.Path = "/";
-            //
-
             options.Authority = _uiSecurityOptions.Authority;
 
             options.ClientId = _uiSecurityOptions.ClientId;
