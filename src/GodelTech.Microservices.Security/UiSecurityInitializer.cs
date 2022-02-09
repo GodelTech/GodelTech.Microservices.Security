@@ -1,7 +1,7 @@
 using System;
-using System.Net.Http;
 using System.Threading.Tasks;
 using GodelTech.Microservices.Core;
+using GodelTech.Microservices.Security.Helpers;
 using GodelTech.Microservices.Security.UiSecurity;
 using IdentityModel.AspNetCore.AccessTokenManagement;
 using Microsoft.AspNetCore.Authentication;
@@ -109,35 +109,19 @@ namespace GodelTech.Microservices.Security
 
             options.UsePkce = _uiSecurityOptions.UsePkce;
 
-            // todo: a.salanoi: do we really need this?
-            options.Events = new OpenIdConnectEvents
+            options.Events = CreateOpenIdConnectEvents();
+
+            options.SaveTokens = _uiSecurityOptions.SaveTokens;
+        }
+
+        /// <summary>
+        /// Create OpenIdConnectEvents.
+        /// </summary>
+        /// <returns>OpenIdConnectEvents.</returns>
+        protected virtual OpenIdConnectEvents CreateOpenIdConnectEvents()
+        {
+            var events = new OpenIdConnectEvents
             {
-                #region Public \ External address overrides
-
-                // This section is required to support scenario when UI sends requests to Identity
-                // using internal network but user need to access Identity using external address
-                OnRedirectToIdentityProvider = context =>
-                {
-                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(
-                        context.ProtocolMessage.IssuerAddress,
-                        _uiSecurityOptions.PublicAuthorityUri
-                    );
-
-                    return Task.CompletedTask;
-                },
-
-                OnRedirectToIdentityProviderForSignOut = context =>
-                {
-                    context.ProtocolMessage.IssuerAddress = ReplaceDomainAndPort(
-                        context.ProtocolMessage.IssuerAddress,
-                        _uiSecurityOptions.PublicAuthorityUri
-                    );
-
-                    return Task.CompletedTask;
-                },
-
-                #endregion
-
                 OnRemoteFailure = context =>
                 {
                     context.Response.Redirect(_failurePath);
@@ -147,27 +131,35 @@ namespace GodelTech.Microservices.Security
                 }
             };
 
-            options.SaveTokens = _uiSecurityOptions.SaveTokens;
-        }
+            if (_uiSecurityOptions.PublicAuthorityUri == null) return events;
 
-        // todo: make tests and than update to Uri and Helper method
-        private static string ReplaceDomainAndPort(string authorityUrl, Uri publicAuthorityUri)
-        {
-            // todo: remove this after tests
-            if (publicAuthorityUri == null) return authorityUrl;
-            var publicAuthorityAddress = publicAuthorityUri.AbsoluteUri;
-            //
+            #region Public \ External address overrides
 
-            if (string.IsNullOrWhiteSpace(publicAuthorityAddress))
-                return authorityUrl;
+            // This section is required to support scenario when UI sends requests to Identity
+            // using internal network but user need to access Identity using external address
+            events.OnRedirectToIdentityProvider = context =>
+            {
+                context.ProtocolMessage.IssuerAddress = UrlHelpers.ChangeAuthority(
+                    context.ProtocolMessage.IssuerAddress,
+                    _uiSecurityOptions.PublicAuthorityUri
+                );
 
-            publicAuthorityAddress = publicAuthorityAddress.EndsWith("/", StringComparison.InvariantCulture) ?
-                publicAuthorityAddress.Substring(publicAuthorityAddress.Length - 1) :
-                publicAuthorityAddress;
+                return Task.CompletedTask;
+            };
 
-            return publicAuthorityAddress + new Uri(authorityUrl).PathAndQuery;
+            events.OnRedirectToIdentityProviderForSignOut = context =>
+            {
+                context.ProtocolMessage.IssuerAddress = UrlHelpers.ChangeAuthority(
+                    context.ProtocolMessage.IssuerAddress,
+                    _uiSecurityOptions.PublicAuthorityUri
+                );
 
-            //return new Uri(publicAuthorityUri, new Uri(authorityUrl).PathAndQuery).AbsoluteUri;
+                return Task.CompletedTask;
+            };
+
+            #endregion
+
+            return events;
         }
     }
 }
