@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GodelTech.Microservices.Security.ApiSecurity;
 using GodelTech.Microservices.Security.Tests.Fakes;
 using GodelTech.Microservices.Security.Tests.Fakes.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Xunit;
@@ -14,13 +16,13 @@ namespace GodelTech.Microservices.Security.Tests
     {
         private readonly Mock<IAuthorizationPolicyFactory> _mockPolicyFactory;
 
-        private readonly FakeApiSecurityInitializer _initializer;
+        private FakeApiSecurityInitializer Initializer { get; set; }
 
         public ApiSecurityInitializerTests()
         {
             _mockPolicyFactory = new Mock<IAuthorizationPolicyFactory>(MockBehavior.Strict);
 
-            _initializer = new FakeApiSecurityInitializer(
+            Initializer = new FakeApiSecurityInitializer(
                 x => { },
                 _mockPolicyFactory.Object
             );
@@ -57,7 +59,7 @@ namespace GodelTech.Microservices.Security.Tests
         {
             // Arrange & Act & Assert
             var result = Assert.Throws<ArgumentNullException>(
-                () => _initializer.ExposedConfigureJwtBearerOptions(null)
+                () => Initializer.ExposedConfigureJwtBearerOptions(null)
             );
 
             Assert.Equal("options", result.ParamName);
@@ -68,7 +70,7 @@ namespace GodelTech.Microservices.Security.Tests
         {
             // Arrange & Act & Assert
             var result = Assert.Throws<ArgumentNullException>(
-                () => _initializer.ExposedConfigureAuthorizationOptions(null)
+                () => Initializer.ExposedConfigureAuthorizationOptions(null)
             );
 
             Assert.Equal("options", result.ParamName);
@@ -90,7 +92,7 @@ namespace GodelTech.Microservices.Security.Tests
                 .Returns(policies);
 
             // Act
-            _initializer.ExposedConfigureAuthorizationOptions(options);
+            Initializer.ExposedConfigureAuthorizationOptions(options);
 
             // Assert
             var actualPolicy = options.GetPolicy("fakeKey");
@@ -101,6 +103,62 @@ namespace GodelTech.Microservices.Security.Tests
                 actualAuthorizationRequirement?.AllowedValues.Single(s => s == "fake.AuthorizationPolicy");
 
             Assert.Equal("fake.AuthorizationPolicy", allowedValue);
+        }
+
+        [Fact]
+        public void ConfigureJwtBearerOptions_Success()
+        {
+            // Arrange
+            var apiSecurityOptions = new ApiSecurityOptions
+            {
+                RequireHttpsMetadata = true,
+                Authority = "Test Authority",
+                Audience = "Test Audience",
+                TokenValidation = new TokenValidationOptions
+                {
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                },
+                Issuer = "Test Issuer",
+                SaveToken = true,
+                IncludeErrorDetails = true
+            };
+
+            var jwtBearerOptions = new JwtBearerOptions();
+
+            // Act
+            Initializer = new FakeApiSecurityInitializer(
+                x =>
+                {
+                    x.RequireHttpsMetadata = true;
+                    x.Authority = "Test Authority";
+                    x.Audience = "Test Audience";
+                    x.TokenValidation.ValidateAudience = true;
+                    x.TokenValidation.ValidateIssuer = true;
+                    x.TokenValidation.ValidateIssuerSigningKey = true;
+                    x.TokenValidation.ValidateLifetime = true;
+                    x.Issuer = "Test Issuer";
+                    x.SaveToken = true;
+                    x.IncludeErrorDetails = true;
+                }
+            );
+
+            Initializer.ExposedConfigureJwtBearerOptions(jwtBearerOptions);
+
+            // Assert
+            Assert.Equal(jwtBearerOptions.RequireHttpsMetadata, apiSecurityOptions.RequireHttpsMetadata);
+            Assert.Equal(jwtBearerOptions.Authority, apiSecurityOptions.Authority);
+            Assert.Equal(jwtBearerOptions.Audience, apiSecurityOptions.Audience);
+            Assert.Equal(jwtBearerOptions.TokenValidationParameters.ValidateAudience, apiSecurityOptions.TokenValidation.ValidateAudience);
+            Assert.Equal(jwtBearerOptions.TokenValidationParameters.ValidateIssuer, apiSecurityOptions.TokenValidation.ValidateIssuer);
+            Assert.Equal(jwtBearerOptions.TokenValidationParameters.ValidateIssuerSigningKey, apiSecurityOptions.TokenValidation.ValidateIssuerSigningKey);
+            Assert.Equal(jwtBearerOptions.TokenValidationParameters.ValidateLifetime, apiSecurityOptions.TokenValidation.ValidateLifetime);
+            Assert.Equal(jwtBearerOptions.TokenValidationParameters.ValidAudience, apiSecurityOptions.Audience);
+            Assert.Equal(jwtBearerOptions.TokenValidationParameters.ValidIssuer, apiSecurityOptions.Issuer);
+            Assert.Equal(jwtBearerOptions.SaveToken, apiSecurityOptions.SaveToken);
+            Assert.Equal(jwtBearerOptions.IncludeErrorDetails, apiSecurityOptions.IncludeErrorDetails);
         }
     }
 }
