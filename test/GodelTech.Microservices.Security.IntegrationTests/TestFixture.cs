@@ -43,7 +43,6 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             Stop();
         }
 
-        // todo: check if we need to move it to GodelTech.Auth.IdentityModel
         public async Task AuthorizeClientAsync(HttpClient httpClient, string scope)
         {
             if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));

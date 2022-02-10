@@ -33,7 +33,7 @@ namespace GodelTech.Microservices.Security
         public UiSecurityInitializer(
             Action<UiSecurityOptions> configureUiSecurity,
             Action<AccessTokenManagementOptions> configureAccessTokenManagement = null,
-            string failurePath = "/Errors/Fault") // todo: a.salanoi: why this path "/Errors/Fault"?
+            string failurePath = "/Errors/Fault")
         {
             if (configureUiSecurity == null) throw new ArgumentNullException(nameof(configureUiSecurity));
 
