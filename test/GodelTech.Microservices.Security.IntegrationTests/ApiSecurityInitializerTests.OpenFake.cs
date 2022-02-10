@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -53,14 +52,8 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpRequestMessage httpRequestMessage,
             HttpStatusCode expectedResponseCode)
         {
-            // Arrange 
-            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync(
-                "ClientForApi",
-                "secret",
-                scope
-            );
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            // Arrange
+            await _fixture.AuthorizeClientAsync(_httpClient, scope);
 
             // Act
             var result = await _httpClient.SendAsync(httpRequestMessage);
