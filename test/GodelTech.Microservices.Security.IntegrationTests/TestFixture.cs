@@ -87,10 +87,25 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         {
             services
                 .AddHttpClient(
-                    "client",
+                    "ApiClient",
                     client =>
                     {
                         client.BaseAddress = ApiApplication.Url;
+                    }
+                )
+                .ConfigurePrimaryHttpMessageHandler(
+                    () => new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    }
+                );
+
+            services
+                .AddHttpClient(
+                    "RazorPagesClient",
+                    client =>
+                    {
+                        client.BaseAddress = RazorPagesApplication.Url;
                     }
                 )
                 .ConfigurePrimaryHttpMessageHandler(

@@ -38,7 +38,7 @@ namespace GodelTech.Microservices.Security.Demo.Mvc
                 services =>
                 {
                     services.AddClientAccessTokenHttpClient(
-                        "client",
+                        "ApiClient",
                         configureClient: client =>
                         {
                             client.BaseAddress = new Uri(Configuration["ApiUrl"]);

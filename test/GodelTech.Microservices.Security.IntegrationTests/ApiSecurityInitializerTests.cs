@@ -23,7 +23,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
             var httpClientFactory = _fixture.ServiceProvider.GetService<IHttpClientFactory>();
 
-            _httpClient = httpClientFactory.CreateClient("client");
+            _httpClient = httpClientFactory.CreateClient("ApiClient");
         }
 
         public void Dispose()
