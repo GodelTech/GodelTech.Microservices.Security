@@ -17,7 +17,7 @@ namespace GodelTech.Microservices.Security.Tests.Helpers
         }
 
         [Fact]
-        public void ChangeAuthority_WhenPublicAuthorityUri_Success()
+        public void ChangeAuthority_Success()
         {
             // Arrange
             var publicAuthorityUri = new Uri("https://test.publicauthority");
