@@ -14,12 +14,7 @@ namespace IdentityServer
     {
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            var builder = services.AddIdentityServer(
-                    x =>
-                    {
-                        x.IssuerUri = "https://godeltech";
-                    }
-                )
+            var builder = services.AddIdentityServer()
                 .AddInMemoryIdentityResources(Config.IdentityResources)
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryApiResources(Config.ApiResource)
