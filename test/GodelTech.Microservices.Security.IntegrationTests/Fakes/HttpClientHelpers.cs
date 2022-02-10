@@ -1,71 +1,46 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace GodelTech.Microservices.Security.IntegrationTests.Fakes
 {
     public static class HttpClientHelpers
     {
-        public static HttpClientHandler CreateHttpClientHandler()
+        public static async Task AuthorizeClientAsync(HttpClient httpClient, Uri identityServerUrl)
         {
-            return new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-            };
-        }
+            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
 
-        public static HttpClient CreateHttpClient(HttpClientHandler httpClientHandler, Uri baseAddress)
-        {
-            return new HttpClient(httpClientHandler, false)
-            {
-                BaseAddress = baseAddress
-            };
-        }
-
-        public static HttpClient CreateClient(HttpClientHandler httpClientHandler, CookieContainer cookieContainer)
-        {
-            if (cookieContainer == null) throw new ArgumentNullException(nameof(cookieContainer));
-
-            var uri = new Uri("https://localhost:44300/Account/Login");
-            using var httpClientHandler2 = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
-                CookieContainer = cookieContainer
-            };
-            using var httpClient = new HttpClient(httpClientHandler2);
-
-            var response = httpClient.GetAsync(uri).Result;
-            var content = response.Content.ReadAsStringAsync().Result;
+            var loginUrl = new Uri(identityServerUrl, "Account/Login");
+            
+            var response = await httpClient.GetAsync(loginUrl);
+            var responseValue = await response.Content.ReadAsStringAsync();
 
             var returnUrl = string.Empty;
             var verificationToken = string.Empty;
-            if (!string.IsNullOrEmpty(content))
+            if (!string.IsNullOrEmpty(responseValue))
             {
-                returnUrl = content.Substring(content.IndexOf("ReturnUrl", StringComparison.InvariantCulture));
+                returnUrl = responseValue.Substring(responseValue.IndexOf("ReturnUrl", StringComparison.InvariantCulture));
                 returnUrl = returnUrl.Substring(returnUrl.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
                 returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("\"", StringComparison.InvariantCulture));
 
-                verificationToken = content.Substring(content.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture));
+                verificationToken = responseValue.Substring(responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture));
                 verificationToken = verificationToken.Substring(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
                 verificationToken = verificationToken.Substring(0, verificationToken.IndexOf("\"", StringComparison.InvariantCulture));
             }
-            
-            using var contentToSend = new FormUrlEncodedContent(new[]
-            {
-                new KeyValuePair<string, string>("ReturnUrl", returnUrl),
-                new KeyValuePair<string, string>("Username", "alice"),
-                new KeyValuePair<string, string>("Password", "alice"),
-                new KeyValuePair<string, string>("button", "login"),
-                new KeyValuePair<string, string>("__RequestVerificationToken", verificationToken),
-            });
-            response = httpClient.PostAsync(uri, contentToSend).Result;
-            var cookies = cookieContainer.GetCookies(uri);
-            cookieContainer.Add(cookies);
 
-            var client = new HttpClient(httpClientHandler);
+            using var contentToSend = new FormUrlEncodedContent(
+                new[]
+                {
+                    new KeyValuePair<string, string>("ReturnUrl", returnUrl),
+                    new KeyValuePair<string, string>("Username", "alice"),
+                    new KeyValuePair<string, string>("Password", "alice"),
+                    new KeyValuePair<string, string>("button", "login"),
+                    new KeyValuePair<string, string>("__RequestVerificationToken", verificationToken),
+                }
+            );
 
-            return client;
+            await httpClient.PostAsync(loginUrl, contentToSend);
         }
     }
 }

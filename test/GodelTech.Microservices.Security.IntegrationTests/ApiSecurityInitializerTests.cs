@@ -28,7 +28,6 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
         public void Dispose()
         {
-            //_httpClientHandler.Dispose();
             _httpClient.Dispose();
         }
 

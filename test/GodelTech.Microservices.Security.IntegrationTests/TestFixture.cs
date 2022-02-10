@@ -43,6 +43,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             Stop();
         }
 
+        // todo: check if we need to move it to GodelTech.Auth.IdentityModel
         public async Task AuthorizeClientAsync(HttpClient httpClient, string scope)
         {
             if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
@@ -85,27 +86,20 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddHttpClient(
-                    "ApiClient",
-                    client =>
-                    {
-                        client.BaseAddress = ApiApplication.Url;
-                    }
-                )
-                .ConfigurePrimaryHttpMessageHandler(
-                    () => new HttpClientHandler
-                    {
-                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
-                    }
-                );
+            AddHttpClient(services, "ApiClient", ApiApplication.Url);
+            AddHttpClient(services, "MvcClient", MvcApplication.Url);
+            AddHttpClient(services, "RazorPagesClient", RazorPagesApplication.Url);
+            AddHttpClient(services, "RazorPagesSecondClient", RazorPagesApplication.Url);
+        }
 
+        private static void AddHttpClient(IServiceCollection services, string name, Uri baseAddress)
+        {
             services
                 .AddHttpClient(
-                    "RazorPagesClient",
+                    name,
                     client =>
                     {
-                        client.BaseAddress = RazorPagesApplication.Url;
+                        client.BaseAddress = baseAddress;
                     }
                 )
                 .ConfigurePrimaryHttpMessageHandler(

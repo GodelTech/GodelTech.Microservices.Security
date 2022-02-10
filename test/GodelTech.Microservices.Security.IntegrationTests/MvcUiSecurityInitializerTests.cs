@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using GodelTech.Microservices.Security.IntegrationTests.Fakes;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
@@ -10,24 +10,19 @@ namespace GodelTech.Microservices.Security.IntegrationTests
     {
         private readonly TestFixture _fixture;
 
-        private readonly HttpClientHandler _httpClientHandler;
         private readonly HttpClient _httpClient;
 
         public MvcUiSecurityInitializerTests(TestFixture fixture)
         {
             _fixture = fixture;
 
-            _httpClientHandler = HttpClientHelpers.CreateHttpClientHandler();
+            var httpClientFactory = _fixture.ServiceProvider.GetService<IHttpClientFactory>();
 
-            _httpClient = HttpClientHelpers.CreateHttpClient(
-                _httpClientHandler,
-                _fixture.MvcApplication.Url
-            );
+            _httpClient = httpClientFactory.CreateClient("MvcClient");
         }
 
         public void Dispose()
         {
-            _httpClientHandler.Dispose();
             _httpClient.Dispose();
         }
     }
