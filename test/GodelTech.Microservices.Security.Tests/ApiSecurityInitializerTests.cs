@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GodelTech.Microservices.Security.ApiSecurity;
 using GodelTech.Microservices.Security.Tests.Fakes;
 using GodelTech.Microservices.Security.Tests.Fakes.Extensions;
 using Microsoft.AspNetCore.Authorization;
@@ -22,8 +21,7 @@ namespace GodelTech.Microservices.Security.Tests
             _mockPolicyFactory = new Mock<IAuthorizationPolicyFactory>(MockBehavior.Strict);
 
             _initializer = new FakeApiSecurityInitializer(
-                x =>
-                    new ApiSecurityOptions(),
+                x => { },
                 _mockPolicyFactory.Object
             );
         }
@@ -45,8 +43,7 @@ namespace GodelTech.Microservices.Security.Tests
             var result = Assert.Throws<ArgumentNullException>(
                 () =>
                     new ApiSecurityInitializer(
-                        x =>
-                            new ApiSecurityOptions(),
+                        x => { },
                         null,
                         null
                     )

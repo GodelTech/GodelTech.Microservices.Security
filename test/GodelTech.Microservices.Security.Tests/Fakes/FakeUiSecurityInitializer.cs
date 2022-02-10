@@ -1,6 +1,7 @@
 ﻿using System;
 using GodelTech.Microservices.Security.UiSecurity;
 using IdentityModel.AspNetCore.AccessTokenManagement;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace GodelTech.Microservices.Security.Tests.Fakes
 {
@@ -15,5 +16,9 @@ namespace GodelTech.Microservices.Security.Tests.Fakes
 
         }
 
+        public void ExposedConfigureOpenIdConnectOptions(OpenIdConnectOptions options)
+        {
+            base.ConfigureOpenIdConnectOptions(options);
+        }
     }
 }
