@@ -57,10 +57,10 @@ namespace GodelTech.Microservices.Security.Tests
         public void SecurityProtocol_Set_Success()
         {
             // Arrange & Act
-            _options.SecurityProtocol = SecurityProtocolType.Tls13;
+            _options.SecurityProtocol = SecurityProtocolType.SystemDefault;
 
             // Assert
-            Assert.Equal(SecurityProtocolType.Tls13, _options.SecurityProtocol);
+            Assert.Equal(SecurityProtocolType.SystemDefault, _options.SecurityProtocol);
         }
     }
 }
