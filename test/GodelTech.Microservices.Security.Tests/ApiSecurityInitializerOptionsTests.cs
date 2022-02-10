@@ -54,6 +54,7 @@ namespace GodelTech.Microservices.Security.Tests
         }
 
         [Fact]
+#pragma warning disable CA5386 // Avoid hardcoding SecurityProtocolType value
         public void SecurityProtocol_Set_Success()
         {
             // Arrange & Act
@@ -62,5 +63,6 @@ namespace GodelTech.Microservices.Security.Tests
             // Assert
             Assert.Equal(SecurityProtocolType.Tls13, _options.SecurityProtocol);
         }
+#pragma warning restore CA5386 // Avoid hardcoding SecurityProtocolType value
     }
 }

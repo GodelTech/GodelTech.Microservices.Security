@@ -35,7 +35,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests
         [Fact]
         public void Create_WhenExecuted_ReturnsCreateView()
         {
-            _webDriver.Navigate().GoToUrl("https://www.google.com/");
+            _webDriver.Navigate().GoToUrl(new Uri("https://www.google.com/"));
 
             Assert.Equal("Google", _webDriver.Title);
         }

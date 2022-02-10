@@ -22,8 +22,7 @@ namespace GodelTech.Microservices.Security.Tests
             _mockPolicyFactory = new Mock<IAuthorizationPolicyFactory>(MockBehavior.Strict);
 
             _initializer = new FakeApiSecurityInitializer(
-                x =>
-                    new ApiSecurityOptions(),
+                x => { },
                 _mockPolicyFactory.Object
             );
         }
@@ -45,8 +44,7 @@ namespace GodelTech.Microservices.Security.Tests
             var result = Assert.Throws<ArgumentNullException>(
                 () =>
                     new ApiSecurityInitializer(
-                        x =>
-                            new ApiSecurityOptions(),
+                        x => { },
                         null,
                         null
                     )
