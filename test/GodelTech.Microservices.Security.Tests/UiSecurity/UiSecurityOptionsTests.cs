@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using FluentAssertions;
 using GodelTech.Microservices.Security.UiSecurity;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Xunit;
@@ -154,7 +153,7 @@ namespace GodelTech.Microservices.Security.Tests.UiSecurity
         public void Scopes_Get_Success()
         {
             // Arrange & Act & Assert
-            _options.Scopes.Should().BeEquivalentTo(new Collection<string>());
+            Assert.Empty(_options.Scopes);
         }
 
         [Fact]
@@ -170,7 +169,7 @@ namespace GodelTech.Microservices.Security.Tests.UiSecurity
             _options.Scopes = expectedResult;
 
             // Act
-            _options.Scopes.Should().BeEquivalentTo(expectedResult);
+            Assert.Equal(expectedResult, _options.Scopes);
         }
 
         [Fact]

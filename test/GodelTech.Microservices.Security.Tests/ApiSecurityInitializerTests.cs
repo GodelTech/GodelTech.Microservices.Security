@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GodelTech.Microservices.Security.ApiSecurity;
 using GodelTech.Microservices.Security.Tests.Fakes;
-using GodelTech.Microservices.Security.Tests.Fakes.Extensions;
+using GodelTech.Microservices.Security.Tests.Fakes.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Xunit;
@@ -32,7 +31,8 @@ namespace GodelTech.Microservices.Security.Tests
         {
             // Arrange& Act & Assert
             var result = Assert.Throws<ArgumentNullException>(
-                () => new ApiSecurityInitializer(null, _mockPolicyFactory.Object));
+                () => new ApiSecurityInitializer(null, _mockPolicyFactory.Object)
+            );
 
             Assert.Equal("configureApiSecurity", result.ParamName);
         }
@@ -83,7 +83,7 @@ namespace GodelTech.Microservices.Security.Tests
             var policies = new Dictionary<string, AuthorizationPolicy>
             {
                 {
-                    "fakeKey", AuthorizationPolicyExtensions.GetAuthorizationPolicy("fake.AuthorizationPolicy")
+                    "fakeKey", AuthorizationPolicyHelpers.GetAuthorizationPolicy("fake.AuthorizationPolicy")
                 }
             };
             
@@ -98,8 +98,8 @@ namespace GodelTech.Microservices.Security.Tests
             Assert.NotNull(actualPolicy);
 
             var actualAuthorizationRequirement = actualPolicy.Requirements[1] as ClaimsAuthorizationRequirement;
-            var allowedValue =
-                actualAuthorizationRequirement?.AllowedValues.Single(s => s == "fake.AuthorizationPolicy");
+            var allowedValue = actualAuthorizationRequirement?.AllowedValues
+                .Single(s => s == "fake.AuthorizationPolicy");
 
             Assert.Equal("fake.AuthorizationPolicy", allowedValue);
         }

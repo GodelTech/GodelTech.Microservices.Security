@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using FluentAssertions;
-using Microsoft.AspNetCore.Authorization;
-using Xunit;
+﻿using Xunit;
 
 namespace GodelTech.Microservices.Security.Tests
 {
@@ -17,7 +14,7 @@ namespace GodelTech.Microservices.Security.Tests
             var result = policyFactory.Create();
 
             // Assert
-            result.Should().BeEquivalentTo(new Dictionary<string, AuthorizationPolicy>());
+            Assert.Empty(result);
         }
     }
 }

@@ -10,14 +10,14 @@ namespace GodelTech.Microservices.Security.Helpers
         /// <summary>
         /// Change authority to public authority keeping path an query.
         /// </summary>
-        /// <param name="authority">Authority url.</param>
+        /// <param name="issuerAddress">Issuer address.</param>
         /// <param name="publicAuthorityUri">Public authority url.</param>
         /// <returns>Url.</returns>
-        public static string ChangeAuthority(string authority, Uri publicAuthorityUri)
+        public static string ChangeAuthority(string issuerAddress, Uri publicAuthorityUri)
         {
-            if (publicAuthorityUri == null) return authority;
+            if (publicAuthorityUri == null) return issuerAddress;
 
-            return new Uri(publicAuthorityUri, new Uri(authority).PathAndQuery).AbsoluteUri;
+            return new Uri(publicAuthorityUri, new Uri(issuerAddress).PathAndQuery).AbsoluteUri;
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace GodelTech.Microservices.Security.Tests.Fakes.Extensions
+namespace GodelTech.Microservices.Security.Tests.Fakes.Helpers
 {
-    public static class AuthorizationPolicyExtensions
+    public static class AuthorizationPolicyHelpers
     {
         public static AuthorizationPolicy GetAuthorizationPolicy(string requiredScope)
         {
