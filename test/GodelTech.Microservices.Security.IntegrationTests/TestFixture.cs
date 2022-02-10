@@ -1,6 +1,11 @@
 ﻿using System;
-using GodelTech.Microservices.Security.IntegrationTests.Utils;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using GodelTech.Microservices.Security.SeleniumTests.Applications;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
@@ -14,9 +19,13 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             MvcApplication = new MvcApplication();
             RazorPagesApplication = new RazorPagesApplication();
 
-            TokenService = new TokenService(IdentityServerApplication.Url);
-
             Start();
+
+            var serviceCollection = new ServiceCollection();
+
+            ConfigureServices(serviceCollection);
+
+            ServiceProvider = serviceCollection.BuildServiceProvider();
         }
 
         public IdentityServerApplication IdentityServerApplication { get; }
@@ -27,11 +36,33 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
         public RazorPagesApplication RazorPagesApplication { get; }
 
-        public TokenService TokenService { get; }
+        public ServiceProvider ServiceProvider { get; }
 
         public void Dispose()
         {
             Stop();
+        }
+
+        public async Task AuthorizeClientAsync(HttpClient httpClient, string scope)
+        {
+            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+
+            var discoveryDocument = await httpClient.GetDiscoveryDocumentAsync(IdentityServerApplication.Url.AbsoluteUri);
+            if (discoveryDocument.IsError) throw new InvalidOperationException(discoveryDocument.Error);
+
+            using var clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
+            {
+                Address = discoveryDocument.TokenEndpoint,
+
+                ClientId = "ClientForApi",
+                ClientSecret = "secret",
+                Scope = scope
+            };
+
+            var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest);
+            if (tokenResponse.IsError) throw new InvalidOperationException(tokenResponse.Error);
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, tokenResponse.AccessToken);
         }
 
         private void Start()
@@ -50,6 +81,32 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             ApiApplication.Stop();
             MvcApplication.Stop();
             RazorPagesApplication.Stop();
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            AddHttpClient(services, "ApiClient", ApiApplication.Url);
+            AddHttpClient(services, "MvcClient", MvcApplication.Url);
+            AddHttpClient(services, "RazorPagesClient", RazorPagesApplication.Url);
+            AddHttpClient(services, "RazorPagesSecondClient", RazorPagesApplication.Url);
+        }
+
+        private static void AddHttpClient(IServiceCollection services, string name, Uri baseAddress)
+        {
+            services
+                .AddHttpClient(
+                    name,
+                    client =>
+                    {
+                        client.BaseAddress = baseAddress;
+                    }
+                )
+                .ConfigurePrimaryHttpMessageHandler(
+                    () => new HttpClientHandler
+                    {
+                        ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+                    }
+                );
         }
     }
 }

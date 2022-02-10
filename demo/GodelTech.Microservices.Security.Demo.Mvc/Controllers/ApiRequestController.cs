@@ -15,7 +15,7 @@ namespace GodelTech.Microservices.Security.Demo.Mvc.Controllers
 
         public async Task<IActionResult> CallApiAsClient()
         {
-            var client = _httpClientFactory.CreateClient("client");
+            var client = _httpClientFactory.CreateClient("ApiClient");
 
             ViewBag.Response = await client.GetStringAsync("fakes/1");
 

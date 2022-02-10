@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -85,15 +84,9 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpRequestMessage httpRequestMessage,
             HttpStatusCode expectedResponseCode)
         {
-            // Arrange 
-            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync(
-                "ClientForApi",
-                "secret",
-                scope
-            );
+            // Arrange
+            await _fixture.AuthorizeClientAsync(_httpClient, scope);
 
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            
             // Act
             var result = await _httpClient.SendAsync(httpRequestMessage);
 
@@ -119,13 +112,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         public async Task SecuredEndpointRequested_WhenJwtTokenProvidedWithoutProperScope_ReturnsForbidden(HttpRequestMessage httpRequestMessage)
         {
             // Arrange
-            var token = await _fixture.TokenService.GetClientCredentialsTokenAsync(
-                "ClientForApi",
-                "secret",
-                "fake.unused"
-            );
-
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            await _fixture.AuthorizeClientAsync(_httpClient, "fake.unused");
 
             // Act
             var result = await _httpClient.SendAsync(httpRequestMessage);
