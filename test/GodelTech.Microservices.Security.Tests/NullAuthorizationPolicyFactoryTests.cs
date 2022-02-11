@@ -4,17 +4,18 @@ namespace GodelTech.Microservices.Security.Tests
 {
     public class NullAuthorizationPolicyFactoryTests
     {
+        private readonly NullAuthorizationPolicyFactory _policyFactory;
+
+        public NullAuthorizationPolicyFactoryTests()
+        {
+            _policyFactory = new NullAuthorizationPolicyFactory();
+        }
+
         [Fact]
         public void Create_Success()
         {
-            // Arrange
-            var policyFactory = new NullAuthorizationPolicyFactory();
-
-            // Act
-            var result = policyFactory.Create();
-
-            // Assert
-            Assert.Empty(result);
+            // Arrange & Act & Assert
+            Assert.Empty(_policyFactory.Create());
         }
     }
 }

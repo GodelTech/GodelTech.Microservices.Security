@@ -119,9 +119,9 @@ namespace GodelTech.Microservices.Security
         {
             if (options == null) throw new ArgumentNullException(nameof(options));
 
-            foreach (var authorizationPolicy in _policyFactory.Create())
+            foreach (var policy in _policyFactory.Create())
             {
-                options.AddPolicy(authorizationPolicy.Key, authorizationPolicy.Value);
+                options.AddPolicy(policy.Key, policy.Value);
             }
         }
     }

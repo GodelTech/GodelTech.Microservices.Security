@@ -4,17 +4,18 @@ using FluentAssertions;
 using GodelTech.Microservices.Security.Tests.Fakes;
 using GodelTech.Microservices.Security.UiSecurity;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.Tests
 {
     public class UiSecurityInitializerTests
     {
-        private FakeUiSecurityInitializer Initializer { get; set; }
+        private readonly FakeUiSecurityInitializer _initializer;
 
         public UiSecurityInitializerTests()
         {
-            Initializer = new FakeUiSecurityInitializer(
+            _initializer = new FakeUiSecurityInitializer(
                 x => { }
             );
         }
@@ -24,7 +25,7 @@ namespace GodelTech.Microservices.Security.Tests
         {
             // Arrange & Act & Assert
             var result = Assert.Throws<ArgumentNullException>(
-                () => new FakeUiSecurityInitializer(null)
+                () => new UiSecurityInitializer(null)
             );
 
             Assert.Equal("configureUiSecurity", result.ParamName);
@@ -35,8 +36,7 @@ namespace GodelTech.Microservices.Security.Tests
         {
             // Arrange & Act & Assert
             var result = Assert.Throws<ArgumentNullException>(
-                () =>
-                    Initializer.ExposedConfigureOpenIdConnectOptions(null)
+                () => _initializer.ExposedConfigureOpenIdConnectOptions(null)
             );
 
             Assert.Equal("options", result.ParamName);
@@ -46,7 +46,30 @@ namespace GodelTech.Microservices.Security.Tests
         public void ConfigureOpenIdConnectOptions_Success()
         {
             // Arrange
-            var uiSecurityOptions = new UiSecurityOptions
+            Action<UiSecurityOptions> configureUiSecurity = options =>
+            {
+                options.Authority = "Test Authority";
+                options.Issuer = "Test Issuer";
+                options.ClientId = "Test ClientId";
+                options.ClientSecret = "Test ClientSecret";
+                options.GetClaimsFromUserInfoEndpoint = true;
+                options.RequireHttpsMetadata = true;
+                options.ResponseType = "Test ResponseType";
+                options.Scopes = new List<string>
+                {
+                    "Test Scope1",
+                    "Test Scope2"
+                };
+                options.UsePkce = true;
+                options.PublicAuthorityUri = new Uri("https://publicauthority.dev");
+                options.SaveTokens = true;
+            };
+
+            var initializer = new FakeUiSecurityInitializer(configureUiSecurity);
+
+            var openIdConnectOptions = new OpenIdConnectOptions();
+
+            var expectedResult = new OpenIdConnectOptions
             {
                 Authority = "Test Authority",
                 ClientId = "Test ClientId",
@@ -54,52 +77,69 @@ namespace GodelTech.Microservices.Security.Tests
                 GetClaimsFromUserInfoEndpoint = true,
                 RequireHttpsMetadata = true,
                 ResponseType = "Test ResponseType",
-                Issuer = "Test Issuer",
-                UsePkce = true,
-                SaveTokens = true,
-                Scopes = new List<string>
+                TokenValidationParameters = new TokenValidationParameters
                 {
-                    "Test Scope1",
-                    "Test Scope2"
-                }
+                    ValidIssuer = "Test Issuer"
+                },
+                UsePkce = true,
+                Events = initializer.ExposedCreateOpenIdConnectEvents(),
+                SaveTokens = true
             };
+            expectedResult.Scope.Clear();
+            expectedResult.Scope.Add("Test Scope1");
+            expectedResult.Scope.Add("Test Scope2");
 
-            var openIdConnectOptions = new OpenIdConnectOptions();
 
             // Act
-            Initializer = new FakeUiSecurityInitializer(
-                x =>
-                {
-                    x.Authority = "Test Authority";
-                    x.ClientId = "Test ClientId";
-                    x.GetClaimsFromUserInfoEndpoint = true;
-                    x.RequireHttpsMetadata = true;
-                    x.ResponseType = "Test ResponseType";
-                    x.Issuer = "Test Issuer";
-                    x.UsePkce = true;
-                    x.SaveTokens = true;
-                    x.Scopes = new List<string>
-                    {
-                        "Test Scope1",
-                        "Test Scope2"
-                    };
-                    x.ClientSecret = "Test ClientSecret";
-                }
-            );
-
-            Initializer.ExposedConfigureOpenIdConnectOptions(openIdConnectOptions);
+            initializer.ExposedConfigureOpenIdConnectOptions(openIdConnectOptions);
 
             // Assert
-            Assert.Equal(openIdConnectOptions.Authority, uiSecurityOptions.Authority);
-            Assert.Equal(openIdConnectOptions.ClientId, uiSecurityOptions.ClientId);
-            Assert.Equal(openIdConnectOptions.ClientSecret, uiSecurityOptions.ClientSecret);
-            Assert.Equal(openIdConnectOptions.GetClaimsFromUserInfoEndpoint, uiSecurityOptions.GetClaimsFromUserInfoEndpoint);
-            Assert.Equal(openIdConnectOptions.RequireHttpsMetadata, uiSecurityOptions.RequireHttpsMetadata);
-            Assert.Equal(openIdConnectOptions.ResponseType, uiSecurityOptions.ResponseType);
-            Assert.Equal(openIdConnectOptions.TokenValidationParameters.ValidIssuer, uiSecurityOptions.Issuer);
-            Assert.Equal(openIdConnectOptions.UsePkce, uiSecurityOptions.UsePkce);
-            Assert.Equal(openIdConnectOptions.SaveTokens, uiSecurityOptions.SaveTokens);
-            openIdConnectOptions.Scope.Should().BeEquivalentTo(uiSecurityOptions.Scopes);
+            openIdConnectOptions.Should().BeEquivalentTo(expectedResult);
+        }
+
+        [Fact]
+        public void CreateOpenIdConnectEvents_WhenPublicAuthorityUriIsNull()
+        {
+            //// Arrange
+            //var mockHttpContext = new Mock<HttpContext>(MockBehavior.Default);
+
+            //var a = new AuthenticationScheme(
+            //    OpenIdConnectDefaults.AuthenticationScheme,
+            //    OpenIdConnectDefaults.AuthenticationScheme,
+            //    ) new AuthenticationSchemeBuilder(OpenIdConnectDefaults.AuthenticationScheme).Build();
+
+            //var remoteFailureContext = new RemoteFailureContext(
+            //    mockHttpContext.Object,
+            //    a,
+            //    new RemoteAuthenticationOptions(),
+            //    new InvalidOperationException()
+            //);
+
+            //var expectedResult = new OpenIdConnectEvents
+            //{
+            //    OnRemoteFailure = context =>
+            //    {
+            //        context.Response.Redirect("/Errors/Fault");
+            //        context.HandleResponse();
+
+            //        return Task.CompletedTask;
+            //    }
+            //};
+
+            //// Act
+            //var events = _initializer.ExposedCreateOpenIdConnectEvents();
+
+            //// Assert
+            //events.OnRemoteFailure.Invoke(remoteFailureContext);
+
+            //// todo: solve this
+            ////Assert.Equal("/Errors/Fault", mockRemoteFailureContext.Object.Response.);
+        }
+
+        [Fact]
+        public void CreateOpenIdConnectEvents_Success()
+        {
+
         }
     }
 }

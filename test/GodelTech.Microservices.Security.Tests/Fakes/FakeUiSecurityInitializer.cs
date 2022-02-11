@@ -9,9 +9,8 @@ namespace GodelTech.Microservices.Security.Tests.Fakes
     {
         public FakeUiSecurityInitializer(
             Action<UiSecurityOptions> configureUiSecurity,
-            Action<AccessTokenManagementOptions> configureAccessTokenManagement = null,
-            string failurePath = "/Errors/Fault")
-            : base(configureUiSecurity, configureAccessTokenManagement, failurePath)
+            Action<AccessTokenManagementOptions> configureAccessTokenManagement = null)
+            : base(configureUiSecurity, configureAccessTokenManagement)
         {
 
         }
@@ -19,6 +18,11 @@ namespace GodelTech.Microservices.Security.Tests.Fakes
         public void ExposedConfigureOpenIdConnectOptions(OpenIdConnectOptions options)
         {
             base.ConfigureOpenIdConnectOptions(options);
+        }
+
+        public OpenIdConnectEvents ExposedCreateOpenIdConnectEvents()
+        {
+            return base.CreateOpenIdConnectEvents();
         }
     }
 }
