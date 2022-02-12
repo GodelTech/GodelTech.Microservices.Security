@@ -32,7 +32,7 @@ namespace GodelTech.Microservices.Security.Tests
         [Fact]
         public void Constructor_WhenApiSecurityOptionsIsNull_ThrowsArgumentNullException()
         {
-            // Arrange& Act & Assert
+            // Arrange & Act & Assert
             var result = Assert.Throws<ArgumentNullException>(
                 () => new ApiSecurityInitializer(null, _mockPolicyFactory.Object)
             );
@@ -43,7 +43,7 @@ namespace GodelTech.Microservices.Security.Tests
         [Fact]
         public void Constructor_WhenAuthorizationPolicyFactoryIsNull_ThrowsArgumentNullException()
         {
-            // Arrange& Act & Assert
+            // Arrange & Act & Assert
             var result = Assert.Throws<ArgumentNullException>(
                 () =>
                     new ApiSecurityInitializer(

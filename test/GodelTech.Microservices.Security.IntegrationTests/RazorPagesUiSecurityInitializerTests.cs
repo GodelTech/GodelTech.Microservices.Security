@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using GodelTech.Microservices.Security.IntegrationTests.Fakes;
-using IdentityModel.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -49,12 +46,12 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         }
 
         [Fact]
-        public async Task SecuredPageRequested_Success()
+        public async Task SecuredPageRequested_WhenUserLoggedIn_ReturnsUserPage()
         {
             // Arrange
-            await HttpClientHelpers.AuthorizeClientAsync(_userHttpClient, _fixture.IdentityServerApplication.Url);
+            await _fixture.LoginUiClientAsync(_userHttpClient, "alice", "alice");
 
-            // Arrange & Act
+            // Act
             var result = await GetAsync(
                 _userHttpClient,
                 new Uri("User", UriKind.Relative)
@@ -68,9 +65,35 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             Assert.Equal("/User", result.RequestMessage.RequestUri.AbsolutePath);
         }
 
+        [Fact]
+        public async Task SecuredPageRequested_WhenUserLoggedOut_RedirectsToIdentityServerLoginPage()
+        {
+            // Arrange
+            await _fixture.LoginUiClientAsync(_userHttpClient, "alice", "alice");
+
+            await GetAsync(
+                _userHttpClient,
+                new Uri("User", UriKind.Relative)
+            );
+
+            await _fixture.LogoutUiClientAsync(_userHttpClient);
+
+            // Arrange
+            var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
+
+            // Assert
+            Assert.Equal(
+                _fixture.IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
+                result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
+            );
+            Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);
+        }
+
         private static async Task<HttpResponseMessage> GetAsync(HttpClient httpClient, Uri url)
         {
             var response = await httpClient.GetAsync(url);
+            if (response.RequestMessage.RequestUri == new Uri(httpClient.BaseAddress, url)) return response;
+
             var responseValue = await response.Content.ReadAsStringAsync();
 
             var code = string.Empty;
