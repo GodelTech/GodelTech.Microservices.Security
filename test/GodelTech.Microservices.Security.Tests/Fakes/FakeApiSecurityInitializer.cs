@@ -9,7 +9,7 @@ namespace GodelTech.Microservices.Security.Tests.Fakes
     {
         public FakeApiSecurityInitializer(
             Action<ApiSecurityOptions> configureApiSecurity,
-            Action<ApiSecurityInitializerOptions> configure = null)
+            Action<ApiSecurityInitializerOptions> configure)
             : base(configureApiSecurity, configure)
         {
 
@@ -18,7 +18,7 @@ namespace GodelTech.Microservices.Security.Tests.Fakes
         public FakeApiSecurityInitializer(
             Action<ApiSecurityOptions> configureApiSecurity,
             IAuthorizationPolicyFactory policyFactory,
-            Action<ApiSecurityInitializerOptions> configure = null)
+            Action<ApiSecurityInitializerOptions> configure)
             : base(configureApiSecurity, policyFactory, configure)
         {
 

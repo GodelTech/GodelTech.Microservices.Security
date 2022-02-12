@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using FluentAssertions;
 using GodelTech.Microservices.Security.Tests.Fakes;
 using GodelTech.Microservices.Security.UiSecurity;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using Moq;
+using Moq.Protected;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.Tests
@@ -16,6 +22,7 @@ namespace GodelTech.Microservices.Security.Tests
         public UiSecurityInitializerTests()
         {
             _initializer = new FakeUiSecurityInitializer(
+                x => { },
                 x => { }
             );
         }
@@ -65,7 +72,10 @@ namespace GodelTech.Microservices.Security.Tests
                 options.SaveTokens = true;
             };
 
-            var initializer = new FakeUiSecurityInitializer(configureUiSecurity);
+            var initializer = new FakeUiSecurityInitializer(
+                configureUiSecurity,
+                null
+            );
 
             var openIdConnectOptions = new OpenIdConnectOptions();
 
@@ -97,49 +107,140 @@ namespace GodelTech.Microservices.Security.Tests
             openIdConnectOptions.Should().BeEquivalentTo(expectedResult);
         }
 
-        [Fact]
-        public void CreateOpenIdConnectEvents_WhenPublicAuthorityUriIsNull()
+        public static IEnumerable<object[]> CreateOpenIdConnectEventsMemberData =>
+            new Collection<object[]>
+            {
+                new object[]
+                {
+                    new FakeUiSecurityInitializer(
+                        x => { },
+                        null
+                    ),
+                    "/Errors/Fault"
+                },
+                new object[]
+                {
+                    new FakeUiSecurityInitializer(
+                        x => { },
+                        x => { },
+                        "/TestFailurePath"
+                    ),
+                    "/TestFailurePath"
+                }
+            };
+
+        [Theory]
+        [MemberData(nameof(CreateOpenIdConnectEventsMemberData))]
+        public void CreateOpenIdConnectEvents_WhenPublicAuthorityUriIsNull(
+            FakeUiSecurityInitializer initializer,
+            string expectedFailurePath)
         {
-            //// Arrange
-            //var mockHttpContext = new Mock<HttpContext>(MockBehavior.Default);
+            // Arrange
+            var mockHttpContext = new Mock<HttpContext>(MockBehavior.Strict);
+            mockHttpContext
+                .Setup(x => x.Response.Redirect(expectedFailurePath));
 
-            //var a = new AuthenticationScheme(
-            //    OpenIdConnectDefaults.AuthenticationScheme,
-            //    OpenIdConnectDefaults.AuthenticationScheme,
-            //    ) new AuthenticationSchemeBuilder(OpenIdConnectDefaults.AuthenticationScheme).Build();
+            var mockRemoteFailureContext = new Mock<RemoteFailureContext>(
+                MockBehavior.Strict,
+                mockHttpContext.Object,
+                new AuthenticationScheme(
+                    OpenIdConnectDefaults.AuthenticationScheme,
+                    OpenIdConnectDefaults.AuthenticationScheme,
+                    typeof(AuthenticationHandler<AuthenticationSchemeOptions>)
+                ),
+                new RemoteAuthenticationOptions(),
+                new InvalidOperationException()
+            );
 
-            //var remoteFailureContext = new RemoteFailureContext(
-            //    mockHttpContext.Object,
-            //    a,
-            //    new RemoteAuthenticationOptions(),
-            //    new InvalidOperationException()
-            //);
+            // Act
+            var events = initializer.ExposedCreateOpenIdConnectEvents();
 
-            //var expectedResult = new OpenIdConnectEvents
-            //{
-            //    OnRemoteFailure = context =>
-            //    {
-            //        context.Response.Redirect("/Errors/Fault");
-            //        context.HandleResponse();
+            // Assert
+            events.OnRemoteFailure.Invoke(mockRemoteFailureContext.Object);
 
-            //        return Task.CompletedTask;
-            //    }
-            //};
-
-            //// Act
-            //var events = _initializer.ExposedCreateOpenIdConnectEvents();
-
-            //// Assert
-            //events.OnRemoteFailure.Invoke(remoteFailureContext);
-
-            //// todo: solve this
-            ////Assert.Equal("/Errors/Fault", mockRemoteFailureContext.Object.Response.);
+            mockHttpContext
+                .Verify(
+                    x => x.Response.Redirect(expectedFailurePath),
+                    Times.Once
+                );
         }
 
         [Fact]
         public void CreateOpenIdConnectEvents_Success()
         {
+            // Arrange
+            var mockHttpContext = new Mock<HttpContext>(MockBehavior.Strict);
+            mockHttpContext
+                .Setup(x => x.Response.Redirect("/Errors/Fault"));
 
+            var authenticationScheme = new AuthenticationScheme(
+                OpenIdConnectDefaults.AuthenticationScheme,
+                OpenIdConnectDefaults.AuthenticationScheme,
+                typeof(AuthenticationHandler<AuthenticationSchemeOptions>)
+            );
+
+            // OnRemoteFailure
+            var mockRemoteFailureContext = new Mock<RemoteFailureContext>(
+                MockBehavior.Strict,
+                mockHttpContext.Object,
+                authenticationScheme,
+                new RemoteAuthenticationOptions(),
+                new InvalidOperationException()
+            );
+
+            // OnRedirectToIdentityProvider
+            var authenticationProperties = new AuthenticationProperties();
+
+            var mockRedirectContext = new Mock<RedirectContext>(
+                MockBehavior.Strict,
+                mockHttpContext.Object,
+                authenticationScheme,
+                new OpenIdConnectOptions(),
+                authenticationProperties
+            );
+            mockRedirectContext
+                .Protected()
+                .SetupSet<AuthenticationProperties>("Properties", authenticationProperties);
+
+            var initializer = new FakeUiSecurityInitializer(
+                options =>
+                {
+                    options.PublicAuthorityUri = new Uri("https://test.dev");
+                },
+                null
+            );
+
+            // Act
+            var events = initializer.ExposedCreateOpenIdConnectEvents();
+
+            // Assert
+            events.OnRemoteFailure.Invoke(mockRemoteFailureContext.Object);
+
+            mockHttpContext
+                .Verify(
+                    x => x.Response.Redirect("/Errors/Fault"),
+                    Times.Once
+                );
+
+            mockRedirectContext.Object.ProtocolMessage = new OpenIdConnectMessage
+            {
+                IssuerAddress = "https://localhost:80/Home/Index?a=b"
+            };
+            events.OnRedirectToIdentityProvider.Invoke(mockRedirectContext.Object);
+            Assert.Equal(
+                "https://test.dev/Home/Index?a=b",
+                mockRedirectContext.Object.ProtocolMessage.IssuerAddress
+            );
+
+            mockRedirectContext.Object.ProtocolMessage = new OpenIdConnectMessage
+            {
+                IssuerAddress = "https://localhost:80/Home/Index?a=b"
+            };
+            events.OnRedirectToIdentityProviderForSignOut.Invoke(mockRedirectContext.Object);
+            Assert.Equal(
+                "https://test.dev/Home/Index?a=b",
+                mockRedirectContext.Object.ProtocolMessage.IssuerAddress
+            );
         }
     }
 }

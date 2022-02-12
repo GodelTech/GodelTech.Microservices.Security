@@ -9,7 +9,16 @@ namespace GodelTech.Microservices.Security.Tests.Fakes
     {
         public FakeUiSecurityInitializer(
             Action<UiSecurityOptions> configureUiSecurity,
-            Action<AccessTokenManagementOptions> configureAccessTokenManagement = null)
+            Action<AccessTokenManagementOptions> configureAccessTokenManagement,
+            string failurePath)
+            : base(configureUiSecurity, configureAccessTokenManagement, failurePath)
+        {
+
+        }
+
+        public FakeUiSecurityInitializer(
+            Action<UiSecurityOptions> configureUiSecurity,
+            Action<AccessTokenManagementOptions> configureAccessTokenManagement)
             : base(configureUiSecurity, configureAccessTokenManagement)
         {
 

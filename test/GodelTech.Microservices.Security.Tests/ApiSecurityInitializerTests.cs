@@ -24,7 +24,8 @@ namespace GodelTech.Microservices.Security.Tests
 
             _initializer = new FakeApiSecurityInitializer(
                 x => { },
-                _mockPolicyFactory.Object
+                _mockPolicyFactory.Object,
+                x => { }
             );
         }
 
@@ -87,7 +88,10 @@ namespace GodelTech.Microservices.Security.Tests
                 options.IncludeErrorDetails = true;
             };
 
-            var initializer = new FakeApiSecurityInitializer(configureApiSecurity);
+            var initializer = new FakeApiSecurityInitializer(
+                configureApiSecurity,
+                null
+            );
 
             var jwtBearerOptions = new JwtBearerOptions();
 
