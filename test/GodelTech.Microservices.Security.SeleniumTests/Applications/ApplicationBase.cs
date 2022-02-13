@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 using GodelTech.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
@@ -48,17 +47,24 @@ namespace GodelTech.Microservices.Security.SeleniumTests.Applications
         {
             return Host.CreateDefaultBuilder()
                 .ConfigureHostConfiguration(
-                    hostConfig =>
+                    builder =>
                     {
-                        hostConfig.SetBasePath(projectPath);
-                        hostConfig.AddJsonFile(Path.Combine(projectPath, "appsettings.json"), false);
+                        builder.SetBasePath(projectPath);
+                        builder.AddJsonFile("appsettings.json", false);
+                    }
+                )
+                .ConfigureAppConfiguration(
+                    builder =>
+                    {
+                        builder.SetBasePath(projectPath);
+                        builder.AddJsonFile("appsettings.json", false);
                     }
                 )
                 .ConfigureWebHostDefaults(
-                    webBuilder =>
+                    builder =>
                     {
-                        webBuilder.UseUrls(url.AbsoluteUri);
-                        webBuilder.UseStartup<TStartup>();
+                        builder.UseUrls(url.AbsoluteUri);
+                        builder.UseStartup<TStartup>();
                     }
                 );
         }

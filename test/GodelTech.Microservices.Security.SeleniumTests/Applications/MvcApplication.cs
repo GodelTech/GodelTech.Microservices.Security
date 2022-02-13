@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using GodelTech.Microservices.Security.Demo.RazorPages;
+using GodelTech.Microservices.Security.Demo.Mvc;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Extensions.DependencyInjection;
 

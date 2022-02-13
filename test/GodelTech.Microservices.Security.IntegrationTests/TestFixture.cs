@@ -157,6 +157,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         {
             AddHttpClient(services, "ApiClient", ApiApplication.Url);
             AddHttpClient(services, "MvcClient", MvcApplication.Url);
+            AddHttpClient(services, "MvcSecondClient", MvcApplication.Url);
             AddHttpClient(services, "RazorPagesClient", RazorPagesApplication.Url);
             AddHttpClient(services, "RazorPagesSecondClient", RazorPagesApplication.Url);
         }

@@ -34,6 +34,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\demo\GodelTech.Microservices.Security.Demo.Api\GodelTech.Microservices.Security.Demo.Api.csproj" />
+		<ProjectReference Include="..\..\demo\GodelTech.Microservices.Security.Demo.Mvc\GodelTech.Microservices.Security.Demo.Mvc.csproj" />
 		<ProjectReference Include="..\..\demo\GodelTech.Microservices.Security.Demo.RazorPages\GodelTech.Microservices.Security.Demo.RazorPages.csproj" />
 		<ProjectReference Include="..\..\demo\IdentityServer\IdentityServer.csproj" />
 	</ItemGroup>

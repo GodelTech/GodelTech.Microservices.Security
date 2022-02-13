@@ -75,7 +75,7 @@ namespace IdentityServer
                         GrantType.ClientCredentials
                     },
 
-                        // where to redirect to after login
+                    // where to redirect to after login
                     RedirectUris = { "https://localhost:44302/signin-oidc" },
 
                     // where to redirect to after logout

@@ -1,29 +1,18 @@
-﻿using System;
-using System.Net.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Xunit;
+﻿using Xunit;
 
 namespace GodelTech.Microservices.Security.IntegrationTests
 {
     [Collection("TestCollection")]
-    public sealed class MvcUiSecurityInitializerTests : IDisposable
+    public sealed class MvcUiSecurityInitializerTests : UiSecurityInitializerTests
     {
-        private readonly TestFixture _fixture;
-
-        private readonly HttpClient _httpClient;
-
         public MvcUiSecurityInitializerTests(TestFixture fixture)
+            : base(
+                fixture,
+                fixture?.MvcApplication.Url,
+                "MvcClient",
+                "MvcSecondClient")
         {
-            _fixture = fixture;
 
-            var httpClientFactory = _fixture.ServiceProvider.GetService<IHttpClientFactory>();
-
-            _httpClient = httpClientFactory.CreateClient("MvcClient");
-        }
-
-        public void Dispose()
-        {
-            _httpClient.Dispose();
         }
     }
 }
