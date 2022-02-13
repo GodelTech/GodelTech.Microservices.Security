@@ -66,7 +66,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         }
 
         [Fact]
-        public async Task SecuredPageRequested_WhenUserLoggedOut_RedirectsToIdentityServerLoginPage()
+        public async Task SecuredPageRequested_WhenUserLoggedOutIdentityServer_RedirectsToIdentityServerLoginPage()
         {
             // Arrange
             await _fixture.LoginUiClientAsync(_userHttpClient, "alice", "alice");
@@ -77,6 +77,30 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             );
 
             await _fixture.LogoutUiClientAsync(_userHttpClient);
+
+            // Arrange
+            var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
+
+            // Assert
+            Assert.Equal(
+                _fixture.IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
+                result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
+            );
+            Assert.Equal("/Account/Login", result.RequestMessage.RequestUri.AbsolutePath);
+        }
+
+        [Fact]
+        public async Task SecuredPageRequested_WhenUserLoggedOut_RedirectsToIdentityServerLoginPage()
+        {
+            // Arrange
+            await _fixture.LoginUiClientAsync(_userHttpClient, "alice", "alice");
+
+            await GetAsync(
+                _userHttpClient,
+                new Uri("User", UriKind.Relative)
+            );
+
+            await _httpClient.GetAsync(new Uri("Logout", UriKind.Relative));
 
             // Arrange
             var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
