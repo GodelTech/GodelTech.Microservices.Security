@@ -3,11 +3,11 @@
   <!-- Configurations for data collectors -->
   <DataCollectionRunSettings>
     <DataCollectors>
-	  <DataCollector friendlyName="XPlat code coverage">
-	    <Configuration>
-	      <Format>cobertura,opencover</Format>
-		</Configuration>
-	  </DataCollector>
+      <DataCollector friendlyName="XPlat code coverage">
+        <Configuration>
+          <ExcludeByAttribute>ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+        </Configuration>
+      </DataCollector>
     </DataCollectors>
   </DataCollectionRunSettings>
 </RunSettings>
