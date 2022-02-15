@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using GodelTech.Microservices.Security.Demo.Api.Models.Fake;
+using IdentityModel.Client;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -97,5 +101,27 @@ namespace GodelTech.Microservices.Security.IntegrationTests
                     RequestUri = new Uri("openFakes", UriKind.Relative)
                 }
             };
+
+        private async Task AuthorizeClientAsync(HttpClient httpClient, string scope)
+        {
+            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+
+            var discoveryDocument = await httpClient.GetDiscoveryDocumentAsync(_fixture.IdentityServerApplication.Url.AbsoluteUri);
+            if (discoveryDocument.IsError) throw new InvalidOperationException(discoveryDocument.Error);
+
+            using var clientCredentialsTokenRequest = new ClientCredentialsTokenRequest
+            {
+                Address = discoveryDocument.TokenEndpoint,
+
+                ClientId = "ClientForApi",
+                ClientSecret = "secret",
+                Scope = scope
+            };
+
+            var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(clientCredentialsTokenRequest);
+            if (tokenResponse.IsError) throw new InvalidOperationException(tokenResponse.Error);
+
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, tokenResponse.AccessToken);
+        }
     }
 }

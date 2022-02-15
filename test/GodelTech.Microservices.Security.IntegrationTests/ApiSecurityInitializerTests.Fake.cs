@@ -85,7 +85,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpStatusCode expectedResponseCode)
         {
             // Arrange
-            await _fixture.AuthorizeClientAsync(_httpClient, scope);
+            await AuthorizeClientAsync(_httpClient, scope);
 
             // Act
             var result = await _httpClient.SendAsync(httpRequestMessage);
@@ -112,7 +112,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         public async Task SecuredEndpointRequested_WhenJwtTokenProvidedWithoutProperScope_ReturnsForbidden(HttpRequestMessage httpRequestMessage)
         {
             // Arrange
-            await _fixture.AuthorizeClientAsync(_httpClient, "fake.unused");
+            await AuthorizeClientAsync(_httpClient, "fake.unused");
 
             // Act
             var result = await _httpClient.SendAsync(httpRequestMessage);

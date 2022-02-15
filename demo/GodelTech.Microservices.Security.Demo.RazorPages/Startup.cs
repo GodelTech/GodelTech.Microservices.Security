@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Core.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace GodelTech.Microservices.Security.Demo.RazorPages
 {
@@ -25,7 +27,32 @@ namespace GodelTech.Microservices.Security.Demo.RazorPages
             yield return new GenericInitializer(null, (app, _) => app.UseRouting());
 
             yield return new UiSecurityInitializer(
-                options => Configuration.Bind("UiSecurityOptions", options)
+                options => Configuration.Bind("UiSecurityOptions", options),
+                options =>
+                {
+                    options.Client.DefaultClient.Scope = "api";
+                }
+            );
+
+            yield return new GenericInitializer(
+                services =>
+                {
+                    services.AddUserAccessTokenHttpClient(
+                        "UserClient",
+                        configureClient: client =>
+                        {
+                            client.BaseAddress = new Uri(Configuration["ApiUrl"]);
+                        }
+                    );
+
+                    services.AddClientAccessTokenHttpClient(
+                        "ApiClient",
+                        configureClient: client =>
+                        {
+                            client.BaseAddress = new Uri(Configuration["ApiUrl"]);
+                        }
+                    );
+                }
             );
 
             yield return new RazorPagesInitializer();

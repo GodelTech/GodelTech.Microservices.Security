@@ -58,7 +58,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         public async Task SecuredPageRequested_WhenUserLoggedIn_ReturnsUserPage()
         {
             // Arrange
-            await _fixture.LoginUiClientAsync(_userHttpClient, "alice", "alice");
+            await LoginUiClientAsync(_userHttpClient, "alice", "alice");
 
             // Act
             var result = await GetAsync(
@@ -78,14 +78,14 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         public async Task SecuredPageRequested_WhenUserLoggedOutIdentityServer_RedirectsToIdentityServerLoginPage()
         {
             // Arrange
-            await _fixture.LoginUiClientAsync(_userHttpClient, "alice", "alice");
+            await LoginUiClientAsync(_userHttpClient, "alice", "alice");
 
             await GetAsync(
                 _userHttpClient,
                 new Uri("User", UriKind.Relative)
             );
 
-            await _fixture.LogoutUiClientAsync(_userHttpClient);
+            await LogoutUiClientAsync(_userHttpClient);
 
             // Arrange
             var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
@@ -102,7 +102,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
         public async Task SecuredPageRequested_WhenUserLoggedOut_RedirectsToIdentityServerLoginPage()
         {
             // Arrange
-            await _fixture.LoginUiClientAsync(_userHttpClient, "alice", "alice");
+            await LoginUiClientAsync(_userHttpClient, "alice", "alice");
 
             await GetAsync(
                 _userHttpClient,
@@ -142,12 +142,48 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             _isDisposed = true;
         }
 
-        private static async Task<HttpResponseMessage> GetAsync(HttpClient httpClient, Uri url)
+        public async Task LoginUiClientAsync(HttpClient httpClient, string username, string password)
+        {
+            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+
+            var loginUrl = new Uri(_fixture.IdentityServerApplication.Url, "Account/Login");
+
+            var response = await httpClient.GetAsync(loginUrl);
+            var responseValue = await response.Content.ReadAsStringAsync();
+
+            var returnUrl = string.Empty;
+            var verificationToken = string.Empty;
+            if (!string.IsNullOrEmpty(responseValue))
+            {
+                returnUrl = responseValue.Substring(responseValue.IndexOf("ReturnUrl", StringComparison.InvariantCulture));
+                returnUrl = returnUrl.Substring(returnUrl.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
+                returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("\"", StringComparison.InvariantCulture));
+
+                verificationToken = responseValue.Substring(responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture));
+                verificationToken = verificationToken.Substring(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
+                verificationToken = verificationToken.Substring(0, verificationToken.IndexOf("\"", StringComparison.InvariantCulture));
+            }
+
+            using var contentToSend = new FormUrlEncodedContent(
+                new[]
+                {
+                    new KeyValuePair<string, string>("ReturnUrl", returnUrl),
+                    new KeyValuePair<string, string>("Username", username),
+                    new KeyValuePair<string, string>("Password", password),
+                    new KeyValuePair<string, string>("button", "login"),
+                    new KeyValuePair<string, string>("__RequestVerificationToken", verificationToken),
+                }
+            );
+
+            await httpClient.PostAsync(loginUrl, contentToSend);
+        }
+
+        private async Task<HttpResponseMessage> GetAsync(HttpClient httpClient, Uri url)
         {
             if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
 
             var response = await httpClient.GetAsync(url);
-            if (response.RequestMessage.RequestUri == new Uri(httpClient.BaseAddress, url)) return response;
+            if (response.RequestMessage.RequestUri == new Uri(_applicationUrl, url)) return response;
 
             var responseValue = await response.Content.ReadAsStringAsync();
 
@@ -188,6 +224,39 @@ namespace GodelTech.Microservices.Security.IntegrationTests
                 new Uri("signin-oidc", UriKind.Relative),
                 postContent
             );
+        }
+
+        public async Task LogoutUiClientAsync(HttpClient httpClient)
+        {
+            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+
+            var logoutUrl = new Uri(_fixture.IdentityServerApplication.Url, "Account/Logout");
+
+            var response = await httpClient.GetAsync(logoutUrl);
+            var responseValue = await response.Content.ReadAsStringAsync();
+
+            var logoutId = string.Empty;
+            var verificationToken = string.Empty;
+            if (!string.IsNullOrEmpty(responseValue))
+            {
+                logoutId = responseValue.Substring(responseValue.IndexOf("logoutId", StringComparison.InvariantCulture));
+                logoutId = logoutId.Substring(logoutId.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
+                logoutId = logoutId.Substring(0, logoutId.IndexOf("\"", StringComparison.InvariantCulture));
+
+                verificationToken = responseValue.Substring(responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture));
+                verificationToken = verificationToken.Substring(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
+                verificationToken = verificationToken.Substring(0, verificationToken.IndexOf("\"", StringComparison.InvariantCulture));
+            }
+
+            using var contentToSend = new FormUrlEncodedContent(
+                new[]
+                {
+                    new KeyValuePair<string, string>("LogoutId", logoutId),
+                    new KeyValuePair<string, string>("__RequestVerificationToken", verificationToken),
+                }
+            );
+
+            await httpClient.PostAsync(logoutUrl, contentToSend);
         }
     }
 }

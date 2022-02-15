@@ -53,7 +53,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             HttpStatusCode expectedResponseCode)
         {
             // Arrange
-            await _fixture.AuthorizeClientAsync(_httpClient, scope);
+            await AuthorizeClientAsync(_httpClient, scope);
 
             // Act
             var result = await _httpClient.SendAsync(httpRequestMessage);

@@ -37,6 +37,14 @@ namespace GodelTech.Microservices.Security.Demo.Mvc
             yield return new GenericInitializer(
                 services =>
                 {
+                    services.AddUserAccessTokenHttpClient(
+                        "UserClient",
+                        configureClient: client =>
+                        {
+                            client.BaseAddress = new Uri(Configuration["ApiUrl"]);
+                        }
+                    );
+
                     services.AddClientAccessTokenHttpClient(
                         "ApiClient",
                         configureClient: client =>
