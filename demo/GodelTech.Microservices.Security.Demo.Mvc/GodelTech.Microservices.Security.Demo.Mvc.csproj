@@ -12,7 +12,7 @@
 
 	<!-- Exclude the project from code coverage -->
 	<ItemGroup>
-		<AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+		<AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage" />
 	</ItemGroup>
 
 	<ItemGroup>
