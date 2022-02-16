@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,6 +41,44 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             GC.SuppressFinalize(this);
         }
 
+        //[Fact]
+        //public async Task ApiRequestCallApiAsUser_Success()
+        //{
+        //    // Arrange 
+        //    await LoginUiClientAsync(_userHttpClient, "alice", "alice");
+
+        //    await GetAsync(
+        //        _userHttpClient,
+        //        new Uri("User", UriKind.Relative)
+        //    );
+
+        //    // Act
+        //    var result = await _httpClient.GetAsync(new Uri("ApiRequest/CallApiAsUser", UriKind.Relative));
+
+        //    // Assert
+        //    Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+        //    Assert.Equal(
+        //        _applicationUrl.AbsoluteUri.TrimEnd('/'),
+        //        result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
+        //    );
+        //    Assert.Equal("/ApiRequest/CallApiAsUser", result.RequestMessage.RequestUri.AbsolutePath);
+        //}
+
+        [Fact]
+        public async Task ApiRequestCallApiAsClient_Success()
+        {
+            // Arrange & Act
+            var result = await _httpClient.GetAsync(new Uri("ApiRequest/CallApiAsClient", UriKind.Relative));
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+            Assert.Equal(
+                _applicationUrl.AbsoluteUri.TrimEnd('/'),
+                result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
+            );
+            Assert.Equal("/ApiRequest/CallApiAsClient", result.RequestMessage.RequestUri.AbsolutePath);
+        }
+
         [Fact]
         public async Task SecuredPageRequested_RedirectsToIdentityServerLoginPage()
         {
@@ -47,6 +86,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
 
             // Assert
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.Equal(
                 _fixture.IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
@@ -67,6 +107,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             );
 
             // Assert
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.Equal(
                 _applicationUrl.AbsoluteUri.TrimEnd('/'),
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
@@ -91,6 +132,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
 
             // Assert
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.Equal(
                 _fixture.IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
@@ -115,6 +157,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             var result = await _httpClient.GetAsync(new Uri("User", UriKind.Relative));
 
             // Assert
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
             Assert.Equal(
                 _fixture.IdentityServerApplication.Url.AbsoluteUri.TrimEnd('/'),
                 result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
