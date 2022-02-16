@@ -5,6 +5,7 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
+          <ExcludeByFile>**/test/**,**/demo/**</ExcludeByFile>
           <SingleHit>false</SingleHit>
           <IncludeTestAssembly>false</IncludeTestAssembly>
         </Configuration>
