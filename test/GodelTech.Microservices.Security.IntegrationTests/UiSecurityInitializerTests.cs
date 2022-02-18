@@ -41,28 +41,28 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             GC.SuppressFinalize(this);
         }
 
-        //[Fact]
-        //public async Task ApiRequestCallApiAsUser_Success()
-        //{
-        //    // Arrange 
-        //    await LoginUiClientAsync(_userHttpClient, "alice", "alice");
+        [Fact]
+        public async Task ApiRequestCallApiAsUser_Success()
+        {
+            // Arrange 
+            await LoginUiClientAsync(_userHttpClient, "alice", "alice");
 
-        //    await GetAsync(
-        //        _userHttpClient,
-        //        new Uri("User", UriKind.Relative)
-        //    );
+            await GetAsync(
+                _userHttpClient,
+                new Uri("User", UriKind.Relative)
+            );
 
-        //    // Act
-        //    var result = await _httpClient.GetAsync(new Uri("ApiRequest/CallApiAsUser", UriKind.Relative));
+            // Act
+            var result = await _userHttpClient.GetAsync(new Uri("ApiRequest/CallApiAsUser", UriKind.Relative));
 
-        //    // Assert
-        //    Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-        //    Assert.Equal(
-        //        _applicationUrl.AbsoluteUri.TrimEnd('/'),
-        //        result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
-        //    );
-        //    Assert.Equal("/ApiRequest/CallApiAsUser", result.RequestMessage.RequestUri.AbsolutePath);
-        //}
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, result.StatusCode);
+            Assert.Equal(
+                _applicationUrl.AbsoluteUri.TrimEnd('/'),
+                result.RequestMessage.RequestUri.GetLeftPart(UriPartial.Authority)
+            );
+            Assert.Equal("/ApiRequest/CallApiAsUser", result.RequestMessage.RequestUri.AbsolutePath);
+        }
 
         [Fact]
         public async Task ApiRequestCallApiAsClient_Success()

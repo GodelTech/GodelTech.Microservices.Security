@@ -85,8 +85,11 @@ namespace IdentityServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "api"
-                    }
+                    },
+
+                    AllowOfflineAccess = true
                 },
                 // interactive ASP.NET Core RazorPages client
                 new Client
@@ -105,13 +108,16 @@ namespace IdentityServer
 
                     // where to redirect to after logout
                     PostLogoutRedirectUris = { "https://localhost:44303/signout-callback-oidc" },
-
+                    
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
+                        IdentityServerConstants.StandardScopes.OfflineAccess,
                         "api"
-                    }
+                    },
+
+                    AllowOfflineAccess = true
                 }
             };
 
