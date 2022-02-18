@@ -185,7 +185,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             _isDisposed = true;
         }
 
-        public async Task LoginUiClientAsync(HttpClient httpClient, string username, string password)
+        private async Task LoginUiClientAsync(HttpClient httpClient, string username, string password)
         {
             if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
 
@@ -269,7 +269,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             );
         }
 
-        public async Task LogoutUiClientAsync(HttpClient httpClient)
+        private async Task LogoutUiClientAsync(HttpClient httpClient)
         {
             if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
 

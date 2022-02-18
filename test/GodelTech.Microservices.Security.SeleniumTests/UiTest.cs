@@ -32,12 +32,27 @@ namespace GodelTech.Microservices.Security.SeleniumTests
             _webDriver.Dispose();
         }
 
-        [Fact]
-        public void Create_WhenExecuted_ReturnsCreateView()
+        [Theory]
+        [InlineData("test@example.com", "Secret1234!", "John Doe")]
+        [InlineData("alice", "alice", "Alice Smith")]
+        [InlineData("bob", "bob", "Bob Smith")]
+        public void SecuredPageRequested_RedirectsToIdentityServerLoginPage(string username, string password, string fullName)
         {
-            _webDriver.Navigate().GoToUrl(new Uri("https://www.google.com/"));
+            // Arrange
+            _webDriver.Navigate().GoToUrl(new Uri(_fixture.MvcApplication.Url, "User"));
 
-            Assert.Equal("Google", _webDriver.Title);
+            var loginInput = _webDriver.FindElement(By.Id("Username"));
+            var passwordInput = _webDriver.FindElement(By.Id("Password"));
+            var submitButton = _webDriver.FindElement(By.XPath("//button[@value='login']"));
+
+            loginInput.SendKeys(username);
+            passwordInput.SendKeys(password);
+
+            // Act
+            submitButton.Click();
+
+            // Assert
+            Assert.True(_webDriver.FindElement(By.XPath($"//h1[contains(text(), '{fullName}')]")).Displayed);
         }
     }
 }
