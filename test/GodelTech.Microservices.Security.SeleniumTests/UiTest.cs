@@ -18,13 +18,16 @@ namespace GodelTech.Microservices.Security.SeleniumTests
         {
             _fixture = fixture;
 
-            var chromeOptions = new ChromeOptions();
+            var chromeOptions = new ChromeOptions
+            {
+                AcceptInsecureCertificates = true
+            };
+            
             chromeOptions.AddArguments("headless");
 
             new DriverManager().SetUpDriver(new ChromeConfig());
 
             _webDriver = new ChromeDriver(AppContext.BaseDirectory, chromeOptions);
-            _ = _webDriver.Manage().Timeouts().ImplicitWait;
         }
 
         public void Dispose()
