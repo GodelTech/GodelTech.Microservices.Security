@@ -28,6 +28,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests
             new DriverManager().SetUpDriver(new ChromeConfig());
 
             _webDriver = new ChromeDriver(AppContext.BaseDirectory, chromeOptions);
+            _webDriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
         }
 
         public void Dispose()
