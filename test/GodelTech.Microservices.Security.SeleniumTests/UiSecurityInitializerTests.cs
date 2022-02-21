@@ -8,13 +8,13 @@ using Xunit;
 namespace GodelTech.Microservices.Security.SeleniumTests
 {
     [Collection("TestCollection")]
-    public sealed class UiTest : IDisposable
+    public sealed class UiSecurityInitializerTests : IDisposable
     {
         private readonly TestFixture _fixture;
 
         private readonly IWebDriver _webDriver;
 
-        public UiTest(TestFixture fixture)
+        public UiSecurityInitializerTests(TestFixture fixture)
         {
             _fixture = fixture;
 
