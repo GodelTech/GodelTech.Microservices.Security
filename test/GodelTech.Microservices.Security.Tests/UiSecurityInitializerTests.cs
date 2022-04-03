@@ -135,6 +135,8 @@ namespace GodelTech.Microservices.Security.Tests
             FakeUiSecurityInitializer initializer,
             string expectedFailurePath)
         {
+            if (initializer == null) throw new ArgumentNullException(nameof(initializer));
+
             // Arrange
             var mockHttpContext = new Mock<HttpContext>(MockBehavior.Strict);
             mockHttpContext
