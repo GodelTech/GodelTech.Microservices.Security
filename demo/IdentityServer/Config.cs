@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Claims;
 using System.Text.Json;
 using IdentityModel;
@@ -108,7 +108,7 @@ namespace IdentityServer
 
                     // where to redirect to after logout
                     PostLogoutRedirectUris = { "https://localhost:44303/signout-callback-oidc" },
-                    
+
                     AllowedScopes = new List<string>
                     {
                         IdentityServerConstants.StandardScopes.OpenId,

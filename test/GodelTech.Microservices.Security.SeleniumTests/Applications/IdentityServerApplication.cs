@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using IdentityServer;
 
 namespace GodelTech.Microservices.Security.SeleniumTests.Applications

@@ -1,6 +1,4 @@
-using System;
-
-namespace GodelTech.Microservices.Security.Demo.Mvc.Models
+﻿namespace GodelTech.Microservices.Security.Demo.Mvc.Models
 {
     public class ErrorViewModel
     {

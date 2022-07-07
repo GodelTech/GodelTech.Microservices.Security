@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GodelTech.Microservices.Core;
 using GodelTech.Microservices.Core.Mvc;
 using Microsoft.AspNetCore.Builder;
@@ -8,7 +8,7 @@ namespace GodelTech.Microservices.Security.Demo.Api
 {
     public class Startup : MicroserviceStartup
     {
-        public Startup(IConfiguration configuration) 
+        public Startup(IConfiguration configuration)
             : base(configuration)
         {
 
