@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using WebDriverManager;
@@ -22,7 +22,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests
             {
                 AcceptInsecureCertificates = true
             };
-            
+
             chromeOptions.AddArguments("headless");
 
             new DriverManager().SetUpDriver(new ChromeConfig());

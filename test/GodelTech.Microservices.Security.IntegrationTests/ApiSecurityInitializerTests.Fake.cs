@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Http;
@@ -14,15 +14,15 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             get
             {
                 // get list
-                yield return new object[] {FakeHttpRequestMessages[0]};
+                yield return new object[] { FakeHttpRequestMessages[0] };
                 // get
-                yield return new object[] {FakeHttpRequestMessages[1]};
+                yield return new object[] { FakeHttpRequestMessages[1] };
                 // post
-                yield return new object[] {FakeHttpRequestMessages[2]};
+                yield return new object[] { FakeHttpRequestMessages[2] };
                 // put
-                yield return new object[] {FakeHttpRequestMessages[3]};
+                yield return new object[] { FakeHttpRequestMessages[3] };
                 // delete
-                yield return new object[] {FakeHttpRequestMessages[4]};
+                yield return new object[] { FakeHttpRequestMessages[4] };
             }
         }
 
@@ -99,11 +99,11 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             get
             {
                 // post
-                yield return new object[] {FakeHttpRequestMessages[2]};
+                yield return new object[] { FakeHttpRequestMessages[2] };
                 // put
-                yield return new object[] {FakeHttpRequestMessages[3]};
+                yield return new object[] { FakeHttpRequestMessages[3] };
                 // delete
-                yield return new object[] {FakeHttpRequestMessages[4]};
+                yield return new object[] { FakeHttpRequestMessages[4] };
             }
         }
 

@@ -198,13 +198,13 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             var verificationToken = string.Empty;
             if (!string.IsNullOrEmpty(responseValue))
             {
-                returnUrl = responseValue.Substring(responseValue.IndexOf("ReturnUrl", StringComparison.InvariantCulture));
-                returnUrl = returnUrl.Substring(returnUrl.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
-                returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("\"", StringComparison.InvariantCulture));
+                returnUrl = responseValue[responseValue.IndexOf("ReturnUrl", StringComparison.InvariantCulture)..];
+                returnUrl = returnUrl[(returnUrl.IndexOf("value=\"", StringComparison.InvariantCulture) + 7)..];
+                returnUrl = returnUrl[..returnUrl.IndexOf("\"", StringComparison.InvariantCulture)];
 
-                verificationToken = responseValue.Substring(responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture));
-                verificationToken = verificationToken.Substring(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
-                verificationToken = verificationToken.Substring(0, verificationToken.IndexOf("\"", StringComparison.InvariantCulture));
+                verificationToken = responseValue[responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture)..];
+                verificationToken = verificationToken[(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7)..];
+                verificationToken = verificationToken[..verificationToken.IndexOf("\"", StringComparison.InvariantCulture)];
             }
 
             using var contentToSend = new FormUrlEncodedContent(
@@ -236,21 +236,21 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             var sessionState = string.Empty;
             if (!string.IsNullOrEmpty(responseValue))
             {
-                code = responseValue.Substring(responseValue.IndexOf("name='code'", StringComparison.InvariantCulture));
-                code = code.Substring(code.IndexOf("value='", StringComparison.InvariantCulture) + 7);
-                code = code.Substring(0, code.IndexOf("'", StringComparison.InvariantCulture));
+                code = responseValue[responseValue.IndexOf("name='code'", StringComparison.InvariantCulture)..];
+                code = code[(code.IndexOf("value='", StringComparison.InvariantCulture) + 7)..];
+                code = code[..code.IndexOf("'", StringComparison.InvariantCulture)];
 
-                scope = responseValue.Substring(responseValue.IndexOf("name='scope'", StringComparison.InvariantCulture));
-                scope = scope.Substring(scope.IndexOf("value='", StringComparison.InvariantCulture) + 7);
-                scope = scope.Substring(0, scope.IndexOf("'", StringComparison.InvariantCulture));
+                scope = responseValue[responseValue.IndexOf("name='scope'", StringComparison.InvariantCulture)..];
+                scope = scope[(scope.IndexOf("value='", StringComparison.InvariantCulture) + 7)..];
+                scope = scope[..scope.IndexOf("'", StringComparison.InvariantCulture)];
 
-                state = responseValue.Substring(responseValue.IndexOf("name='state'", StringComparison.InvariantCulture));
-                state = state.Substring(state.IndexOf("value='", StringComparison.InvariantCulture) + 7);
-                state = state.Substring(0, state.IndexOf("'", StringComparison.InvariantCulture));
+                state = responseValue[responseValue.IndexOf("name='state'", StringComparison.InvariantCulture)..];
+                state = state[(state.IndexOf("value='", StringComparison.InvariantCulture) + 7)..];
+                state = state[..state.IndexOf("'", StringComparison.InvariantCulture)];
 
-                sessionState = responseValue.Substring(responseValue.IndexOf("name='session_state'", StringComparison.InvariantCulture));
-                sessionState = sessionState.Substring(sessionState.IndexOf("value='", StringComparison.InvariantCulture) + 7);
-                sessionState = sessionState.Substring(0, sessionState.IndexOf("'", StringComparison.InvariantCulture));
+                sessionState = responseValue[responseValue.IndexOf("name='session_state'", StringComparison.InvariantCulture)..];
+                sessionState = sessionState[(sessionState.IndexOf("value='", StringComparison.InvariantCulture) + 7)..];
+                sessionState = sessionState[..sessionState.IndexOf("'", StringComparison.InvariantCulture)];
             }
 
             using var postContent = new FormUrlEncodedContent(
@@ -282,13 +282,13 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             var verificationToken = string.Empty;
             if (!string.IsNullOrEmpty(responseValue))
             {
-                logoutId = responseValue.Substring(responseValue.IndexOf("logoutId", StringComparison.InvariantCulture));
-                logoutId = logoutId.Substring(logoutId.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
-                logoutId = logoutId.Substring(0, logoutId.IndexOf("\"", StringComparison.InvariantCulture));
+                logoutId = responseValue[responseValue.IndexOf("logoutId", StringComparison.InvariantCulture)..];
+                logoutId = logoutId[(logoutId.IndexOf("value=\"", StringComparison.InvariantCulture) + 7)..];
+                logoutId = logoutId[..logoutId.IndexOf("\"", StringComparison.InvariantCulture)];
 
-                verificationToken = responseValue.Substring(responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture));
-                verificationToken = verificationToken.Substring(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7);
-                verificationToken = verificationToken.Substring(0, verificationToken.IndexOf("\"", StringComparison.InvariantCulture));
+                verificationToken = responseValue[responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture)..];
+                verificationToken = verificationToken[(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7)..];
+                verificationToken = verificationToken[..verificationToken.IndexOf("\"", StringComparison.InvariantCulture)];
             }
 
             using var contentToSend = new FormUrlEncodedContent(
