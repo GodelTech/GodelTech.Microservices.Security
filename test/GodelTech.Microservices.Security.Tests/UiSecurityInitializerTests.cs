@@ -53,7 +53,7 @@ namespace GodelTech.Microservices.Security.Tests
         public void ConfigureOpenIdConnectOptions_Success()
         {
             // Arrange
-            Action<UiSecurityOptions> configureUiSecurity = options =>
+            static void configureUiSecurity(UiSecurityOptions options)
             {
                 options.Authority = "Test Authority";
                 options.Issuer = "Test Issuer";
@@ -70,7 +70,7 @@ namespace GodelTech.Microservices.Security.Tests
                 options.UsePkce = true;
                 options.PublicAuthorityUri = new Uri("https://publicauthority.dev");
                 options.SaveTokens = true;
-            };
+            }
 
             var initializer = new FakeUiSecurityInitializer(
                 configureUiSecurity,

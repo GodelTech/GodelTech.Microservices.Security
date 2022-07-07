@@ -1,5 +1,4 @@
-﻿using Moq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using GodelTech.Microservices.Security.ApiSecurity;
@@ -8,6 +7,7 @@ using GodelTech.Microservices.Security.Tests.Fakes.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Moq;
 using Xunit;
 
 namespace GodelTech.Microservices.Security.Tests
@@ -71,7 +71,7 @@ namespace GodelTech.Microservices.Security.Tests
         public void ConfigureJwtBearerOptions_Success()
         {
             // Arrange
-            Action<ApiSecurityOptions> configureApiSecurity = options =>
+            static void configureApiSecurity(ApiSecurityOptions options)
             {
                 options.RequireHttpsMetadata = true;
                 options.Authority = "Test Authority";
@@ -86,7 +86,7 @@ namespace GodelTech.Microservices.Security.Tests
                 };
                 options.SaveToken = true;
                 options.IncludeErrorDetails = true;
-            };
+            }
 
             var initializer = new FakeApiSecurityInitializer(
                 configureApiSecurity,
@@ -141,7 +141,7 @@ namespace GodelTech.Microservices.Security.Tests
                     "fakeKey", AuthorizationPolicyHelpers.GetAuthorizationPolicy("fake.AuthorizationPolicy")
                 }
             };
-            
+
             _mockPolicyFactory
                 .Setup(x => x.Create())
                 .Returns(policies);
