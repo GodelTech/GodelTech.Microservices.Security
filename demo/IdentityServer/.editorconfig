@@ -16,3 +16,8 @@ indent_size = 2
 indent_size = 4
 insert_final_newline = true
 charset = utf-8-bom
+
+[*.{cs,vb}]
+
+# IDE0160: Convert to block-scoped namespace
+csharp_style_namespace_declarations = block_scoped
