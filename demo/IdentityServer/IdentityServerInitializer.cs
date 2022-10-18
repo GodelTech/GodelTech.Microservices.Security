@@ -28,5 +28,10 @@ namespace IdentityServer
         {
             app.UseIdentityServer();
         }
+
+        public virtual void ConfigureEndpoints(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+
+        }
     }
 }
