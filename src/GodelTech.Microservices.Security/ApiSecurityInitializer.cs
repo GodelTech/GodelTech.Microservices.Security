@@ -85,6 +85,12 @@ namespace GodelTech.Microservices.Security
             app.UseAuthorization();
         }
 
+        /// <inheritdoc />
+        public virtual void ConfigureEndpoints(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+
+        }
+
         /// <summary>
         /// Configure JwtBearerOptions.
         /// </summary>
