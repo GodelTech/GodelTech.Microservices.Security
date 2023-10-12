@@ -165,6 +165,8 @@ namespace GodelTech.Microservices.Security.Tests
                     x => x.Response.Redirect(expectedFailurePath),
                     Times.Once
                 );
+
+            Assert.True(mockRemoteFailureContext.Object.Result.Handled);
         }
 
         [Fact]
@@ -223,6 +225,8 @@ namespace GodelTech.Microservices.Security.Tests
                     x => x.Response.Redirect("/Errors/Fault"),
                     Times.Once
                 );
+
+            Assert.True(mockRemoteFailureContext.Object.Result.Handled);
 
             mockRedirectContext.Object.ProtocolMessage = new OpenIdConnectMessage
             {
