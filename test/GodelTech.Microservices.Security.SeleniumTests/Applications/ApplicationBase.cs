@@ -35,6 +35,7 @@ namespace GodelTech.Microservices.Security.SeleniumTests.Applications
         public void Stop()
         {
             _host.StopAsync().GetAwaiter().GetResult();
+            _host.Dispose();
         }
 
         protected virtual void ConfigureServices(IServiceCollection services)
