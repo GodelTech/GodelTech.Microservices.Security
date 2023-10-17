@@ -57,6 +57,27 @@ namespace GodelTech.Microservices.Security.Tests
         }
 
         [Fact]
+        public void Constructor_WhenApiSecurityInitializerOptions_Invoked()
+        {
+            // Arrange
+            var invoked = false;
+
+            void configureApiSecurityInitializerOptions(ApiSecurityInitializerOptions options)
+            {
+                invoked = true;
+            }
+
+            // Act
+            var initializer = new ApiSecurityInitializer(
+                x => { },
+                configureApiSecurityInitializerOptions
+            );
+
+            // Assert
+            Assert.True(invoked);
+        }
+
+        [Fact]
         public void ConfigureJwtBearerOptions_WhenJwtBearerOptions_ThrowsArgumentNullException()
         {
             // Arrange & Act & Assert
