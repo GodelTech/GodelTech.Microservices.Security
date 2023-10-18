@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 using GodelTech.Extensions.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +10,7 @@ using Microsoft.IdentityModel.Logging;
 
 namespace GodelTech.Microservices.Security.SeleniumTests.Applications
 {
-    public abstract class ApplicationBase<TStartup>
+    public abstract class ApplicationBase<TStartup> : IDisposable
         where TStartup : class
     {
         private readonly IHost _host;
@@ -25,16 +26,24 @@ namespace GodelTech.Microservices.Security.SeleniumTests.Applications
                 .Build();
         }
 
+        protected bool IsDisposed { get; private set; }
+
         public Uri Url { get; }
 
-        public void Start()
+        public async Task StartAsync()
         {
-            _host.StartAsync().GetAwaiter().GetResult();
+            await _host.StartAsync();
         }
 
-        public void Stop()
+        public async Task StopAsync()
         {
-            _host.StopAsync().GetAwaiter().GetResult();
+            await _host.StopAsync();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void ConfigureServices(IServiceCollection services)
@@ -68,5 +77,29 @@ namespace GodelTech.Microservices.Security.SeleniumTests.Applications
                     }
                 );
         }
+
+        #region Dispose
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposing)
+            {
+                // unmanaged resources would be cleaned up here.
+                return;
+            }
+
+            if (IsDisposed)
+            {
+                // no need to dispose twice.
+                return;
+            }
+
+            // free managed resources
+            _host?.Dispose();
+
+            IsDisposed = true;
+        }
+
+        #endregion
     }
 }
