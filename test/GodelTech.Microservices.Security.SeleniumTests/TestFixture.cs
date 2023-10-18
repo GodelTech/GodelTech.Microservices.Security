@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using GodelTech.Microservices.Security.SeleniumTests.Applications;
+using Xunit;
 
 namespace GodelTech.Microservices.Security.SeleniumTests
 {
-    public sealed class TestFixture : IDisposable
+    public sealed class TestFixture : IDisposable, IAsyncLifetime
     {
         public TestFixture()
         {
@@ -12,8 +14,6 @@ namespace GodelTech.Microservices.Security.SeleniumTests
             ApiApplication = new ApiApplication();
             MvcApplication = new MvcApplication();
             RazorPagesApplication = new RazorPagesApplication();
-
-            Start();
         }
 
         public IdentityServerApplication IdentityServerApplication { get; }
@@ -24,27 +24,33 @@ namespace GodelTech.Microservices.Security.SeleniumTests
 
         public RazorPagesApplication RazorPagesApplication { get; }
 
+        public async Task InitializeAsync()
+        {
+            await IdentityServerApplication.StartAsync();
+
+            await ApiApplication.StartAsync();
+            await MvcApplication.StartAsync();
+            await RazorPagesApplication.StartAsync();
+        }
+
+        public Task DisposeAsync()
+        {
+            return Task.WhenAll(
+                IdentityServerApplication.StopAsync(),
+
+                ApiApplication.StopAsync(),
+                MvcApplication.StopAsync(),
+                RazorPagesApplication.StopAsync()
+            );
+        }
+
         public void Dispose()
         {
-            Stop();
-        }
+            IdentityServerApplication.Dispose();
 
-        private void Start()
-        {
-            IdentityServerApplication.Start();
-
-            ApiApplication.Start();
-            MvcApplication.Start();
-            RazorPagesApplication.Start();
-        }
-
-        private void Stop()
-        {
-            IdentityServerApplication.Stop();
-
-            ApiApplication.Stop();
-            MvcApplication.Stop();
-            RazorPagesApplication.Stop();
+            ApiApplication.Dispose();
+            MvcApplication.Dispose();
+            RazorPagesApplication.Dispose();
         }
     }
 }
