@@ -35,7 +35,7 @@ namespace GodelTech.Microservices.Security
             Action<AccessTokenManagementOptions> configureAccessTokenManagement = null,
             string failurePath = "/Errors/Fault")
         {
-            if (configureUiSecurity == null) throw new ArgumentNullException(nameof(configureUiSecurity));
+            ArgumentNullException.ThrowIfNull(configureUiSecurity);
 
             _failurePath = failurePath;
 
@@ -91,7 +91,7 @@ namespace GodelTech.Microservices.Security
         /// <param name="options">OpenIdConnectOptions.</param>
         protected virtual void ConfigureOpenIdConnectOptions(OpenIdConnectOptions options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(options);
 
             options.Authority = _uiSecurityOptions.Authority;
 

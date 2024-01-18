@@ -46,8 +46,8 @@ namespace GodelTech.Microservices.Security
             IAuthorizationPolicyFactory policyFactory,
             Action<ApiSecurityInitializerOptions> configure = null)
         {
-            if (configureApiSecurity == null) throw new ArgumentNullException(nameof(configureApiSecurity));
-            if (policyFactory == null) throw new ArgumentNullException(nameof(policyFactory));
+            ArgumentNullException.ThrowIfNull(configureApiSecurity);
+            ArgumentNullException.ThrowIfNull(policyFactory);
 
             configureApiSecurity.Invoke(_apiSecurityOptions);
 
@@ -97,7 +97,7 @@ namespace GodelTech.Microservices.Security
         /// <param name="options">JwtBearerOptions.</param>
         protected virtual void ConfigureJwtBearerOptions(JwtBearerOptions options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(options);
 
             options.RequireHttpsMetadata = _apiSecurityOptions.RequireHttpsMetadata;
             options.Authority = _apiSecurityOptions.Authority;
@@ -123,7 +123,7 @@ namespace GodelTech.Microservices.Security
         /// <param name="options">AuthorizationOptions.</param>
         protected virtual void ConfigureAuthorizationOptions(AuthorizationOptions options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
+            ArgumentNullException.ThrowIfNull(options);
 
             foreach (var policy in _policyFactory.Create())
             {

@@ -50,7 +50,7 @@ namespace GodelTech.Microservices.Security.Demo.Api.Controllers
         [ProducesResponseType(typeof(FakeModel), StatusCodes.Status201Created)]
         public IActionResult Post([FromBody] FakePostModel model)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             var item = new FakeModel
             {
@@ -72,7 +72,7 @@ namespace GodelTech.Microservices.Security.Demo.Api.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public IActionResult Put(int id, FakePutModel model)
         {
-            if (model == null) throw new ArgumentNullException(nameof(model));
+            ArgumentNullException.ThrowIfNull(model);
 
             if (id != model.Id)
             {
