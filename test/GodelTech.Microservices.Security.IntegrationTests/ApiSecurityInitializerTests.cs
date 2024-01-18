@@ -104,7 +104,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
         private async Task AuthorizeClientAsync(HttpClient httpClient, string scope)
         {
-            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+            ArgumentNullException.ThrowIfNull(httpClient);
 
             var discoveryDocument = await httpClient.GetDiscoveryDocumentAsync(_fixture.IdentityServerApplication.Url.AbsoluteUri);
             if (discoveryDocument.IsError) throw new InvalidOperationException(discoveryDocument.Error);

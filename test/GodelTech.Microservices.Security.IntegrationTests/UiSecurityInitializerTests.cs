@@ -187,7 +187,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
         private async Task LoginUiClientAsync(HttpClient httpClient, string username, string password)
         {
-            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+            ArgumentNullException.ThrowIfNull(httpClient);
 
             var loginUrl = new Uri(_fixture.IdentityServerApplication.Url, "Account/Login");
 
@@ -200,11 +200,11 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             {
                 returnUrl = responseValue[responseValue.IndexOf("ReturnUrl", StringComparison.InvariantCulture)..];
                 returnUrl = returnUrl[(returnUrl.IndexOf("value=\"", StringComparison.InvariantCulture) + 7)..];
-                returnUrl = returnUrl[..returnUrl.IndexOf("\"", StringComparison.InvariantCulture)];
+                returnUrl = returnUrl[..returnUrl.IndexOf('"', StringComparison.InvariantCulture)];
 
                 verificationToken = responseValue[responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture)..];
                 verificationToken = verificationToken[(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7)..];
-                verificationToken = verificationToken[..verificationToken.IndexOf("\"", StringComparison.InvariantCulture)];
+                verificationToken = verificationToken[..verificationToken.IndexOf('"', StringComparison.InvariantCulture)];
             }
 
             using var contentToSend = new FormUrlEncodedContent(
@@ -223,7 +223,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
         private async Task<HttpResponseMessage> GetAsync(HttpClient httpClient, Uri url)
         {
-            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+            ArgumentNullException.ThrowIfNull(httpClient);
 
             var response = await httpClient.GetAsync(url);
             if (response.RequestMessage.RequestUri == new Uri(_applicationUrl, url)) return response;
@@ -238,19 +238,19 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             {
                 code = responseValue[responseValue.IndexOf("name='code'", StringComparison.InvariantCulture)..];
                 code = code[(code.IndexOf("value='", StringComparison.InvariantCulture) + 7)..];
-                code = code[..code.IndexOf("'", StringComparison.InvariantCulture)];
+                code = code[..code.IndexOf('\'', StringComparison.InvariantCulture)];
 
                 scope = responseValue[responseValue.IndexOf("name='scope'", StringComparison.InvariantCulture)..];
                 scope = scope[(scope.IndexOf("value='", StringComparison.InvariantCulture) + 7)..];
-                scope = scope[..scope.IndexOf("'", StringComparison.InvariantCulture)];
+                scope = scope[..scope.IndexOf('\'', StringComparison.InvariantCulture)];
 
                 state = responseValue[responseValue.IndexOf("name='state'", StringComparison.InvariantCulture)..];
                 state = state[(state.IndexOf("value='", StringComparison.InvariantCulture) + 7)..];
-                state = state[..state.IndexOf("'", StringComparison.InvariantCulture)];
+                state = state[..state.IndexOf('\'', StringComparison.InvariantCulture)];
 
                 sessionState = responseValue[responseValue.IndexOf("name='session_state'", StringComparison.InvariantCulture)..];
                 sessionState = sessionState[(sessionState.IndexOf("value='", StringComparison.InvariantCulture) + 7)..];
-                sessionState = sessionState[..sessionState.IndexOf("'", StringComparison.InvariantCulture)];
+                sessionState = sessionState[..sessionState.IndexOf('\'', StringComparison.InvariantCulture)];
             }
 
             using var postContent = new FormUrlEncodedContent(
@@ -271,7 +271,7 @@ namespace GodelTech.Microservices.Security.IntegrationTests
 
         private async Task LogoutUiClientAsync(HttpClient httpClient)
         {
-            if (httpClient == null) throw new ArgumentNullException(nameof(httpClient));
+            ArgumentNullException.ThrowIfNull(httpClient);
 
             var logoutUrl = new Uri(_fixture.IdentityServerApplication.Url, "Account/Logout");
 
@@ -284,11 +284,11 @@ namespace GodelTech.Microservices.Security.IntegrationTests
             {
                 logoutId = responseValue[responseValue.IndexOf("logoutId", StringComparison.InvariantCulture)..];
                 logoutId = logoutId[(logoutId.IndexOf("value=\"", StringComparison.InvariantCulture) + 7)..];
-                logoutId = logoutId[..logoutId.IndexOf("\"", StringComparison.InvariantCulture)];
+                logoutId = logoutId[..logoutId.IndexOf('"', StringComparison.InvariantCulture)];
 
                 verificationToken = responseValue[responseValue.IndexOf("__RequestVerificationToken", StringComparison.InvariantCulture)..];
                 verificationToken = verificationToken[(verificationToken.IndexOf("value=\"", StringComparison.InvariantCulture) + 7)..];
-                verificationToken = verificationToken[..verificationToken.IndexOf("\"", StringComparison.InvariantCulture)];
+                verificationToken = verificationToken[..verificationToken.IndexOf('"', StringComparison.InvariantCulture)];
             }
 
             using var contentToSend = new FormUrlEncodedContent(
