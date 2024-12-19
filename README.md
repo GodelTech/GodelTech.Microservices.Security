@@ -1,6 +1,6 @@
 # GodelTech.Microservices.Security
 
-# Description
+## Description
 The GodelTech.Microservices.Security repository is focused on providing security solutions for microservices developed using C#. It encompasses various security-related functionalities and best practices to ensure the protection and integrity of microservices architectures.
 
 ## Overview
@@ -214,5 +214,5 @@ The following resources might be useful to understand internals of current proje
 * [IdentityServer Examples](https://github.com/IdentityServer/IdentityServer4/tree/main/samples)
 * [IdentityModel.AspNetCore](https://identitymodel.readthedocs.io/en/latest/aspnetcore/overview.html)
 
-# License
+## License
 This project is licensed under the MIT License. See the LICENSE file for more details.
